@@ -194,6 +194,6 @@ bar {
         position top
 }
 
-exec_always --no-startup-id feh --bg-scale /home/salzatec1/Pictures/Forest.jpeg
+exec_always --no-startup-id feh --bg-scale /home/salzatec1/.local/share/bg/Ship_epic.jpg
 
 exec picom -b
