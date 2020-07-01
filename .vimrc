@@ -1,6 +1,7 @@
 " Makes vim more useful 
 set nocompatible
 
+" "------ Plugins added with plug ------" "
 " Uncomment if you like those  plugins, add the ones you like
 " call plug#begin('~/.vim/plugged')
 "     
@@ -16,6 +17,7 @@ set nocompatible
 
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo
+
 " Recommended if you are using gruvbox
 " set background=dark
 
@@ -86,13 +88,14 @@ set expandtab
 set undodir=~/.vim/undo-dir
 set undofile
 
-nnoremap <C-L> :NERDTreeToggle<CR>
-nnoremap <leader>+ :vertical resize +5<CR>
-nnoremap <leader>- :vertical resize -5<CR>
-
-" YCM
-nnoremap <leader>gd :YcmCompleter GoTo<CR>
-nnoremap <leader>gf :YcmCompleter FixIt<CR>
+" "------ NerdTree Settings--------" "
+" nnoremap <C-L> :NERDTreeToggle<CR>
+" nnoremap <leader>+ :vertical resize +5<CR>
+" nnoremap <leader>- :vertical resize -5<CR>
+" 
+" "---- YCM Auto completion Settings -------" "
+" nnoremap <leader>gd :YcmCompleter GoTo<CR>
+" nnoremap <leader>gf :YcmCompleter FixIt<CR>
 
 " ++----------------- sdsa  ++------------------------
 " <C-g>       : Shows me the state of the current file 
