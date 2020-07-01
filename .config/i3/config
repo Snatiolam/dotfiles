@@ -9,7 +9,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-
+set $shutdown shutdown -h now
 set $inner_gaps 15
 set $outer_gaps 15
 set $mod Mod4
@@ -158,7 +158,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 
 
-bindsym $mod+Shift+x exec prompt "Are you sure you want to shutdown" "shutdown"
+bindsym $mod+Shift+x exec prompt "Shutdown computer?" "$shutdown"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
