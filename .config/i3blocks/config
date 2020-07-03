@@ -1,68 +1,52 @@
-command=~/.local/bin/statusbar/$BLOCK_NAME
-separator_block_width=15
-markup=pango
-
-[record]
-command=cat /tmp/recordingicon
+[WEATHER_SIGNALER]
+command=~/.config/i3blocks/weather/weather_signaler
 interval=once
-signal=9
 
-[music]
-label=🎼
+[WEATHER]
+command=~/.config/i3blocks/weather/weather_info.sh
+interval=300
+color=#FEC925
+signal=2
+
+[DISK]
+command=~/.config/i3blocks/scripts/disk /home
+interval=2
+color=#C9E3DB
+
+[BATTERY]
+command=~/.config/i3blocks/scripts/battery
+interval=3
+
+[CPU]
+full_text= CPU:  0.00% @ +00.0°C 
+command=~/.config/i3blocks/scripts/cpu
+interval=repeat
+color=#00B4EB
+
+[MEM]
+command=free -h | awk '/Mem:/ { printf(" 🐏 %5s/%s \n", $3, $2) }'
+interval=1
+color=#FEC925
+
+[SOUND_BURST]
+command=~/.config/i3blocks/sound/sound_burst.sh
 interval=once
-signal=11
 
-[news]
-interval=once
-signal=6
+[SOUND]
+full_text= 🔇:  0% 
+command=~/.config/i3blocks/scripts/sound_info.sh
+interval=0
+signal=1
 
-#[iplocate]
-#interval=30
-
-[pacpackages]
-interval=once
-signal=8
-
-[torrent]
-interval=20
-signal=7
-
-[weather]
-interval=18000
-signal=5
-
-[mailbox]
-interval=180
-signal=12
-
-#[memory]
-#interval=30
-
-#[cpu]
-#interval=15
-
-[volume]
-interval=once
-signal=10
-
-#[disk]
-#interval=60
-#command=disk /
-
-#[disk]
-#interval=60
-#command=disk /home
-
-[battery]
-command=battery BAT0
-interval=5
-
-[clock]
-label=📅
+[wifi]
+command=~/.config/i3blocks/wifi/wifi_quality
+label=📶
+instance=wlp2s0
 interval=30
 
-[internet]
-interval=10
+[TIME_DATE]
+label=🗓️
+command=date +" %a, %d %b - %H:%M:%S"
+interval=1
 
-[help-icon]
-interval=once
+
