@@ -3,10 +3,10 @@ command=~/.config/i3blocks/weather/weather_signaler
 interval=once
 
 [WEATHER]
-command=~/.config/i3blocks/weather/weather_info.sh
-interval=300
+command=~/.config/i3blocks/scripts/weather
+interval=18000
 color=#FEC925
-signal=2
+signal=5
 
 [DISK]
 command=~/.config/i3blocks/scripts/disk /home
