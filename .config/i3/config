@@ -13,7 +13,7 @@ set $shutdown shutdown -h now
 set $inner_gaps 15
 set $outer_gaps 15
 set $mod Mod4
-
+set $netrefresh sudo -A systemctl restart NetworkManager
 
 # #---Gaps---# #
 for_window [class="^.*"] border pixel 2
@@ -159,6 +159,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 
 bindsym $mod+Shift+x exec prompt "Shutdown computer?" "$shutdown"
+
+bindsym $mod+F5 exec --no-startup-id $netrefresh
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
