@@ -1,0 +1,6 @@
+temp() {
+    local cur=$(curl -s wttr.in/$LOCATION?format=%c%t)
+    echo "$cur"
+}
+
+temp

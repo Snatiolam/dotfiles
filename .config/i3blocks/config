@@ -1,12 +1,10 @@
-[WEATHER_SIGNALER]
-command=~/.config/i3blocks/weather/weather_signaler
-interval=once
-
-[WEATHER]
+[WEATHER_REPORT]
 command=~/.config/i3blocks/scripts/weather
 interval=18000
-color=#FEC925
-signal=5
+
+[TEMPERATURE]
+command=~/.config/i3blocks/scripts/temp
+interval=1800
 
 [DISK]
 command=~/.config/i3blocks/scripts/disk /home
@@ -14,7 +12,7 @@ interval=2
 color=#C9E3DB
 
 [BATTERY]
-command=~/.config/i3blocks/scripts/battery
+command=~/.config/i3blocks/scripts/battery BAT0
 interval=3
 
 [CPU]
@@ -38,7 +36,7 @@ command=~/.config/i3blocks/scripts/sound_info.sh
 interval=0
 signal=1
 
-[wifi]
+[WIFI]
 command=~/.config/i3blocks/wifi/wifi_quality
 label=📶
 instance=wlp2s0
@@ -48,5 +46,4 @@ interval=30
 label=🗓️
 command=date +" %a, %d %b - %H:%M:%S"
 interval=1
-
 
