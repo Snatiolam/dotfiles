@@ -156,8 +156,6 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-
-
 bindsym $mod+Shift+x exec prompt "Shutdown computer?" "$shutdown"
 
 bindsym $mod+F5 exec --no-startup-id $netrefresh
@@ -200,8 +198,9 @@ bindsym $mod+r mode "resize"
 # Terminal
 #assign [class="Terminator"] $ws2
 #assign [class="Steam"] $ws3
+# Mail
+#assign [class="Thunderbird"] $ws8
 # File Manager
-#assign [class="Org.gnome.Nautilus"] $ws8
 #assign [class="discord"] $ws9
 #assign [class="Microsoft Teams - Preview"] $ws10
 
