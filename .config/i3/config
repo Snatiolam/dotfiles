@@ -165,6 +165,9 @@ bindsym Print exec --no-startup-id maim ~/Pictures/pic-full-"$(date '+%y%m%d-
 
 bindsym Shift+Print exec --no-startup-id maimpick
 
+bindsym XF86MonBrightnessDown   exec --no-startup-id xbacklight -dec 10
+bindsym XF86MonBrightnessUp     exec --no-startup-id xbacklight -inc 10  
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
