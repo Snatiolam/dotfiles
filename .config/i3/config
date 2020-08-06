@@ -161,8 +161,7 @@ bindsym $mod+Shift+x exec prompt "Shutdown computer?" "$shutdown"
 
 bindsym $mod+F5 exec --no-startup-id $netrefresh
 
-bindsym Print exec --no-startup-id maim ~/Pictures/pic-full-"$(date '+%y%m%d-
-%H%M-%S').png"
+bindsym Print exec --no-startup-id maim ~/Pictures/pic-full-"$(date '+%y%m%d-%H%M-%S').png"
 
 bindsym Shift+Print exec --no-startup-id maimpick
 
