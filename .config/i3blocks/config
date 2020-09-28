@@ -33,11 +33,11 @@ interval=once
 [SOUND]
 full_text= 🔇:  0% 
 command=~/.config/i3blocks/scripts/sound_info.sh
-interval=0
-signal=1
+interval=once
+signal=10
 
 [WIFI]
-command=~/.config/i3blocks/wifi/wifi_quality
+command=~/.config/i3blocks/scripts/wifi
 label=📶
 instance=wlp2s0
 interval=30

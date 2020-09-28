@@ -7,8 +7,8 @@
 # More info at http://www.thinkwiki.org/wiki/Xorg_RandR_1.2
 
 
-PRIMARY_OUTPUT="eDP1";
-SECONDARY_OUTPUT="HDMI1";
+PRIMARY_OUTPUT="eDP-1";
+SECONDARY_OUTPUT="HDMI-1";
 SECONDARY_LOCATION="${1:-right}";    # SEC_LOCATION may be one of: left, right, above, or below
 
 case "$SECONDARY_LOCATION" in
