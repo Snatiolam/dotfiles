@@ -48,6 +48,14 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3blocks
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3block
 
+# # ----- Binding XF86Keys ----- # #
+
+bindsym XF86MonBrightnessDown   exec --no-startup-id xbacklight -dec 10
+bindsym XF86MonBrightnessUp     exec --no-startup-id xbacklight -inc 10  
+bindsym XF86Calculator          exec --no-startup-id speedcrunch
+bindsym XF86Search              exec --no-startup-id firefox
+bindsym XF86Mail                exec --no-startup-id thunderbird
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -165,9 +173,6 @@ bindsym $mod+F5 exec --no-startup-id $netrefresh
 bindsym Print exec --no-startup-id maim ~/Pictures/pic-full-"$(date '+%y%m%d-%H%M-%S').png"
 
 bindsym Shift+Print exec --no-startup-id maimpick
-
-bindsym XF86MonBrightnessDown   exec --no-startup-id xbacklight -dec 10
-bindsym XF86MonBrightnessUp     exec --no-startup-id xbacklight -inc 10  
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
