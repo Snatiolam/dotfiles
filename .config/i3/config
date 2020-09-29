@@ -228,5 +228,5 @@ bar {
 # exec --no-startup-id xscreensaver
 # exec --no-startup-id xautolock -time 1 -locker 'i3lock -i ~/Pictures/lockscreen.png' 
 #--- Another option with screen blueish 'i3lock -e -c 007f7f'
-#exec --no-startup-id xautolock -time 7 -locker 'lock_screen'
+#exec --no-startup-id xautolock -time 10 -locker 'lock_screen'
 

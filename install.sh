@@ -10,14 +10,14 @@ install_binaries(){
     [ ! -d "$INSTALL_BIN" ] && mkdir -p "$INSTALL_BIN"
     for file in "$ROOT_DIR/.local/bin/*"
     do
-        sudo cp $file $INSTALL_BIN
+        sudo cp $file "$INSTALL_BIN/"
     done
     echo "Shell scripts installed"
 }
 
 install_vimrc(){
     echo "Installing vimrc file"
-    cp .vimrc $HOME
+    cp .vimrc "$HOME/"
     echo "Installed vimrc"
 }
 
@@ -33,16 +33,22 @@ install_i3blocks_config(){
     [ ! -d "$INSTALL_DIR/.config/i3blocks/scripts" ] && sudo mkdir -p "$INSTALL_DIR/.config/i3blocks/scripts"
     for file in "$INSTALL_SCRIPTS/*"
     do
-        sudo cp $file "$INSTALL_DIR/.config/i3blocks/scripts"
+        sudo cp $file "$INSTALL_DIR/.config/i3blocks/scripts/"
     done
-    
+}
+
+install_zsh_files(){
+    cp "$ROOT_DIR/.zprofile" "$INSTALL_DIR/"
+    cp "$ROOT_DIR/.zshrc" "$INSTALL_DIR/"
+
 }
 
 main(){
     # install_binaries
     # install_vimrc
     # install_i3_config
-    install_i3blocks_config
+    # install_i3blocks_config
+    install_zsh_files
 }
 
 main
