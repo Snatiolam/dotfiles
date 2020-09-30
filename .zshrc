@@ -6,5 +6,6 @@ alias cd..='cd ..'
 alias cd...='cd ../..'
 alias cd....='cd../../..'
 
-neofetch
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 
