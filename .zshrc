@@ -5,7 +5,10 @@ HISTSIZE=5000
 HISTFILE=~/.cache/zsh/history
 SAVEHIST=5000
 
+# Colors to basic commands
 alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+# Basic aliases
 alias ll='ls -l'
 alias cd..='cd ..'
 alias cd...='cd ../..'
