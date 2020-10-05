@@ -27,8 +27,12 @@ alias cd....='cd../../..'
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[3~' delete-char
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^R' history-incremental-search-backward
+bindkey '^U' kill-whole-line
+# bindkey -e # for debug 
 
-# Easy prompt setting
 # autoload -U promptinit
 # promptinit
 # # prompt -l
@@ -40,5 +44,4 @@ PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 
 # neofetch
 
-# Syntax highlighting for shell commands: Should be last
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
