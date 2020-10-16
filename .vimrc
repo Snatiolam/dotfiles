@@ -7,6 +7,7 @@ set nocompatible
 "     
 "     Plug 'morhetz/gruvbox'
 "     Plug 'preservim/nerdtree'
+"     Plug 'mbbill/undotree'
 "     Plug 'xuyuanp/nerdtree-git-plugin'
 "     " Important download { python3-dev, nodejs(npm), Go and cmake}
 "     " Then run (install.py | install.sh)
@@ -89,13 +90,20 @@ set undodir=~/.vim/undo-dir
 set undofile
 
 " "------ NerdTree Settings--------" "
-" nnoremap <C-L> :NERDTreeToggle<CR>
-" nnoremap <leader>+ :vertical resize +5<CR>
-" nnoremap <leader>- :vertical resize -5<CR>
-" 
+" nnoremap <C-n> :NERDTreeToggle<CR>
+
+" "------ UndoTree Settings--------" "
+" nnoremap <C-l> :UndoTreeToggle<CR>
+
+nnoremap <leader>+ :vertical resize +5<CR>
+nnoremap <leader>- :vertical resize -5<CR>
+
 " "---- YCM Auto completion Settings -------" "
 " nnoremap <leader>gd :YcmCompleter GoTo<CR>
 " nnoremap <leader>gf :YcmCompleter FixIt<CR>
+
+" "---- Alacritty mouse enabling ----" " 
+set ttymouse=sgr
 
 " ++----------------- sdsa  ++------------------------
 " <C-g>       : Shows me the state of the current file 
