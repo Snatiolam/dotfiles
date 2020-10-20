@@ -98,6 +98,12 @@ set undofile
 nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
 
+" "---- Map vim movement keys ----" "
+noremap ; l
+noremap l k
+noremap k j
+noremap j h
+
 " "---- YCM Auto completion Settings -------" "
 " nnoremap <leader>gd :YcmCompleter GoTo<CR>
 " nnoremap <leader>gf :YcmCompleter FixIt<CR>
