@@ -207,6 +207,24 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    # bindsym l exec --no-startup-id lock_screen, mode "default"
+    bindsym l exec --no-startup-id i3lock, mode "default"
+    bindsym e exit
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot
+    bindsym Shift+s exec --no-startup-id systemctl shutdown
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+s mode "$mode_system"
+
+
+
 # #---Open  applications on specific workspaces---# #
 # Browser
 #assign [class="Firefox"] $ws1
