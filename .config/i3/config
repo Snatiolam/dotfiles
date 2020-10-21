@@ -215,7 +215,7 @@ mode "$mode_system" {
     bindsym s exec --no-startup-id systemctl suspend, mode "default"
     bindsym h exec --no-startup-id systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot
-    bindsym Shift+s exec --no-startup-id systemctl shutdown
+    bindsym Shift+s exec --no-startup-id systemctl poweroff
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
