@@ -16,16 +16,6 @@ set nocompatible
 "     
 " call plug#end()
 
-set statusline=%F
-set statusline+=\
-set statusline+=%y
-set statusline+=%= "Align statusline to the right"
-set statusline+=Line:\ %l/%L
-set statusline+=\
-set statusline+=Col:\ %c
-set statusline+=\
-set statusline+=%p%%
-
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo
 
@@ -70,6 +60,32 @@ set ruler
 " Always display the status line, even if only one window is displayed
 set laststatus=2
 
+let g:currentmode={
+       \ 'n'  : 'NORMAL',
+       \ 'v'  : 'VISUAL',
+       \ 'V'  : 'V·Line',
+       \ "\<C-v>" : 'V·Block',
+       \ 'i'  : 'INSERT',
+       \ 'R'  : 'R',
+       \ 'Rv' : 'V·Replace',
+       \ 'c'  : 'Command',
+       \}
+
+set statusline=
+set statusline+=[%{toupper(currentmode[mode()])}]
+set statusline+=\ %F
+set statusline+=\
+set statusline+=%y
+set statusline+=%= "Align statusline to the right"
+set statusline+=Line:\ %l/%L
+set statusline+=\
+set statusline+=Col:\ %c
+set statusline+=\
+set statusline+=-\\%p%%
+
+"hi statusline guibg=White ctermfg=8 guifg=DarkSlateGray ctermbg=15
+"hi StatusLine ctermbg=black ctermfg=red
+}
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
 set confirm
