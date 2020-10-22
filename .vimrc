@@ -16,6 +16,16 @@ set nocompatible
 "     
 " call plug#end()
 
+set statusline=%F
+set statusline+=\
+set statusline+=%y
+set statusline+=%= "Align statusline to the right"
+set statusline+=Line:\ %l/%L
+set statusline+=\
+set statusline+=Col:\ %c
+set statusline+=\
+set statusline+=%p%%
+
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo
 
