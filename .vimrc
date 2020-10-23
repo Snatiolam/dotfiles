@@ -72,19 +72,19 @@ let g:currentmode={
        \}
 
 "set statusline=
-"set statusline+=[%{toupper(currentmode[mode()])}]
-"set statusline+=\ %F
-"set statusline+=\
-"set statusline+=%y
+"set statusline+=%1*\ [%{toupper(currentmode[mode()])}]\
+"set statusline+=%2*\ %F%m%r\
+"set statusline+=%1*\ %y\
 "set statusline+=%= "Align statusline to the right"
-"set statusline+=Line:\ %l/%L
-"set statusline+=\
-"set statusline+=Col:\ %c
-"set statusline+=\
-"set statusline+=-\\%p%%
+"set statusline+=Line:\ %l/%L\
+"set statusline+=Col:\ %c\
+"set statusline+=-\\%p%%\
 
-"hi statusline guibg=White ctermfg=8 guifg=DarkSlateGray ctermbg=15
-hi StatusLine cterm=bold ctermbg=red ctermfg=white
+"hi User1 cterm=bold ctermfg=white ctermbg=Blue
+"hi User2 cterm=bold ctermfg=Blue ctermbg=Black
+"hi StatusLine guibg=White ctermfg=8 guifg=DarkSlateGray ctermbg=15
+
+hi StatusLine cterm=bold ctermbg=red ctermfg=white"
 
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
