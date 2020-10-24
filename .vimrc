@@ -13,16 +13,16 @@
 set nocompatible
 
 " "------ Plugins added with plug ------" "
-call plug#begin('~/.vim/plugged')
-    " Plug 'morhetz/gruvbox'
-    " Plug 'mbbill/undotree'"
-    " Plug 'preservim/nerdtree'
-    " Plug 'xuyuanp/nerdtree-git-plugin'
-    " Plug 'jiangmiao/auto-pairs'
+" call plug#begin('~/.vim/plugged')
+"     Plug 'morhetz/gruvbox'
+"     Plug 'mbbill/undotree'"
+"     Plug 'preservim/nerdtree'
+"     Plug 'xuyuanp/nerdtree-git-plugin'
+"     Plug 'jiangmiao/auto-pairs'
 "   Important download { python3-dev, nodejs(npm), Go and cmake}
 "   Then run (install.py | install.sh)
-    " Plug 'Valloric/YouCompleteMe'
-call plug#end()
+"     Plug 'Valloric/YouCompleteMe'
+" call plug#end()
 
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo
