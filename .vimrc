@@ -22,6 +22,7 @@ colorscheme pablo
 " Recommended if you are using gruvbox
 " set background=dark
 
+
 " Attempt to determine the type of a file based on its name and possibly its 
 " " contents. Use this to allow intelligent auto-indenting for each filetype, 
 " " and for plugins that are filetype specific. 
@@ -115,11 +116,13 @@ set expandtab
 set undodir=~/.vim/undo-dir
 set undofile
 
+set splitbelow splitright
+
 " "------ NerdTree Settings--------" "
 " nnoremap <C-n> :NERDTreeToggle<CR>
 
 " "------ UndoTree Settings--------" "
-" nnoremap <C-l> :UndoTreeToggle<CR>
+" nnoremap <C-u> :UndoTreeToggle<CR>
 
 nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
@@ -129,6 +132,23 @@ noremap ; l
 noremap l k
 noremap k j
 noremap j h
+
+" "---- Alias to to quit and save faster ----" "
+nnoremap <leader>q :q<CR>
+nnoremap <leader>w :w<CR>
+
+" "---- Alias to split window with a new file ----" "
+nnoremap <leader>h :split<Space>
+nnoremap <leader>v :vsplit<Space>
+
+" "---- Alias to split window with a new file ----" "
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" "---- Alias to substite al occurrences -----" "
+nnoremap S :%s//gI<left><left><left>
 
 " "---- YCM Auto completion Settings -------" "
 " nnoremap <leader>gd :YcmCompleter GoTo<CR>
