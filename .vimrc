@@ -104,6 +104,13 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
+" Undo
+set undodir=~/.vim/undodir
+set undofile
+
+" By default the <leader> key is mapped to \
+let mapleader = " "
+
 " Mappings
 
 " "------ NerdTree Settings--------" "
