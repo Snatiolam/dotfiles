@@ -42,6 +42,7 @@ set splitbelow splitright
 
 " Searching
 set hlsearch 
+set incsearch
 set ignorecase
 set smartcase
 
@@ -87,6 +88,7 @@ set mouse=a
 
 " UI - More beauty
 set number
+set relativenumber
 set cursorline
 set showcmd 
 
@@ -101,11 +103,6 @@ set pastetoggle=<F2>
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-
-" Setting where the undo directory should be
-set undodir=~/.vim/undo-dir
-set undofile
-
 
 " Mappings
 
