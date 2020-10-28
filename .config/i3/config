@@ -185,6 +185,11 @@ bindsym $mod+m            exec --no-startup-id $term -e ncmpcpp
 
 bindsym $mod+b exec --no-startup-id polybar-msg cmd toggle
 
+# scratchpad move/show
+
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
