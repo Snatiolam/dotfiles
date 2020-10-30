@@ -22,6 +22,8 @@ set nocompatible
 "   Important download { python3-dev, nodejs(npm), Go and cmake}
 "   Then run (install.py | install.sh)
 "     Plug 'Valloric/YouCompleteMe'
+"     Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+"     Plug 'junegunn/fzf.vim'
 " call plug#end()
 
 " The color scheme of vim ( pablo is preferred as default )
@@ -137,13 +139,18 @@ nnoremap <leader>h :split<Space>
 nnoremap <leader>v :vsplit<Space>
 
 " "---- Alias to split window with a new file ----" "
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" <C-w>h == :wincmd h<CR>
+map <leader>j :wincmd h<CR>
+map <leader>k :wincmd j<CR>
+map <leader>l :wincmd k<CR>
+map <leader>; :wincmd l<CR>
 
 " "---- Alias to substite al occurrences -----" "
 nnoremap S :%s//gI<left><left><left>
+
+" " Fuzzy finder (fzf) " "
+map <Leader>p :Files<CR>
+map <Leader>ob :Buffers<CR>
 
 " "---- YCM Auto completion Settings -------" "
 " nnoremap <leader>gd :YcmCompleter GoTo<CR>

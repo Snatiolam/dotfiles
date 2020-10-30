@@ -31,7 +31,7 @@ bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 bindkey '^R' history-incremental-search-backward
 bindkey '^U' kill-whole-line
-# bindkey -e # for debug 
+# bindkey -e # for debug
 
 # autoload -U promptinit
 # promptinit
