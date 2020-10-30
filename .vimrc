@@ -11,6 +11,7 @@
 
 " Makes vim more useful 
 set nocompatible
+set backspace=start,indent,eol
 
 " "------ Plugins added with plug ------" "
 " call plug#begin('~/.vim/plugged')
