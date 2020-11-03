@@ -12,12 +12,14 @@
 " Makes vim more useful 
 set nocompatible
 set backspace=start,indent,eol
+set cmdheight=2
 
 " "------ Plugins added with plug ------" "
 " call plug#begin('~/.vim/plugged')
 "     Plug 'morhetz/gruvbox'
 "     Plug 'mbbill/undotree'"
 "     Plug 'preservim/nerdtree'
+"     Plug 'potatoesmaster/i3-vim-syntax'
 "     Plug 'xuyuanp/nerdtree-git-plugin'
 "     Plug 'jiangmiao/auto-pairs'
 "   Important download { python3-dev, nodejs(npm), Go and cmake}
