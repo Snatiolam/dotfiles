@@ -59,6 +59,7 @@ set autoindent
 set ruler
 set laststatus=2
 
+let $FZF_DEFAULT_OPTS='--reverse'
 let g:currentmode={
        \ 'n'  : 'NORMAL',
        \ 'v'  : 'VISUAL',
