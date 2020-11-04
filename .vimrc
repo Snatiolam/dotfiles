@@ -14,6 +14,7 @@ set nocompatible
 set backspace=start,indent,eol
 set cmdheight=2
 
+
 " "------ Plugins added with plug ------" "
 " call plug#begin('~/.vim/plugged')
 "     Plug 'tpope/vim-fugitive'
@@ -34,6 +35,7 @@ set cmdheight=2
 colorscheme pablo
 " Recommended if you are using gruvbox
 " set background=dark
+"let g:gruvbox_invert_selection='0'
 
 syntax on 
 filetype plugin on 
@@ -96,8 +98,9 @@ set mouse=a
 " UI - More beauty
 set number
 set relativenumber
-set cursorline
 set showcmd 
+set cursorline
+set signcolumn=yes
 
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
