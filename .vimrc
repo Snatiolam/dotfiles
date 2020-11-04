@@ -16,6 +16,7 @@ set cmdheight=2
 
 " "------ Plugins added with plug ------" "
 " call plug#begin('~/.vim/plugged')
+"     Plug 'tpope/vim-fugitive'
 "     Plug 'morhetz/gruvbox'
 "     Plug 'mbbill/undotree'"
 "     Plug 'preservim/nerdtree'
@@ -117,6 +118,7 @@ set undofile
 let mapleader = " "
 
 " Mappings
+"nmap <leader>gs :Git<CR>
 
 " "------ NerdTree Settings--------" "
 "nnoremap <C-n> :NERDTreeToggle<CR>
