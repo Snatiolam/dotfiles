@@ -11,8 +11,9 @@
 
 " Makes vim more useful 
 set nocompatible
-set backspace=start,indent,eol
+set backspace=indent,eol,start
 set cmdheight=2
+set encoding=utf-8
 
 
 " "------ Plugins added with plug ------" "
