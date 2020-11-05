@@ -74,8 +74,8 @@ font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:pixelsize=12;1
 
 modules-left = i3
-modules-center = filesystem 
-modules-right = xbacklight pulseaudio xkeyboard wlan eth battery date powermenu
+modules-center =  
+modules-right = xbacklight xkeyboard pulseaudio wlan eth battery date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -224,11 +224,18 @@ format-disconnected = No connected
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 =   ;lower signal
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 =  
+ramp-signal-4 = 
+
+;ramp-signal-0 = 
+;ramp-signal-1 = 
+;ramp-signal-2 = 
+;ramp-signal-3 = 
+;ramp-signal-4 = 
+
 ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
@@ -259,7 +266,8 @@ time-alt = %H:%M:%S
 
 format-prefix = 
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = ${colors.yellow}
+format-underline = #fff
+;format-underline = ${colors.yellow}
 
 label = %date% %time%
 
@@ -267,6 +275,7 @@ label = %date% %time%
 type = internal/pulseaudio
 
 use-ui-max = false
+format-volume-underline = ${colors.lightgray}
 
 format-volume = <ramp-volume>  <label-volume>
 label-volume = %percentage%%
@@ -422,7 +431,7 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:pixelsize=12;1
 
-modules-left = mpd
+modules-left =filesystem mpd 
 modules-center = title
 modules-right = temperature cpu memory
 
@@ -449,7 +458,8 @@ type = internal/cpu
 interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #f90000
+format-underline = ${colors.yellow}
+;format-underline = #f90000
 label = %percentage:2%%
 
 [module/memory]
@@ -457,7 +467,8 @@ type = internal/memory
 interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #4bffdc
+;format-underline = #4bffdc
+format-underline = #41ec5b
 label = %percentage_used%%
 tail = true
 
