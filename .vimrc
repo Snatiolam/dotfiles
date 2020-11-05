@@ -144,6 +144,9 @@ noremap l k
 noremap k j
 noremap j h
 
+"Repeat latest f, F, t, T
+noremap h ; 
+
 " "---- Alias to to quit and save faster ----" "
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
