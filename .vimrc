@@ -127,7 +127,12 @@ set undofile
 let mapleader = " "
 
 " Mappings
-"nmap <leader>gs :Git<CR>
+
+" Spelling toggle
+noremap <leader>m :setlocal spell! spelllang=en_us<CR>
+hi SpellBad ctermbg=red 
+
+nmap <leader>gs :Git<CR>
 
 " "------ NerdTree Settings--------" "
 "nnoremap <C-n> :NERDTreeToggle<CR>
