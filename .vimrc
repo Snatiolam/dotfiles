@@ -127,6 +127,11 @@ set undofile
 let mapleader = " "
 
 " Mappings
+" No arrow keys for learning
+noremap <left> <NOP>
+noremap <down> <NOP>
+noremap <up> <NOP>
+noremap <right> <NOP>
 
 " Spelling toggle
 noremap <leader>m :setlocal spell! spelllang=en_us<CR>
@@ -136,22 +141,13 @@ nmap <leader>gs :Git<CR>
 
 " "------ NerdTree Settings--------" "
 "nnoremap <C-n> :NERDTreeToggle<CR>
-"
+
 " "------ UndoTree Settings--------" "
 "nnoremap <C-u> :UndotreeToggle<CR>
 
 nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
-" 
-" "---- Map vim movement keys ----" "
-noremap ; l
-noremap l k
-noremap k j
-noremap j h
-
-"Repeat latest f, F, t, T
-noremap h ; 
-
+ 
 " "---- Alias to to quit and save faster ----" "
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
