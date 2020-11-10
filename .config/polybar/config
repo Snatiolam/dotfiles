@@ -44,15 +44,16 @@ secondary = #e60053
 alert = #bd2c40
 
 [bar/top-bar]
+
 enable-ipc = true
 ;monitor = ${env:MONITOR:HDMI-1}
+monitor = ${env:MONITOR:}
 width = 100%
 height = 27
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 6.0
 fixed-center = true
-
 background = ${colors.background}
 foreground = ${colors.foreground}
 
@@ -157,7 +158,7 @@ index-sort = true
 wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
-;pin-workspaces = true
+pin-workspaces = true
 
 label-mode-padding = 2
 label-mode-foreground = #000
@@ -400,6 +401,8 @@ margin-top = 5
 margin-bottom = 5
 
 [bar/bottom-bar]
+
+monitor = ${env:MONITOR:}
 
 font-4 = NotoColorEmoji:pixelsize=12;1
 enable-ipc = true
