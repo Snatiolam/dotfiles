@@ -79,17 +79,22 @@ let g:currentmode={
        \ 't'  : 'Terminal',
        \}
 
-" set statusline=
-" set statusline+=%1*\ %{toupper(currentmode[mode()])}\ 
-" set statusline+=%2*\ %f%m%r\ 
-" set statusline+=%1*\ %y\ 
-" set statusline+=%= "Align statusline to the right"
-" set statusline+=Line:\ %l/%L\ 
-" set statusline+=Col:\ %c\ 
-" set statusline+=-\\%p%%\ 
-
-" hi User1 cterm=bold ctermfg=white ctermbg=Blue 
-" hi User2 cterm=bold ctermfg=Blue ctermbg=Black
+"set statusline=
+"set statusline+=%1*\ %{toupper(currentmode[mode()])}\ 
+"set statusline+=%2*\ %f%m%r\ 
+"set statusline+=%= "Align statusline to the right"
+"set statusline+=%4*\ %{&filetype}\ 
+"set statusline+=%3*\ %{&fileencoding} 
+"set statusline+=[%{&ff}]\ 
+"set statusline+=%1*\ %p%%\ 
+"set statusline+=>>
+"set statusline+=\ %l/%L\ 
+"set statusline+=Col:\ %c\ 
+"
+"hi User1 cterm=bold ctermfg=white ctermbg=Blue 
+"hi User2 cterm=bold ctermfg=Blue ctermbg=Black
+"hi User3 cterm=bold ctermfg=white ctermbg=DarkGrey
+"hi User4 cterm=bold ctermfg=white ctermbg=Black
 " hi StatusLine guibg=White ctermfg=8 guifg=DarkSlateGray ctermbg=15
 " hi StatusLine cterm=bold ctermbg=red ctermfg=white
 
