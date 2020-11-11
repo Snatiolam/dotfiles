@@ -95,11 +95,14 @@ let g:currentmode={
 "set statusline+=\ %l/%L\ 
 "set statusline+=Col:\ %c\ 
 
-"hi NormalColor cterm=bold guifg=Black guibg=Green ctermbg=Grey ctermfg=White
-"hi InsertColor cterm=bold guifg=Black guibg=Green ctermbg=Blue ctermfg=White
-"hi VisualColor cterm=bold guifg=Black guibg=Green ctermbg=Magenta ctermfg=White
-"hi ReplaceColor cterm=bold guifg=Black guibg=Green ctermbg=Red ctermfg=White
-"
+"hi NormalColor cterm=bold guifg=Black guibg=Green ctermbg=Grey ctermfg=Black
+"" 191 DarkOliveGreen1 #d7ff5f 256 color-term
+"hi InsertColor cterm=bold guifg=Black guibg=Green ctermbg=191 ctermfg=Black
+"" 205 HotPink #ff5faf
+"hi VisualColor cterm=bold guifg=Black guibg=Green ctermbg=205 ctermfg=Black
+"" 214 Orange1 #ffaf00
+"hi ReplaceColor cterm=bold guifg=Black guibg=Green ctermbg=214 ctermfg=Black
+
 "hi User1 cterm=bold ctermfg=white ctermbg=Grey
 "hi User2 cterm=bold ctermfg=white ctermbg=Black
 "hi User3 cterm=bold ctermfg=white ctermbg=DarkGrey
