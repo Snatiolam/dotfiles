@@ -80,7 +80,11 @@ let g:currentmode={
        \}
 
 "set statusline=
-"set statusline+=%1*\ %{toupper(currentmode[mode()])}\ 
+"set statusline+=%#NormalColor#%{(mode()=='n')?'\ \ '.currentmode[mode()].'\ ':''} 
+"set statusline+=%#InsertColor#%{(mode()=='i')?'\ \ '.currentmode[mode()].'\ ':''} 
+"set statusline+=%#VisualColor#%{(mode()=='v')?'\ \ '.currentmode[mode()].'\ ':''} 
+"set statusline+=%#ReplaceColor#%{(mode()=='R')?'\ \ '.currentmode[mode()].'\ ':''} 
+""set statusline+=%1*\ %{toupper(currentmode[mode()])}\ 
 "set statusline+=%2*\ %f%m%r\ 
 "set statusline+=%= "Align statusline to the right"
 "set statusline+=%4*\ %{&filetype}\ 
@@ -90,9 +94,14 @@ let g:currentmode={
 "set statusline+=>>
 "set statusline+=\ %l/%L\ 
 "set statusline+=Col:\ %c\ 
+
+"hi NormalColor cterm=bold guifg=Black guibg=Green ctermbg=Grey ctermfg=White
+"hi InsertColor cterm=bold guifg=Black guibg=Green ctermbg=Blue ctermfg=White
+"hi VisualColor cterm=bold guifg=Black guibg=Green ctermbg=Magenta ctermfg=White
+"hi ReplaceColor cterm=bold guifg=Black guibg=Green ctermbg=Red ctermfg=White
 "
-"hi User1 cterm=bold ctermfg=white ctermbg=Blue 
-"hi User2 cterm=bold ctermfg=Blue ctermbg=Black
+"hi User1 cterm=bold ctermfg=white ctermbg=Grey
+"hi User2 cterm=bold ctermfg=white ctermbg=Black
 "hi User3 cterm=bold ctermfg=white ctermbg=DarkGrey
 "hi User4 cterm=bold ctermfg=white ctermbg=Black
 " hi StatusLine guibg=White ctermfg=8 guifg=DarkSlateGray ctermbg=15
