@@ -175,10 +175,10 @@ nnoremap <leader>v :vsplit<Space>
 
 " "---- Alias to split window with a new file ----" "
 " <C-w>h == :wincmd h<CR>
-map <leader>j :wincmd h<CR>
-map <leader>k :wincmd j<CR>
-map <leader>l :wincmd k<CR>
-map <leader>; :wincmd l<CR>
+map <leader>h :wincmd h<CR>
+map <leader>j :wincmd j<CR>
+map <leader>k :wincmd k<CR>
+map <leader>l :wincmd l<CR>
 
 " "---- Alias to substite al occurrences -----" "
 nnoremap S :%s//gI<left><left><left>
