@@ -29,6 +29,6 @@
 | maim      | Take screenshots      |
 | redshift  | Eye care              |
 | ranger    | Terminal file manager |
-| redshift  | GUI file manager      |
-| mpd     | music player daemon   |
+| thunar  | GUI file manager      |
+| mpd       | music player daemon   |
 | ncmpcpp   | Client for mpd        |
