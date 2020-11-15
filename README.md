@@ -13,22 +13,29 @@
 ## Basic
 
 | Software               | Utility                      |
-|------------------------|------------------------------|
+| ---------------------- | ---------------------------- |
 | networkmanager         |                              |
 | network-manager-applet | networkmanager tray          |
 | pulseaudio             | Proxy for sound/sound system |
 | pavucontrol            | GUI for pulse audio          |
 
+## Theming
+
+| Software | Utility                      |
+| -------- | ---------------------------- |
+| feh      | CLI for setting wallpapers   |
+| picom    | Compositor for Xorg          |
 
 ## Apps
 
 | Software  | Utility               |
-|-----------|-----------------------|
+| --------- | --------------------- |
 | Alacritty | Terminal emulator     |
 | Vim       | Best editor ever      |
 | maim      | Take screenshots      |
 | redshift  | Eye care              |
 | ranger    | Terminal file manager |
-| thunar  | GUI file manager      |
+| thunar    | GUI file manager      |
 | mpd       | music player daemon   |
 | ncmpcpp   | Client for mpd        |
+
