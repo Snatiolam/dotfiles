@@ -8,8 +8,8 @@
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
+# This config uses $BROWSER and $TERMINAL environment variables
 
-set $term terminator
 set $shutdown shutdown -h now
 set $inner_gaps 15
 set $outer_gaps 15
@@ -56,14 +56,14 @@ bindsym XF86AudioPrev           exec --no-startup-id mpc prev
 bindsym XF86MonBrightnessDown   exec --no-startup-id xbacklight -dec 10
 bindsym XF86MonBrightnessUp     exec --no-startup-id xbacklight -inc 10  
 bindsym XF86Calculator          exec --no-startup-id speedcrunch
-bindsym XF86Search              exec --no-startup-id firefox
+bindsym XF86Search              exec --no-startup-id $BROWSER
 bindsym XF86Mail                exec --no-startup-id thunderbird
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec $term
+bindsym $mod+Return exec $TERMINAL
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -180,8 +180,8 @@ bindsym Print exec --no-startup-id maim ~/Pictures/pic-full-"$(date '+%y%m%d-%H%
 
 bindsym Shift+Print exec --no-startup-id maimpick
 
-bindsym $mod+Shift+Return exec --no-startup-id $term --title ranger -e ranger
-bindsym $mod+m            exec --no-startup-id $term -e ncmpcpp
+bindsym $mod+Shift+Return exec --no-startup-id $TERMINAL --title ranger -e ranger
+bindsym $mod+m            exec --no-startup-id $TERMINAL -e ncmpcpp
 
 bindsym $mod+b exec --no-startup-id polybar-msg cmd toggle
 
