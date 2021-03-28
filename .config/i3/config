@@ -267,6 +267,9 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # # ---- Setting background ---- # #
 # exec_always --no-startup-id feh --bg-scale /home/salzatec1/Pictures/Backgrounds/War.jpg
 
+# Notifications
+# exec --no-startup-id dunst
+
 # # ------ Compositor ------ # #
 # exec picom -b
 
