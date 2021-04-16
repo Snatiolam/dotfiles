@@ -249,7 +249,6 @@ bindsym $mod+Shift+s mode "$mode_system"
 #assign [class="discord"] $ws9
 
 #assign [class="Microsoft Teams - Preview"] $ws10
-#for_window [window_role="browser-window"] floating enable
 
 #for_windwow [title="ranger"] floating enable
 

@@ -17,11 +17,16 @@ zstyle ':vcs_info:git:*' formats 'on branch %b ' # Format vcs_info_msg_0_ variab
 # Colors to basic commands
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 # Basic aliases
 alias ll='ls -l'
 alias cd..='cd ..'
 alias cd...='cd ../..'
 alias cd....='cd../../..'
+# Verbosity and safer options
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -vI'
 
 # <Ctrl-v> To escape know the wanted key to map
 bindkey '^[[1;5C' forward-word
