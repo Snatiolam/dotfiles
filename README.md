@@ -23,7 +23,7 @@
 | network-manager-applet                                                | networkmanager tray                          |
 | pulseaudio                                                            | Proxy for sound/sound system                 |
 | pavucontrol                                                           | GUI for pulse audio                          |
-| [udikie](https://wiki.archlinux.org/index.php/udisks)                 | Wrapper of udisks for automount              |
+| [udiskie](https://wiki.archlinux.org/index.php/udisks)                | Wrapper of udisks for automount              |
 | [dunst](https://wiki.archlinux.org/index.php/Dunst)                   | Notification system                          |
   
 ## Theming
