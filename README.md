@@ -26,7 +26,11 @@
 | [udiskie](https://wiki.archlinux.org/index.php/udisks)                | Wrapper of udisks for automount              |
 | [dunst](https://wiki.archlinux.org/index.php/Dunst)                   | Notification system                          |
   
-Note: If you are using pulseaudio in an Asus Zenbook machine please read this: [Asus Zenbook UX390](https://wiki.archlinux.org/title/ASUS_Zenbook_UX390_(Espa%C3%B1ol))
+---
+**NOTE**
+
+If you are using pulseaudio in an Asus Zenbook machine please read this: [Asus Zenbook UX390](https://wiki.archlinux.org/title/ASUS_Zenbook_UX390_(Espa%C3%B1ol))
+---
 
 
 ## Theming
