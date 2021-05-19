@@ -16,6 +16,10 @@
 ;
 ;==========================================================
 
+; NOTE
+; Install ttf-font-awesome-4 to render the icons properly
+; Verify installation name with fc-list
+
 [colors]
 black = ${xrdb:color0:#1d2021}
 darkred = ${xrdb:color1:#cc241d}
