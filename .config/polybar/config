@@ -79,8 +79,8 @@ font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:pixelsize=12;1
 
 modules-left = i3
-modules-center =  
-modules-right = xbacklight xkeyboard pulseaudio wlan eth battery date powermenu
+modules-center = date 
+modules-right = xkeyboard pulseaudio wlan battery powermenu
 
 tray-position = right
 tray-padding = 2
@@ -169,7 +169,7 @@ label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-label-focused = %index%
+label-focused = %icon%
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 2
@@ -191,6 +191,20 @@ label-urgent-padding = 2
 
 ; Separator in between workspaces
 ; label-separator = |
+
+; Change label-focused = %index% if you unlike icons else put it = %icon%
+; (Remember to install ttf-fonts-awesome-4 for icons)
+;       index;icon
+ws-icon-0 = 10;
+ws-icon-1 = 1;
+ws-icon-2 = 2;
+ws-icon-3 = 3;3
+ws-icon-4 = 4;
+ws-icon-5 = 5;5
+ws-icon-6 = 6;
+ws-icon-7 = 7;7
+ws-icon-8 = 8;
+ws-icon-9 = 9;
 
 [module/xbacklight]
 type = internal/xbacklight
