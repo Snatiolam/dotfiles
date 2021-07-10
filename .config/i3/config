@@ -185,7 +185,7 @@ bindsym $mod+m            exec --no-startup-id $TERMINAL -e ncmpcpp
 
 bindsym $mod+b exec --no-startup-id polybar-msg cmd toggle
 
-exec_always --no-startup-id setxkbmap -layout us,es -option 'grp:alt_space_toggle'
+exec_always --no-startup-id setxkbmap -layout 'us,es,us,gr' -variant ',,dvorak,polytonic' -option 'grp:alt_space_toggle'
 
 # scratchpad move/show
 
