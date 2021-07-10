@@ -49,15 +49,16 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 
 ## Apps
 
-| Software                                                              | Utility               |
-| --------------------------------------------------------------------- | --------------------- |
-| Alacritty                                                             | Terminal emulator     |
-| Vim                                                                   | Best editor ever      |
-| maim                                                                  | Take screenshots      |
-| redshift                                                              | Eye care              |
-| ranger                                                                | Terminal file manager |
-| thunar                                                                | GUI file manager      |
-| [mpd](https://wiki.archlinux.org/index.php/Music_Player_Daemon)       | music player daemon   |
-| ncmpcpp                                                               | Client for mpd        |
-| [OpenShot](https://www.openshot.org/)                                 | Video Editor          |
+| Software                                                              | Utility                          |
+| --------------------------------------------------------------------- | -------------------------------- |
+| Alacritty                                                             | Terminal emulator                |
+| Vim                                                                   | Best editor ever                 |
+| [maim](https://github.com/naelstrof/maim)                             | Take screenshots                 |
+| redshift                                                              | Eye care                         |
+| ranger                                                                | Terminal file manager            |
+| thunar                                                                | GUI file manager                 |
+| [mpd](https://wiki.archlinux.org/index.php/Music_Player_Daemon)       | music player daemon              |
+| ncmpcpp                                                               | Client for mpd                   |
+| [OpenShot](https://www.openshot.org/)                                 | Video Editor                     |
+| [SongRec](https://github.com/marin-m/SongRec)                         | Song recognition (Shazam client) |
 
