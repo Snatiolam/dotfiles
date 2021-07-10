@@ -10,12 +10,11 @@
 " Maintainer: Santiago Alzate (Snatiolam)
 
 " Makes vim more useful 
-set nocompatible
 set backspace=indent,eol,start
 set cmdheight=2
 set encoding=utf-8
 set nowrap
-set backup
+" set backup
 
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
@@ -181,7 +180,7 @@ map <leader>k :wincmd k<CR>
 map <leader>l :wincmd l<CR>
 
 " "---- Alias to substite al occurrences -----" "
-nnoremap S :%s//gI<left><left><left>
+nnoremap <leader>s :%s//gI<left><left><left>
 
 " " Fuzzy finder (fzf) " "
 map <Leader>p :Files<CR>
