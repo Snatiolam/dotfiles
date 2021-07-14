@@ -52,7 +52,7 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 | Software                                                              | Utility                          |
 | --------------------------------------------------------------------- | -------------------------------- |
 | Alacritty                                                             | Terminal emulator                |
-| Vim                                                                   | Best editor ever                 |
+| Vim / Neovim                                                          | Best editor ever                 |
 | [maim](https://github.com/naelstrof/maim)                             | Take screenshots                 |
 | redshift                                                              | Eye care                         |
 | ranger                                                                | Terminal file manager            |
@@ -61,4 +61,4 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 | ncmpcpp                                                               | Client for mpd                   |
 | [OpenShot](https://www.openshot.org/)                                 | Video Editor                     |
 | [SongRec](https://github.com/marin-m/SongRec)                         | Song recognition (Shazam client) |
-
+| [OBS](https://github.com/marin-m/SongRec)                             | Screen recording / streaming     |
