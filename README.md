@@ -51,7 +51,7 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 
 | Software                                                              | Utility                          |
 | --------------------------------------------------------------------- | -------------------------------- |
-| Alacritty                                                             | Terminal emulator                |
+| Alacritty / rxvt-unicode (urxvt)                                      | Terminal emulator                |
 | Vim / Neovim                                                          | Best editor ever                 |
 | [maim](https://github.com/naelstrof/maim)                             | Take screenshots                 |
 | redshift                                                              | Eye care                         |
