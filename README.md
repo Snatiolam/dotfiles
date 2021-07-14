@@ -62,3 +62,4 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 | [OpenShot](https://www.openshot.org/)                                 | Video Editor                     |
 | [SongRec](https://github.com/marin-m/SongRec)                         | Song recognition (Shazam client) |
 | [OBS](https://obsproject.com/)                                        | Screen recording / streaming     |
+| [mpv](https://mpv.io/)/[vlc](https://www.videolan.org/vlc/)           | Video players                    |
