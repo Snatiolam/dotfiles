@@ -39,7 +39,7 @@
 
 URxvt.background: #1d1f21
 URxvt.foreground: #c5c8c6
-URxvt.font : xft:mononoki:size=15
+URxvt.font : xft:mononoki:size=15,xft:agave Nerd Font Mono:size=20
 URxvt.scrollBar : false
 URxvt.cursorBlink : true
 URxvt.iso14755: false
