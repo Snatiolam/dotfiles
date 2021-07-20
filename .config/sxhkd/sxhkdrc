@@ -16,6 +16,9 @@ super + @space
 super + Escape
 	pkill -USR1 -x sxhkd
 
+#
+# # ------ Binding XF86Keys ------- # #
+#
 XF86AudioRaiseVolume
     pactl set-sink-volume @DEFAULT_SINK@ +5%
 
@@ -24,6 +27,26 @@ XF86AudioLowerVolume
 
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+XF86AudioNext
+    mpc next
+
+XF86AudioPlay        
+    mpc toggle
+
+XF86AudioPrev
+    mpc prev
+
+XF86Mail
+    thunderbird
+
+XF86Search
+    $BROWSER
+Print
+    maim ~/Pictures/Screenshots/pic-full-"$(date '+%y%m%d-%H%M-%S').png"
+
+shift + Print
+    maimpick
 
 #
 # bspwm hotkeys
