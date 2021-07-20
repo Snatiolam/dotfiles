@@ -8,7 +8,8 @@ super + Return
 
 # program launcher
 super + @space
-        rofi -show run
+        rofi -show drun
+        #rofi -show run
         #dmenu_run -nb '#191919' -nf '#2aa198' -sb '#2aa198' -sf '#191919' -fn 'mononoki-14'
 	#dmenu_run
 
