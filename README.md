@@ -26,6 +26,7 @@
 | [udiskie](https://wiki.archlinux.org/index.php/udisks)                | Wrapper of udisks for automount              |
 | [dunst](https://wiki.archlinux.org/index.php/Dunst)                   | Notification system                          |
 | [lightdm](https://wiki.archlinux.org/title/LightDM)                   | Display Manager (Login)                      |
+| [rofi](https://github.com/davatorium/rofi) / dmenu                    | Application Launcher                         |
   
 ---
 **NOTE**
