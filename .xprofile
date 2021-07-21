@@ -1,0 +1,7 @@
+#!/bin/sh
+[[ -f ~/.zshenv  ]] && source ~/.zshenv
+udiskie  --tray &   # Show udiskie in the tray bar, open and unpower mounted devices
+picom -b        &   # Picom for transparency
+setxkbmap -layout 'us,es,us,gr' -variant ',,dvorak,polytonic' -option 'grp:alt_space_toggle' & # Set my basic layout config
+xautolock -time 10 -locker 'lock_screen' &      # Locks screen after 10 min with blurred screenshot
+dunst &                                         # dunst for notifications
