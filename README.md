@@ -32,6 +32,7 @@
 **NOTE**
 
 If you are using pulseaudio in an Asus Zenbook machine please read this: [Asus Zenbook UX390](https://wiki.archlinux.org/title/ASUS_Zenbook_UX390_(Espa%C3%B1ol))
+Also headphones may also fail: [Here](https://askubuntu.com/questions/132440/headphone-jack-not-working) Are some possible solutions.
 
 Configure .xprofile since your ~/.xinitrc won't be loaded if you are using lightdm
 
