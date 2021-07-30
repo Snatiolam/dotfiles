@@ -2,6 +2,10 @@
 # wm independent hotkeys
 #
 
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
 # terminal emulator
 super + Return
 	urxvt
@@ -12,10 +16,14 @@ super + @space
         #rofi -show run
         #dmenu_run -nb '#191919' -nf '#2aa198' -sb '#2aa198' -sf '#191919' -fn 'mononoki-14'
 	#dmenu_run
+#
+# Personal Bindings
+#
 
-# make sxhkd reload its configuration files:
-super + Escape
-	pkill -USR1 -x sxhkd
+# Move desktop to next or previous monitor
+super + {_, shift +}n
+        bspc desktop focused -m {next, prev} --follow; \
+        bspc monitor -o $(bspc query -D -m --names | sort -n);
 
 #
 # # ------ Binding XF86Keys ------- # #
