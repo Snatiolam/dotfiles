@@ -189,6 +189,25 @@ nnoremap <leader>s :%s//gI<left><left><left>
 map <Leader>p :Files<CR>
 map <Leader>ob :Buffers<CR>
 
+" " Awesome Remaps " "
+" Now undo breaks without exiting insert mode an loose everything you wrote
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ? ?<c-g>u
+inoremap ! !<c-g>u
+inoremap ] ]<c-g>u
+
+" Same as D or C, so it is more intuitive
+nnoremap Y y$
+
+" Move text
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+inoremap <C-j> <esc>:m .+1<CR>==
+inoremap <C-k> <esc>:m .-2<CR>==
+nnoremap <leader>j :m .+1<CR>==
+nnoremap <leader>k :m .-2<CR>==
+
 " "---- YCM Auto completion Settings -------" "
 " nnoremap <leader>gd :YcmCompleter GoTo<CR>
 " nnoremap <leader>gf :YcmCompleter FixIt<CR>
