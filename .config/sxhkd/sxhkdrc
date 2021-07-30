@@ -25,6 +25,28 @@ super + {_, shift +}n
         bspc desktop focused -m {next, prev} --follow; \
         bspc monitor -o $(bspc query -D -m --names | sort -n);
 
+# Hide/Minimize
+alt + shift + m
+  D=$(bspc query --desktops -d focused); \
+  W=$(bspc query --nodes -n focused); \
+  bspc query --desktops --names |grep -q "Scratchpad" || bspc monitor --add-desktops "Scratchpad"; \
+  bspc node $W --to-desktop "Scratchpad";
+  #bspc query --desktops | grep -q “‘$D” || bspc monitor --add-desktops \'$D; \
+  #bspc node $W --to-desktop \'$D
+
+# Get minimized windows into focused workspace
+super + alt + shift + m
+  D=$(bspc query --desktops -d focused); \
+    if bspc query -D --names | grep -q "Scratchpad" ; then \
+    for i in $(bspc query -N -d "Scratchpad"); do \
+        bspc node $i --to-desktop "$D"; \
+        break; \
+    done; \
+    bspc node $i --focus; \
+    (( $(bspc query -N -d "Scratchpad" | wc -l) )) || bspc desktop "Scratchpad" --remove; \
+    fi;
+
+
 #
 # # ------ Binding XF86Keys ------- # #
 #
