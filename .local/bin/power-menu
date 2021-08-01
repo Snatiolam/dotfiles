@@ -1,0 +1,34 @@
+#!/bin/sh
+# Author: Santiago Alzate Cardona
+
+poweroff=" Power off"
+reboot=" Restart"
+lock=" Lock screen"
+suspend=" suspend"
+logout=" Log out"
+
+options="$lock\n$poweroff\n$reboot\n$suspend\n$logout"
+rofi_command="rofi -theme DarkBlue"
+
+function main() {
+    action=$(printf "$options" | $rofi_command -dmenu -i -p "Powermenu" -selected-row 0)
+    case $action in
+        $poweroff)
+            systemctl poweroff
+            ;;
+        $reboot)
+            systemctl reboot
+            ;;
+        $lock)
+            lock_screen
+            ;;
+        $suspend)
+            systemctl suspend
+            ;;
+        $logout)
+            bspc quit
+            ;;
+    esac
+}
+
+main
