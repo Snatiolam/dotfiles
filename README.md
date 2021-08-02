@@ -49,7 +49,7 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 | lxappearance                                                    | GUI for changing themes         |
 | [Material-Black-Cherry](https://www.gnome-look.org/p/1316887/)  | GTK-Theme                       |
 | [Material-Black-Cherry-Numix](https://www.pling.com/p/1333360/) | GTK-Icons                       |
-| [Nerd Fonts](https://www.nerdfonts.com/) (agave)                | Stable fonts (support glyphs)   |
+| [Nerd Fonts](https://www.nerdfonts.com/) (Hack)                 | Stable fonts (support glyphs)   |
 
 ## Apps
 
