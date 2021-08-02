@@ -164,7 +164,7 @@ ws-icon-5 = 5;5
 ws-icon-6 = 6;
 ws-icon-7 = 7;
 ws-icon-8 = 8;
-ws-icon-9 = 9;
+ws-icon-9 = 9;
 
 [module/i3]
 type = internal/i3
@@ -215,7 +215,7 @@ ws-icon-5 = 5;5
 ws-icon-6 = 6;
 ws-icon-7 = 7;7
 ws-icon-8 = 8;
-ws-icon-9 = 9;
+ws-icon-9 = 9;
 
 [module/xbacklight]
 type = internal/xbacklight
@@ -433,7 +433,6 @@ margin-bottom = 5
 
 monitor = ${env:MONITOR:}
 
-font-4 = NotoColorEmoji:pixelsize=12;1
 enable-ipc = true
 
 width = 100%
@@ -462,6 +461,7 @@ font-0 = fixed:pixelsize=12;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:pixelsize=12;1
+font-4 = NotoColorEmoji:pixelsize=12;1
 
 modules-left =filesystem mpd 
 modules-center = title
