@@ -67,3 +67,13 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 | [SongRec](https://github.com/marin-m/SongRec)                         | Song recognition (Shazam client) |
 | [OBS](https://obsproject.com/)                                        | Screen recording / streaming     |
 | [mpv](https://mpv.io/)/[vlc](https://www.videolan.org/vlc/)           | Video players                    |
+
+### File Manager
+
+If you are trying to open your file explorer and is not opening the one you want by default
+you can set the default file manager by simply typing.
+
+'''sh
+application="thunar.desktop"
+xdg-mime default $application inode/directory
+'''
