@@ -73,7 +73,7 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 If you are trying to open your file explorer and is not opening the one you want by default
 you can set the default file manager by simply typing.
 
-'''sh
+```sh
 application="thunar.desktop"
 xdg-mime default $application inode/directory
-'''
+```
