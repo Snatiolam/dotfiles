@@ -54,20 +54,21 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 ## Apps
 
 | Software                                                              | Utility                          |
-| --------------------------------------------------------------------- | -------------------------------- |
-| Alacritty / rxvt-unicode (urxvt)                                      | Terminal emulator                |
-| Vim / Neovim                                                          | Best editor ever                 |
-| [maim](https://github.com/naelstrof/maim)                             | Take screenshots                 |
-| redshift                                                              | Eye care                         |
-| ranger                                                                | Terminal file manager            |
-| thunar                                                                | GUI file manager                 |
-| [mpd](https://wiki.archlinux.org/index.php/Music_Player_Daemon)       | music player daemon              |
-| ncmpcpp                                                               | Client for mpd                   |
-| [OpenShot](https://www.openshot.org/)                                 | Video Editor                     |
-| [SongRec](https://github.com/marin-m/SongRec)                         | Song recognition (Shazam client) |
-| [OBS](https://obsproject.com/)                                        | Screen recording / streaming     |
-| [mpv](https://mpv.io/)/[vlc](https://www.videolan.org/vlc/)           | Video players                    |
-| [firejail](https://wiki.archlinux.org/title/firejail)                 | Reduce risk of security breaches |
+| ------------------------------------------------------------------------- | -------------------------------- |
+| Alacritty / rxvt-unicode (urxvt)                                          | Terminal emulator                |
+| Vim / Neovim                                                              | Best editor ever                 |
+| [maim](https://github.com/naelstrof/maim)                                 | Take screenshots                 |
+| redshift                                                                  | Eye care                         |
+| ranger                                                                    | Terminal file manager            |
+| thunar                                                                    | GUI file manager                 |
+| [mpd](https://wiki.archlinux.org/index.php/Music_Player_Daemon)           | music player daemon              |
+| ncmpcpp                                                                   | Client for mpd                   |
+| [OpenShot](https://www.openshot.org/)                                     | Video Editor                     |
+| [SongRec](https://github.com/marin-m/SongRec)                             | Song recognition (Shazam client) |
+| [OBS](https://obsproject.com/)                                            | Screen recording / streaming     |
+| [mpv](https://mpv.io/)/[vlc](https://www.videolan.org/vlc/)               | Video players                    |
+| [firejail](https://wiki.archlinux.org/title/firejail)                     | Reduce risk of security breaches |
+| [syncthing-gtk](https://wiki.archlinux.org/title/Syncthing#Syncthing-GTK) | Sync my pc with my phone         |
 
 ### File Manager
 
