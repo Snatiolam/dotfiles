@@ -67,6 +67,7 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 | [SongRec](https://github.com/marin-m/SongRec)                         | Song recognition (Shazam client) |
 | [OBS](https://obsproject.com/)                                        | Screen recording / streaming     |
 | [mpv](https://mpv.io/)/[vlc](https://www.videolan.org/vlc/)           | Video players                    |
+| [firejail](https://wiki.archlinux.org/title/firejail)                 | Reduce risk of security breaches |
 
 ### File Manager
 
