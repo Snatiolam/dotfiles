@@ -46,7 +46,7 @@ nm-applet &
 
 # Specific desktops
 bspc rule -a firefox desktop='1' state=tiling follow=on
-bspc rule -a Microsoft Teams - Preview desktop='10' state=tiling follow=on
+bspc rule -a 'Microsoft Teams - Preview' desktop='10' state=tiling follow=on
 bspc rule -a discord desktop='9' state=tiling follow=on
 
 # Floating windows
