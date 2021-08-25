@@ -56,7 +56,8 @@ width = 100%
 height = 30
 ;offset-x = 1%
 ;offset-y = 1%
-radius = 6.0
+;radius = 6.0
+radius = 0.0
 fixed-center = true
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -64,8 +65,9 @@ separator = |
 line-size = 3
 line-color = #f00
 
-border-size = 4
-border-color = #00000000
+;border-size = 4
+border-size = 0
+;border-color = #000
 
 padding-left = 0
 padding-right = 2
@@ -439,7 +441,8 @@ width = 100%
 height = 30
 ;offset-x = 1%
 ;offset-y = 1%
-radius = 6.0
+;radius = 6.0
+radius = 0.0
 fixed-center = true
 
 background = ${colors.background}
@@ -448,10 +451,11 @@ separator = |
 line-size = 3
 line-color = #f00
 
-border-size = 4
-border-color = #00000000
+;border-size = 4
+border-size = 0
+;border-color = #000
 
-padding-left = 0
+padding-left = 2
 padding-right = 2
 
 module-margin-left = 1
