@@ -21,9 +21,16 @@ super + @space
 #
 
 # Move desktop to next or previous monitor
-super + {_, shift +}n
+# super + {_, shift +}n
+super + shift + {comma, period}
         bspc desktop focused -m {next, prev} --follow; \
-        bspc monitor -o $(bspc query -D -m --names | sort -n);
+        bspc monitor -o $(bspc query -D -m --names| sort -n);
+        bspc desktop focused -m {next, prev} --follow; \
+        bspc monitor -o $(bspc query -D -m --names| sort -n);
+
+# Move focus to previos or next monitor
+super + {comma, period}
+        bspc monitor --focus {prev, next}
 
 # Hide/Minimize
 alt + shift + m
