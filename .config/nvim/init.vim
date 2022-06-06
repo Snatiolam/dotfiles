@@ -1,4 +1,4 @@
-"    _____             _   _       _                 
+    _____             _   _       _                 
 "   / ____|           | | (_)     | |                
 "  | (___  _ __   __ _| |_ _  ___ | | __ _ _ __ ___  
 "   \___ \| '_ \ / _` | __| |/ _ \| |/ _` | '_ ` _ \ 
@@ -21,6 +21,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " "------ Plugins added with plug ------" "
 " call plug#begin('~/.vim/plugged')
+"
 "    Plug 'tpope/vim-fugitive'
 "    Plug 'morhetz/gruvbox'
 "    Plug 'mbbill/undotree'"
@@ -28,15 +29,32 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 "    Plug 'potatoesmaster/i3-vim-syntax'
 "    Plug 'xuyuanp/nerdtree-git-plugin'
 "    Plug 'jiangmiao/auto-pairs'
+
 "" --- HTML / CSS Plugins"
 "    Plug 'alvan/closetag.vim'
 "    Plug 'ap/vim-css-color'
+
 "   Important download { python3-dev, nodejs(npm), Go and cmake}
 "   Then run (install.py | install.sh)
 "    Plug 'Valloric/YouCompleteMe'
 "    Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 "    Plug 'junegunn/fzf.vim'
+"    Plug 'fladson/vim-kitty'
+
+"" Snippets
+"    Plug 'L3MON4D3/LuaSnip'
+
+"" Neovim lsp Plugins
+"    " Language Server Protocol (Neovim Nightly required)
+"    Plug 'neovim/nvim-lspconfig'
+"    " Auto completion with lsp
+"    Plug 'hrsh7th/cmp-nvim-lsp'
+"    Plug 'hrsh7th/nvim-cmp'
+
 " call plug#end()
+
+" " Call init.lua "
+"lua require("init")
 
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo
