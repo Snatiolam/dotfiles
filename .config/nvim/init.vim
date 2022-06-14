@@ -23,7 +23,11 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 " call plug#begin('~/.vim/plugged')
 "
 "    Plug 'tpope/vim-fugitive'
+
+"    " Themes "
 "    Plug 'morhetz/gruvbox'
+"    Plug 'tanvirtin/monokai.nvim'
+
 "    Plug 'mbbill/undotree'"
 "    Plug 'preservim/nerdtree'
 "    Plug 'potatoesmaster/i3-vim-syntax'

@@ -5,6 +5,7 @@ SAVEHIST=5000
 
 # Zsh tab completion
 autoload -U compinit
+zstyle ":completion:*" matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ":completion:*" menu select
 zmodload zsh/complist
 compinit
