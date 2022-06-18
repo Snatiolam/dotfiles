@@ -1,7 +1,7 @@
-    _____             _   _       _                 
-"   / ____|           | | (_)     | |                
-"  | (___  _ __   __ _| |_ _  ___ | | __ _ _ __ ___  
-"   \___ \| '_ \ / _` | __| |/ _ \| |/ _` | '_ ` _ \ 
+"    _____             _   _       _
+"   / ____|           | | (_)     | |
+"  | (___  _ __   __ _| |_ _  ___ | | __ _ _ __ ___
+"   \___ \| '_ \ / _` | __| |/ _ \| |/ _` | '_ ` _ \
 "   ____) | | | | (_| | |_| | (_) | | (_| | | | | | |
 "  |_____/|_| |_|\__,_|\__|_|\___/|_|\__,_|_| |_| |_|
 "
@@ -9,7 +9,7 @@
 " Github:     https://github.com/Snatiolam/Dots/
 " Maintainer: Santiago Alzate (Snatiolam)
 
-" Makes vim more useful 
+" Makes vim more useful
 set backspace=indent,eol,start
 set cmdheight=2
 set encoding=utf-8
@@ -28,13 +28,17 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 "    Plug 'morhetz/gruvbox'
 "    Plug 'tanvirtin/monokai.nvim'
 
+
+"   " Status line"
+"    Plug 'vim-airline/vim-airline'
+
 "    Plug 'mbbill/undotree'"
 "    Plug 'preservim/nerdtree'
 "    Plug 'potatoesmaster/i3-vim-syntax'
 "    Plug 'xuyuanp/nerdtree-git-plugin'
 "    Plug 'jiangmiao/auto-pairs'
 
-"" --- HTML / CSS Plugins"
+"   " --- HTML / CSS Plugins"
 "    Plug 'alvan/closetag.vim'
 "    Plug 'ap/vim-css-color'
 
@@ -66,19 +70,19 @@ colorscheme pablo
 " set background=dark
 "let g:gruvbox_invert_selection='0'
 
-syntax on 
-filetype plugin on 
+syntax on
+filetype plugin on
 
 " Better file navigation
 set path+=**
-set wildmenu 
+set wildmenu
 set hidden
 
 " Correct splitting windows
 set splitbelow splitright
 
 " Searching
-set hlsearch 
+set hlsearch
 set incsearch
 set ignorecase
 set smartcase
@@ -104,20 +108,20 @@ let g:currentmode={
        \}
 
 "set statusline=
-"set statusline+=%#NormalColor#%{(mode()=='n')?'\ \ '.currentmode[mode()].'\ ':''} 
-"set statusline+=%#InsertColor#%{(mode()=='i')?'\ \ '.currentmode[mode()].'\ ':''} 
-"set statusline+=%#VisualColor#%{(mode()=='v')?'\ \ '.currentmode[mode()].'\ ':''} 
-"set statusline+=%#ReplaceColor#%{(mode()=='R')?'\ \ '.currentmode[mode()].'\ ':''} 
-""set statusline+=%1*\ %{toupper(currentmode[mode()])}\ 
-"set statusline+=%2*\ %f%m%r\ 
+"set statusline+=%#NormalColor#%{(mode()=='n')?'\ \ '.currentmode[mode()].'\ ':''}
+"set statusline+=%#InsertColor#%{(mode()=='i')?'\ \ '.currentmode[mode()].'\ ':''}
+"set statusline+=%#VisualColor#%{(mode()=='v')?'\ \ '.currentmode[mode()].'\ ':''}
+"set statusline+=%#ReplaceColor#%{(mode()=='R')?'\ \ '.currentmode[mode()].'\ ':''}
+""set statusline+=%1*\ %{toupper(currentmode[mode()])}\
+"set statusline+=%2*\ %f%m%r\
 "set statusline+=%= "Align statusline to the right"
-"set statusline+=%4*\ %{&filetype}\ 
-"set statusline+=%3*\ %{&fileencoding} 
-"set statusline+=[%{&ff}]\ 
-"set statusline+=%1*\ %p%%\ 
+"set statusline+=%4*\ %{&filetype}\
+"set statusline+=%3*\ %{&fileencoding}
+"set statusline+=[%{&ff}]\
+"set statusline+=%1*\ %p%%\
 "set statusline+=>>
-"set statusline+=\ %l/%L\ 
-"set statusline+=Col:\ %c\ 
+"set statusline+=\ %l/%L\
+"set statusline+=Col:\ %c\
 
 "hi NormalColor cterm=bold guifg=Black guibg=Green ctermbg=Grey ctermfg=Black
 "" 191 DarkOliveGreen1 #d7ff5f 256 color-term
@@ -136,7 +140,7 @@ let g:currentmode={
 
 " Let not beeping nor flashing when doing something wrong
 set visualbell
-set t_vb= 
+set t_vb=
 
 " Enable use of the mouse for all modes
 set mouse=a
@@ -144,7 +148,7 @@ set mouse=a
 " UI - More beauty
 set number
 set relativenumber
-set showcmd 
+set showcmd
 set cursorline
 set signcolumn=yes
 
@@ -176,19 +180,19 @@ noremap <right> <NOP>
 
 " Spelling toggle
 noremap <leader>m :setlocal spell! spelllang=en_us<CR>
-hi SpellBad ctermbg=red 
+hi SpellBad ctermbg=red
 
 nmap <leader>gs :Git<CR>
 
 " "------ NerdTree Settings--------" "
-"nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 " "------ UndoTree Settings--------" "
-"nnoremap <C-u> :UndotreeToggle<CR>
+nnoremap <C-u> :UndotreeToggle<CR>
 
 nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
- 
+
 " "---- Alias to to quit and save faster ----" "
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
@@ -219,6 +223,10 @@ inoremap ? ?<c-g>u
 inoremap ! !<c-g>u
 inoremap ] ]<c-g>u
 
+" Yank to clipboard
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+
 " Same as D or C, so it is more intuitive
 nnoremap Y y$
 
@@ -234,8 +242,18 @@ nnoremap <leader>k :m .-2<CR>==
 " nnoremap <leader>gd :YcmCompleter GoTo<CR>
 " nnoremap <leader>gf :YcmCompleter FixIt<CR>
 
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 150})
+augroup END
+
+augroup formatting
+    autocmd!
+    autocmd BufWritePre * %s/\s\+$//e
+augroup END
+
 " ++----------------- sdsa  ++------------------------
-" <C-g>       : Shows me the state of the current file 
+" <C-g>       : Shows me the state of the current file
 "
 " ----------- Useful motions----------------
 " $ or <End>  : Move to the end of line
@@ -245,13 +263,13 @@ nnoremap <leader>k :m .-2<CR>==
 " f{char}     : Move cursor to the next ocurrence of {char}
 " t{char}     : Move cusor to till the next currence of {char}
 "   ;         : Repeat previous f, t, F, T motion
-"   ,         : Repeat previous f, t, F, T motion but in reverse 
+"   ,         : Repeat previous f, t, F, T motion but in reverse
 "  %          : Move to matching character (default supported pairs: '()', '{}', '[]')
 "  H          : Move to top of the screen
 "  M          : Move to the middle of the screen
 "  L          : Move to the bottom of the screen
-"  <C-e>      : Move screen down one line (without moving cursor) 
-"  <C-y>      : Move screen up one line (without moving cursor) 
+"  <C-e>      : Move screen down one line (without moving cursor)
+"  <C-y>      : Move screen up one line (without moving cursor)
 "  {          : Move cursor to the beginning of the previous block
 "  }          : Mode cursor to the end of the next block
 "
