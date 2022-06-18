@@ -31,6 +31,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 "   " Status line"
 "    Plug 'vim-airline/vim-airline'
+"    Plug 'vim-airline/vim-airline-themes'
 
 "    Plug 'mbbill/undotree'"
 "    Plug 'preservim/nerdtree'
@@ -72,6 +73,8 @@ colorscheme pablo
 
 syntax on
 filetype plugin on
+
+let g:airline_theme='murmur'
 
 " Better file navigation
 set path+=**
