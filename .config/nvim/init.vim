@@ -27,6 +27,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 "    " Themes "
 "    Plug 'morhetz/gruvbox'
 "    Plug 'tanvirtin/monokai.nvim'
+"    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 
 "   " Status line"
