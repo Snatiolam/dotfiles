@@ -74,7 +74,8 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 end
 
-lspconfig.sumneko_lua.setup{
+-- Might need to change to sumneko_lua but is deprecated
+lspconfig.lua_ls.setup{
     settings = {
         Lua = {
             diagnostics = {
@@ -110,7 +111,7 @@ lspconfig.rust_analyzer.setup{
 
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'sumneko_lua', 'clangd', 'pyright', 'gopls', 'rust_analyzer' }
+local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     -- on_attach = my_custom_on_attach,
