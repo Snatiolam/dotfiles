@@ -1,0 +1,17 @@
+#!/bin/sh
+
+device='ELAN2702:00 04F3:2702'
+
+is_disabled=$(xinput list "${device}" | grep disable)
+
+if [ -z "$is_disabled" ]
+then
+    echo "Disabling touchscreen"
+    xinput disable "${device}"
+    # echo "$is_disabled"
+else
+    echo "Enabling touchscreen"
+    xinput enable "${device}"
+    # echo "$is_disabled"
+fi
+
