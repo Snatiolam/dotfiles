@@ -75,7 +75,7 @@ colorscheme pablo
 syntax on
 filetype plugin on
 
-let g:airline_theme='murmur'
+let g:airline_theme='angr'
 
 " Better file navigation
 set path+=**
