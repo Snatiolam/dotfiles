@@ -71,8 +71,8 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
+    awful.layout.suit.floating,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
@@ -128,6 +128,21 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
+
+-- Battery widget
+mybattery = awful.widget.watch('bash -c "cat /sys/class/power_supply/BAT0/capacity | xargs -I{} echo {}%"', 10)
+
+-- Volume widget
+myvolume = wibox.widget.textbox()
+
+function update_volume_widget()
+    awful.spawn.easy_async('bash -c "pactl list sinks | grep \'Volume:\' | head -n 1 | awk \'{print $5}\'"', function(stdout)
+        local volume = tonumber(string.match(stdout, "(%d+)"))
+        myvolume.text = "Vol: " .. volume .. "%"
+    end)
+end
+
+update_volume_widget()
 
 -- {{{ Wibar
 -- Create a textclock widget
@@ -234,8 +249,14 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
+            wibox.widget.separator({orientation="vertical",   forced_width = 1}),
+            mykeyboardlayout,
+            wibox.widget.separator({orientation="vertical",   forced_width = 10}),
+            myvolume,
+            wibox.widget.separator({orientation="vertical",   forced_width = 10}),
+            mybattery,
+            wibox.widget.separator({orientation="vertical",   forced_width = 10}),
             mytextclock,
             s.mylayoutbox,
         },
@@ -595,5 +616,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
+-- Autostart apps
+awful.util.spawn_with_shell('xautolock -time 15 -locker i3lock')
+awful.util.spawn_with_shell('picom -b')
 
 -- }}}
