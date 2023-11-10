@@ -146,7 +146,7 @@ update_volume_widget()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock('%a %b %d, %H:%M:%S', 1)
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -242,7 +242,7 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+            -- mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -419,9 +419,15 @@ clientkeys = gears.table.join(
             c:raise()
         end ,
         {description = "(un)maximize horizontally", group = "client"}),
-    awful.key({}, "XF86AudioRaiseVolume", function() os.execute("pactl set-sink-volume @DEFAULT_SINK@ +5%") end,
+    awful.key({}, "XF86AudioRaiseVolume", function()
+                            os.execute("pactl set-sink-volume @DEFAULT_SINK@ +5%")
+                            update_volume_widget()
+                        end,
               {description = "raise volume"}),
-    awful.key({}, "XF86AudioLowerVolume", function() os.execute("pactl set-sink-volume @DEFAULT_SINK@ -5%") end,
+    awful.key({}, "XF86AudioLowerVolume", function()
+                            os.execute("pactl set-sink-volume @DEFAULT_SINK@ -5%")
+                            update_volume_widget()
+                        end,
               {description = "lower volume"}),
     awful.key({}, "XF86AudioMute", function() os.execute("pactl set-sink-mute 0 toggle") end,
               {description = "toggle mute"})
