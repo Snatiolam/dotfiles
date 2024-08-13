@@ -71,7 +71,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', '<space>f', vim.lsp.buf.format, bufopts)
 end
 
 lspconfig.lua_ls.setup{
@@ -107,10 +107,10 @@ lspconfig.rust_analyzer.setup{
     },
 }
 
-
+lspconfig.jdtls.setup{}
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer' }
+local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer', 'jdtls'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     -- on_attach = my_custom_on_attach,
