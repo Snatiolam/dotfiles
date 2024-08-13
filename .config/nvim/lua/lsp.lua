@@ -109,8 +109,10 @@ lspconfig.rust_analyzer.setup{
 
 lspconfig.jdtls.setup{}
 
+lspconfig.tsserver.setup{}
+
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer', 'jdtls'}
+local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer', 'jdtls', 'tsserver'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     -- on_attach = my_custom_on_attach,
