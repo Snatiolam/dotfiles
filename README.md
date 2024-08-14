@@ -27,11 +27,13 @@
 | [dunst](https://wiki.archlinux.org/index.php/Dunst)                   | Notification system                          |
 | [lightdm](https://wiki.archlinux.org/title/LightDM)                   | Display Manager (Login)                      |
 | [rofi](https://github.com/davatorium/rofi) / dmenu                    | Application Launcher                         |
-  
+
 ---
 **NOTE**
 
 If you are using pulseaudio in an Asus Zenbook machine please read this: [Asus Zenbook UX390](https://wiki.archlinux.org/title/ASUS_Zenbook_UX390_(Espa%C3%B1ol))
+
+If you are using alsa in an Asus Zenbook machine please read this: [Asus Zenbook Fedora](https://discussion.fedoraproject.org/t/volume-control-not-working-only-mute-or-max-volume-after-fresh-install-of-fedora-34-gnome-40/73599/5?replies_to_post_number=3)
 
 Also headphones may also fail: [Here](https://askubuntu.com/questions/132440/headphone-jack-not-working)
 
