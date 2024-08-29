@@ -52,6 +52,22 @@ install_zsh_files(){
         ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
         # cp "$ROOT_DIR/.zprofile" "$HOME/"
     fi
+
+    mkdir -p ~/.cache/zsh 
+
+    if [ -d ~/.zsh/zsh-autosuggestions ]; then
+        echo "zsh-autosuggestions plugin is already installed."
+    else
+        echo "zsh-autosuggestions plugin is not installed. Installing zsh-autosuggestions plugin."
+        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+    fi
+
+    if [ -d ~/.zsh/zsh-syntax-highlighting ]; then
+        echo "zsh-syntax-highlighting plugin is already installed."
+    else
+        echo "zsh-syntax-highlighting plugin is not installed. Installing zsh-syntax-highlighting plugin."
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+    fi
 }
 main(){
     # install_binaries

@@ -51,15 +51,15 @@ PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 # neofetch
 
 ## PLugins
-# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# ZSH_HIGHLIGHT_STYLES[alias]='fg=yellow,bold'
-# ZSH_HIGHLIGHT_STYLES[path]='fg=magenta'
-# ZSH_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
-# ZSH_HIGHLIGHT_STYLES[globbing]='none'
-# ZSH_HIGHLIGHT_STYLES[redirection]='fg=cyan'
-# ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=cyan'
-# ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=magenta'
-# ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=magenta'
-#
-# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
+ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ ZSH_HIGHLIGHT_STYLES[alias]='fg=yellow,bold'
+ ZSH_HIGHLIGHT_STYLES[path]='fg=magenta'
+ ZSH_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
+ ZSH_HIGHLIGHT_STYLES[globbing]='none'
+ ZSH_HIGHLIGHT_STYLES[redirection]='fg=cyan'
+ ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=cyan'
+ ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=magenta'
+ ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=magenta'
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
