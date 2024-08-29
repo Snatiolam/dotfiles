@@ -21,33 +21,28 @@ install_vimrc(){
     echo "Installed vimrc"
 }
 
-install_i3_config(){
-    [ ! -d "$INSTALL_DIR/.config/i3" ] && sudo mkdir -p "$INSTALL_DIR/.config/i3"
-    cp "$ROOT_DIR/.config/i3/config" "$INSTALL_DIR/.config/i3"
-}
-
-install_i3blocks_config(){
-    [ ! -d "$INSTALL_DIR/.config/i3blocks" ] && mkdir -p "$INSTALL_DIR/.config/i3blocks"
-    cp "$ROOT_DIR/.config/i3blocks/config" "$INSTALL_DIR/.config/i3blocks/"
-    INSTALL_SCRIPTS="$ROOT_DIR/.config/i3blocks/scripts"
-    [ ! -d "$INSTALL_DIR/.config/i3blocks/scripts" ] && sudo mkdir -p "$INSTALL_DIR/.config/i3blocks/scripts"
-    for file in "$INSTALL_SCRIPTS/*"
-    do
-        sudo cp $file "$INSTALL_DIR/.config/i3blocks/scripts/"
-    done
-}
-
 install_zsh_files(){
-    cp "$ROOT_DIR/.zprofile" "$INSTALL_DIR/"
-    cp "$ROOT_DIR/.zshrc" "$INSTALL_DIR/"
-
+    ZSHRC="$HOME/.zshrc"
+    if [ -f "$ZSHRC" ]; then
+        echo "File $ZSHRC exist"
+        read -p "Do you want to overwrite it? Y/N -> " -n 1 -r
+        if [[ "$REPLY" =~ ^[Yy]$ ]]
+        then
+            printf "\nFile is going to be replaced"
+            rm $ZSHRC
+            ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
+            # cp "$ROOT_DIR/.zprofile" "$HOME/"
+        fi
+        printf "\n"
+    else
+        echo "File does not exist"
+        ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
+        # cp "$ROOT_DIR/.zprofile" "$HOME/"
+    fi
 }
-
 main(){
     # install_binaries
     # install_vimrc
-    # install_i3_config
-    # install_i3blocks_config
     install_zsh_files
 }
 
