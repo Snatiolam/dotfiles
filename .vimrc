@@ -21,9 +21,9 @@ set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " "------ Plugins added with plug ------" "
-" call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 "     Plug 'tpope/vim-fugitive'
-"     Plug 'morhetz/gruvbox'
+     Plug 'morhetz/gruvbox'
 "     Plug 'mbbill/undotree'"
 "     Plug 'preservim/nerdtree'
 "     Plug 'potatoesmaster/i3-vim-syntax'
@@ -34,7 +34,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 "     Plug 'Valloric/YouCompleteMe'
 "     Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 "     Plug 'junegunn/fzf.vim'
-" call plug#end()
+call plug#end()
 
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo

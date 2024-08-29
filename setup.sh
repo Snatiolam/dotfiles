@@ -15,7 +15,7 @@ install_binaries(){
     echo "Shell scripts installed"
 }
 
-install_vimrc(){
+setup_vim(){
     echo "Installing VIM configuration files"
     FILE="$HOME/.vimrc"
     if [ -f "$FILE" ]; then
@@ -31,9 +31,17 @@ install_vimrc(){
         echo "File $FILE does not exist."
         cp .vimrc "$FILE"
     fi
+
+    if [ -f ~/.vim/autoload/plug.vim ]; then
+        echo "Vim Plug is already installed."
+    else
+        echo "Vim Plug is not installed. Installing Vim Plug plugin."
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
+
 }
 
-install_zsh_files(){
+setup_zsh(){
     ZSHRC="$HOME/.zshrc"
     echo "Installing ZSH configuration files"
     if [ -f "$ZSHRC" ]; then
@@ -69,10 +77,11 @@ install_zsh_files(){
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
     fi
 }
+
 main(){
     # install_binaries
-    install_vimrc
-    install_zsh_files
+    setup_vim
+    setup_zsh
 }
 
 main
