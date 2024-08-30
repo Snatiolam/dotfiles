@@ -15,7 +15,7 @@ set backspace=indent,eol,start
 set cmdheight=2
 set encoding=utf-8
 set nowrap
-set backup
+set nobackup
 
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
