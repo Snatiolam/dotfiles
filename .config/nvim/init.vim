@@ -20,25 +20,25 @@ set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " "------ Plugins added with plug ------" "
-" call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 "
 "    Plug 'tpope/vim-fugitive'
 
 "    " Themes "
-"    Plug 'morhetz/gruvbox'
+    Plug 'morhetz/gruvbox'
 "    Plug 'tanvirtin/monokai.nvim'
 "    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 
 "   " Status line"
-"    Plug 'vim-airline/vim-airline'
-"    Plug 'vim-airline/vim-airline-themes'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
 
 "    Plug 'mbbill/undotree'"
 "    Plug 'preservim/nerdtree'
 "    Plug 'potatoesmaster/i3-vim-syntax'
 "    Plug 'xuyuanp/nerdtree-git-plugin'
-"    Plug 'jiangmiao/auto-pairs'
+    Plug 'jiangmiao/auto-pairs'
 
 "   " --- HTML / CSS Plugins"
 "    Plug 'alvan/closetag.vim'
@@ -61,7 +61,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 "    Plug 'hrsh7th/cmp-nvim-lsp'
 "    Plug 'hrsh7th/nvim-cmp'
 
-" call plug#end()
+call plug#end()
 
 " " Call init.lua "
 "lua require("init")
