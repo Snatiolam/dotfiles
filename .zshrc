@@ -15,6 +15,8 @@ autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats 'on branch %b ' # Format vcs_info_msg_0_ variable
 
+alias cdf='cd $(find * -type d | fzf)'
+
 # Colors to basic commands
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
@@ -63,3 +65,8 @@ PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
+
+. "$HOME/.asdf/asdf.sh"
+. "$HOME/.asdf/plugins/java/set-java-home.zsh"
+
+export PATH=$PATH:/home/snatiolam/.local/share/eclipse-jdtls/bin

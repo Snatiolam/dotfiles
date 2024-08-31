@@ -41,6 +41,35 @@ setup_vim(){
 
 }
 
+setup_nvim() {
+    if [ -d "$HOME/.config/nvim" ]; then
+        echo "Neovim conf already exists. Deleting old Neovim config"
+        rm -rf $HOME/.config/nvim
+        install_nvim_files
+    else
+        echo "Neovim config does not exist"
+        install_nvim_files
+    fi
+}
+
+install_nvim_files() {
+    echo "Installing Neovim config"
+    mkdir -p $HOME/.config/nvim
+
+    cp .config/nvim/init.vim $HOME/.config/nvim/
+    cp -r .config/nvim/lua $HOME/.config/nvim/
+
+    # curl fails is uncommented
+    # PATH="${XDG_DATA_HOME:-$HOME/.local/share}";
+
+     if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim ]; then
+         echo "Vim Plug is already installed"
+     else
+         echo "Vim Plug is not installed. Installing Vim Plug"
+         curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+     fi
+}
+
 setup_zsh(){
     ZSHRC="$HOME/.zshrc"
     echo "Installing ZSH configuration files"
@@ -61,7 +90,7 @@ setup_zsh(){
         # cp "$ROOT_DIR/.zprofile" "$HOME/"
     fi
 
-    mkdir -p ~/.cache/zsh 
+    mkdir -p ~/.cache/zsh
 
     if [ -d ~/.zsh/zsh-autosuggestions ]; then
         echo "zsh-autosuggestions plugin is already installed."
@@ -80,6 +109,7 @@ setup_zsh(){
 
 main(){
     # install_binaries
+    setup_nvim
     setup_vim
     setup_zsh
 }
