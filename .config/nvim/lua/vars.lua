@@ -40,7 +40,8 @@ vim.o.laststatus = 2
 
 -- Let not beeping nor flashing when doing something wrong
 vim.o.visualbell = true
-vim.o.t_vb = ""
+-- t_vb obsolete in Neovim
+-- vim.o.t_vb = ""
 
 -- Enable use of the mouse for all modes
 vim.o.mouse = 'a'
