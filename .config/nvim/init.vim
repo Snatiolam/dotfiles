@@ -47,8 +47,8 @@ call plug#begin('~/.vim/plugged')
 "   Important download { python3-dev, nodejs(npm), Go and cmake}
 "   Then run (install.py | install.sh)
 "    Plug 'Valloric/YouCompleteMe'
-"    Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
-"    Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+    Plug 'junegunn/fzf.vim'
 "    Plug 'fladson/vim-kitty'
 
 "" Snippets
