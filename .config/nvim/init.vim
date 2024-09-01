@@ -34,8 +34,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
 
-"    Plug 'mbbill/undotree'"
-"    Plug 'preservim/nerdtree'
+    Plug 'mbbill/undotree'"
+    Plug 'preservim/nerdtree'
 "    Plug 'potatoesmaster/i3-vim-syntax'
 "    Plug 'xuyuanp/nerdtree-git-plugin'
     Plug 'jiangmiao/auto-pairs'
@@ -54,17 +54,23 @@ call plug#begin('~/.vim/plugged')
 "" Snippets
 "    Plug 'L3MON4D3/LuaSnip'
 
+"  " ---  Treesitter highlighting"
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
 "" Neovim lsp Plugins
 "    " Language Server Protocol (Neovim Nightly required)
-"    Plug 'neovim/nvim-lspconfig'
+    Plug 'neovim/nvim-lspconfig'
 "    " Auto completion with lsp
-"    Plug 'hrsh7th/cmp-nvim-lsp'
-"    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/nvim-cmp'
 
 call plug#end()
 
 " " Call init.lua "
 "lua require("init")
+
+" " Enable highlighting with treesitter"
+"lua require'nvim-treesitter.configs'.setup{highlight={enable=true}}
 
 " The color scheme of vim ( pablo is preferred as default )
 colorscheme pablo
