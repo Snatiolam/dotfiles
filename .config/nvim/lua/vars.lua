@@ -6,9 +6,7 @@ vim.o.cmdheight = 2
 vim.o.encoding = 'utf-8'
 vim.o.wrap = false
 
-vim.wo.colorcolumn = '80'
-
-vim.cmd('colorscheme gruvbox')
+vim.o.colorcolumn = '80'
 
 vim.o.syntax = "on"
 --vim.bo.filetype = 'plugin on'
@@ -66,5 +64,6 @@ vim.o.softtabstop = 4
 vim.o.expandtab = true
 
 -- Undo
-vim.o.undodir = '~/.vim.undodir'
+vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.o.undofile = true
+

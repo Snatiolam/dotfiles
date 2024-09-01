@@ -10,6 +10,9 @@ map("n", "<down>", "<NOP>")
 map("n", "<up>", "<NOP>")
 map("n", "<right>", "<NOP>")
 
+map("n", "<C-n>", ":NERDTreeToggle<CR>")
+map("n", "<C-u>", ":UndotreeToggle<CR>")
+
 -- Vertical resize
 map("n", "<leader>+", ":vertical resize +5<cr>")
 map("n", "<leader>-", ":vertical resize -5<cr>")
@@ -36,6 +39,11 @@ map("n", "<leader>l", ":wincmd l<cr>")
 -- Alias to substite al occurrences
 map("n", "<leader>s", ":%s//gI<left><left><left>")
 
+
+-- fzf keymaps
+map("n", "<leader>p", ":Files<CR>")
+map("n", "<leader>ob", ":Buffers<CR>")
+
 -- Awesome Remaps
 -- Now undo breaks without exiting insert mode an loose everything you wrote
 map("i", ",", ",<c-g>u")
@@ -50,3 +58,12 @@ map("v", "<leader>y", '"+y')
 
 -- Same as D or C, so it is more intuitive
 map("n", "Y", 'y$')
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd(
+    'TextYankPost',
+    {
+        pattern = '*',
+        command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
+    }
+)
