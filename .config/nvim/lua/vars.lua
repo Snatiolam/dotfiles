@@ -56,8 +56,8 @@ vim.o.signcolumn = 'yes'
 --  asking if you wish to save changed files.
 vim.o.confirm = true
 
--- Use <F2> to toggle between 'paste' and 'nopaste'
-vim.o.pastetoggle = '<F2>'
+-- Use bracketed paste (Toggle paste and nopaste is obsolete in Neovim)
+-- vim.o.pastetoggle = '<F2>'
 
 -- Tabs and spaces
 vim.o.shiftwidth = 4
