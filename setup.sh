@@ -56,7 +56,7 @@ install_nvim_files() {
     echo "Installing Neovim config"
     mkdir -p $HOME/.config/nvim
 
-    cp .config/nvim/init.vim $HOME/.config/nvim/
+    cp .config/nvim/init.lua $HOME/.config/nvim/
     cp -r .config/nvim/lua $HOME/.config/nvim/
 
     # curl fails is uncommented
