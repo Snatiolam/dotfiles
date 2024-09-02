@@ -70,3 +70,5 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
 . "$HOME/.asdf/plugins/java/set-java-home.zsh"
 
 export PATH=$PATH:/home/snatiolam/.local/share/eclipse-jdtls/bin
+export PATH=$PATH:"$HOME/.cargo/bin"
+export PATH=$PATH:/opt/gradle/gradle-8.10/bin

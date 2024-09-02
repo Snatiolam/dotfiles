@@ -61,6 +61,13 @@ install_nvim_files() {
 
     # curl fails is uncommented
     # PATH="${XDG_DATA_HOME:-$HOME/.local/share}";
+    #
+     if [ -d ~/.fzf ]; then
+         echo "FZF is already installed"
+     else
+         echo "FZF is not installed. Installing FZF"
+         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+     fi
 
      if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim ]; then
          echo "Vim Plug is already installed"

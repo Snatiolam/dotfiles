@@ -107,6 +107,8 @@ lspconfig.rust_analyzer.setup{
     },
 }
 
+-- nvim-java setup uses and installs jdtls 
+require('java').setup()
 lspconfig.jdtls.setup{}
 
 lspconfig.tsserver.setup{}
@@ -115,7 +117,6 @@ lspconfig.tsserver.setup{}
 local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer', 'jdtls', 'tsserver'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
-    -- on_attach = my_custom_on_attach,
     on_attach = on_attach,
     capabilities = capabilities
   }

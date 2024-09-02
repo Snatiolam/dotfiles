@@ -32,7 +32,7 @@ require("lazy").setup({
           local configs = require("nvim-treesitter.configs")
 
           configs.setup({
-              ensure_installed = { "c", "lua", "vim", "vimdoc", "rust", "typescript", "javascript", "html" },
+              ensure_installed = { "c", "java", "lua", "vim", "vimdoc", "rust", "typescript", "javascript", "html" },
               sync_install = false,
               highlight = { enable = true },
               -- indent = { enable = true },  
@@ -54,4 +54,5 @@ require("lazy").setup({
     },
     {"mbbill/undotree"},
     {"preservim/nerdtree"},
+    {"nvim-java/nvim-java"},
 })
