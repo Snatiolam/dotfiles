@@ -55,4 +55,9 @@ require("lazy").setup({
     {"mbbill/undotree"},
     {"preservim/nerdtree"},
     {"nvim-java/nvim-java"},
+    {
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+-- or                              , branch = '0.1.x',
+      dependencies = { 'nvim-lua/plenary.nvim' },
+    },
 })

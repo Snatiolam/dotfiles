@@ -44,6 +44,12 @@ map("n", "<leader>s", ":%s//gI<left><left><left>")
 map("n", "<leader>p", ":Files<CR>")
 map("n", "<leader>ob", ":Buffers<CR>")
 
+-- Telescope
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fs', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fg', builtin.git_files, {})
+
 -- Awesome Remaps
 -- Now undo breaks without exiting insert mode an loose everything you wrote
 map("i", ",", ",<c-g>u")
