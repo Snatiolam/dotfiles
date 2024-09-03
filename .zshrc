@@ -72,3 +72,5 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
 export PATH=$PATH:/home/snatiolam/.local/share/eclipse-jdtls/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:/opt/gradle/gradle-8.10/bin
+
+alias luamake="/home/snatiolam/Documents/lua-language-server/3rd/luamake/luamake"
