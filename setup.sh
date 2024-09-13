@@ -15,7 +15,25 @@ install_binaries(){
     echo "Shell scripts installed"
 }
 
-setup_vim(){
+setup_tmux() {
+    echo "Installing TMUX configuration files"
+    FILE=$HOME/.tmux.conf
+    if [ -f "$FILE" ]; then
+        echo "File $FILE exist"
+        read -p "Do you want to overwrite it? Y/N -> " -n 1 -r
+        if [[ "$REPLY" =~ ^[Yy]$ ]]
+        then
+            printf "\nFile is going to be replaced"
+            cp .tmux.conf "$FILE"
+        fi
+        printf "\n"
+    else
+        echo "File $FILE does not exist. Installing..."
+        cp .tmux.conf "$FILE"
+    fi
+}
+
+setup_vim() {
     echo "Installing VIM configuration files"
     FILE="$HOME/.vimrc"
     if [ -f "$FILE" ]; then
@@ -28,7 +46,7 @@ setup_vim(){
         fi
         printf "\n"
     else
-        echo "File $FILE does not exist."
+        echo "File $FILE does not exist. Installing..."
         cp .vimrc "$FILE"
     fi
 
@@ -47,7 +65,7 @@ setup_nvim() {
         rm -rf $HOME/.config/nvim
         install_nvim_files
     else
-        echo "Neovim config does not exist"
+        echo "Neovim config does not exist. Installing..."
         install_nvim_files
     fi
 }
@@ -62,19 +80,19 @@ install_nvim_files() {
     # curl fails is uncommented
     # PATH="${XDG_DATA_HOME:-$HOME/.local/share}";
     #
-     if [ -d ~/.fzf ]; then
-         echo "FZF is already installed"
-     else
-         echo "FZF is not installed. Installing FZF"
-         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-     fi
+    if [ -d ~/.fzf ]; then
+        echo "FZF is already installed"
+    else
+        echo "FZF is not installed. Installing FZF"
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    fi
 
-     if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim ]; then
-         echo "Vim Plug is already installed"
-     else
-         echo "Vim Plug is not installed. Installing Vim Plug"
-         curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-     fi
+    if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim ]; then
+        echo "Vim Plug is already installed"
+    else
+        echo "Vim Plug is not installed. Installing Vim Plug"
+        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
 }
 
 setup_zsh(){
@@ -92,7 +110,7 @@ setup_zsh(){
         fi
         printf "\n"
     else
-        echo "File $ZSHRC does not exist"
+        echo "File $ZSHRC does not exist. Installing..."
         ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
         # cp "$ROOT_DIR/.zprofile" "$HOME/"
     fi
@@ -116,6 +134,7 @@ setup_zsh(){
 
 main(){
     # install_binaries
+    setup_tmux
     setup_nvim
     setup_vim
     setup_zsh
