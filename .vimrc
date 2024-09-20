@@ -140,6 +140,9 @@ set expandtab
 set undodir=~/.vim/undodir
 set undofile
 
+set list
+set listchars=tab:>-,space:·
+
 " By default the <leader> key is mapped to \
 let mapleader = " "
 
