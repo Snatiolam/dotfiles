@@ -70,3 +70,7 @@ vim.o.undofile = true
 -- Show spaces
 vim.o.list = true
 vim.o.listchars = "tab:>-,space:·"
+
+-- Copy to clipboard
+vim.o.clipboard=unnamedplus
+vim.api.nvim_set_option("clipboard", "unnamedplus")
