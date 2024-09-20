@@ -67,3 +67,6 @@ vim.o.expandtab = true
 vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.o.undofile = true
 
+-- Show spaces
+vim.o.list = true
+vim.o.listchars = "tab:>-,space:·"
