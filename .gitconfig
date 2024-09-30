@@ -1,0 +1,7 @@
+[user]
+	email = santiago.alzate3@gmail.com
+	name = Snatiolam
+[alias]
+	tree = log --graph --decorate --oneline --all
+[init]
+	defaultBranch = main
