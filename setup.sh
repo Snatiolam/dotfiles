@@ -14,6 +14,19 @@ install_binaries(){
     echo "Shell scripts installed"
 }
 
+install_fonts() {
+    echo "Installing fonts (Hack Nerd Font) and (Monaspice Nerd Font)"
+    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip \
+    && cd ~/.local/share/fonts \
+    && unzip Hack.zip \
+    && rm Hack.zip
+
+    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Monaspace.zip \
+    && cd ~/.local/share/fonts \
+    && unzip Monaspace.zip \
+    && rm Monaspace.zip
+}
+
 setup_tmux() {
     echo "Installing TMUX configuration files"
     FILE=$HOME/.tmux.conf
@@ -61,7 +74,7 @@ setup_vim() {
 setup_nvim() {
     if [ -d "$HOME/.config/nvim" ]; then
         echo "Neovim conf already exists. Deleting old Neovim config"
-        rm -rf $HOME/.config/nvim
+        rm -rf "$HOME/.config/nvim"
         install_nvim_files
     else
         echo "Neovim config does not exist. Installing..."
@@ -71,10 +84,10 @@ setup_nvim() {
 
 install_nvim_files() {
     echo "Installing Neovim config"
-    mkdir -p $HOME/.config/nvim
+    mkdir -p "$HOME/.config/nvim"
 
-    cp .config/nvim/init.lua $HOME/.config/nvim/
-    cp -r .config/nvim/lua $HOME/.config/nvim/
+    cp .config/nvim/init.lua "$HOME/.config/nvim/"
+    cp -r .config/nvim/lua "$HOME/.config/nvim/"
 
     # curl fails is uncommented
     # PATH="${XDG_DATA_HOME:-$HOME/.local/share}";
@@ -135,6 +148,7 @@ setup_zsh(){
 
 main(){
     install_binaries
+    install_fonts
     setup_tmux
     setup_nvim
     setup_vim
