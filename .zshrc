@@ -1,7 +1,7 @@
 # History cache
-HISTSIZE=5000
+HISTSIZE=10000
+SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
-SAVEHIST=5000
 
 # Zsh tab completion
 autoload -U compinit
@@ -17,28 +17,23 @@ zstyle ':vcs_info:git:*' formats 'on branch %b ' # Format vcs_info_msg_0_ variab
 
 alias cdf='cd $(find * -type d | fzf)'
 
-# Colors to basic commands
+# Aliases
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
-# Basic aliases
 alias ll='ls -l'
-alias cd..='cd ..'
-alias cd...='cd ../..'
-alias cd....='cd../../..'
+
 # Verbosity and safer options
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -vI'
 
-# <Ctrl-v> To escape know the wanted key to map
+# <Ctrl-v> To escape and know the wanted key to map
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[3~' delete-char
-bindkey '^A' beginning-of-line
-bindkey '^E' end-of-line
-bindkey '^R' history-incremental-search-backward
-bindkey '^U' kill-whole-line
+
 # bindkey -e # for debug
 
 # autoload -U promptinit
@@ -73,5 +68,3 @@ export PATH=$PATH:/home/snatiolam/.local/share/eclipse-jdtls/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:/opt/gradle/gradle-8.10/bin
 export PATH=$PATH:"$HOME/.local/bin"
-
-alias luamake="/home/snatiolam/Documents/lua-language-server/3rd/luamake/luamake"

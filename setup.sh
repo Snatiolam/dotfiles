@@ -1,16 +1,15 @@
 #!/bin/bash
 
 
-ROOT_DIR="."
 INSTALL_DIR="$HOME"
 
 install_binaries(){
     echo "Installing shell scripts in ~/.local/bin"
     INSTALL_BIN="$INSTALL_DIR/.local/bin"
     [ ! -d "$INSTALL_BIN" ] && mkdir -p "$INSTALL_BIN"
-    for file in "$ROOT_DIR/.local/bin/*"
+    for file in .local/bin/*
     do
-        sudo cp $file "$INSTALL_BIN/"
+        cp -f "$file" "$INSTALL_BIN/"
     done
     echo "Shell scripts installed"
 }
@@ -104,14 +103,16 @@ setup_zsh(){
         if [[ "$REPLY" =~ ^[Yy]$ ]]
         then
             printf "\nFile is going to be replaced"
-            rm $ZSHRC
-            ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
+            rm "$ZSHRC"
+            cp .zshrc "$ZSHRC"
+            # ln -s "$(realpath $ROOT_DIR/.zshrc)" "$ZSHRC"
             # cp "$ROOT_DIR/.zprofile" "$HOME/"
         fi
         printf "\n"
     else
         echo "File $ZSHRC does not exist. Installing..."
-        ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
+        cp .zshrc "$ZSHRC"
+        # ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
         # cp "$ROOT_DIR/.zprofile" "$HOME/"
     fi
 
@@ -133,7 +134,7 @@ setup_zsh(){
 }
 
 main(){
-    # install_binaries
+    install_binaries
     setup_tmux
     setup_nvim
     setup_vim
