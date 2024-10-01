@@ -13,7 +13,7 @@ compinit
 #Zsh git version control system info for prompt
 autoload -Uz vcs_info
 precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats '(%b) ' # Format vcs_info_msg_0_ variable
+zstyle ':vcs_info:git:*' formats $'\Uf126 %b ' # Format vcs_info_msg_0_ variable
 
 alias cdf='cd $(find * -type d | fzf)'
 
@@ -44,7 +44,8 @@ bindkey '^[[3~' delete-char
 autoload -U colors && colors
 setopt PROMPT_SUBST   # When single quote let expand the prompt
 # PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~ %{$fg_bold[red]%}$vcs_info_msg_0_%{$fg[red]%}]%{$reset_color%}$%b '
-PS1='%B%F{red}[%F{yellow}%n%F{green}@%F{blue}%M %F{magenta}%~ %{$fg_bold[red]%}$vcs_info_msg_0_%F{red}]%F{reset_colors}$%b '
+# PS1='%B%F{red}[%F{yellow}%n%F{green}@%F{blue}%M %F{magenta}%~ %{$fg_bold[red]%}$vcs_info_msg_0_%F{red}]%F{reset_colors}$%b '
+PS1='%B%F{yellow}%n%F{green}@%F{blue}%M %F{magenta}%~ %{$fg_bold[red]%}$vcs_info_msg_0_%F{reset_colors}$%b '
 
 # neofetch
 
