@@ -10,6 +10,12 @@ local luasnip = require 'luasnip'
 -- nvim-cmp setup
 local cmp = require 'cmp'
 
+-- Install servers
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = { "lua_ls", "clangd", "pyright" },
+})
+
 cmp.setup {
     snippet = {
       -- REQUIRED - must specify a snippet engine (luasnip)
@@ -84,6 +90,7 @@ lspconfig.lua_ls.setup{
     }
 }
 
+-- Generate compile_commandsjson with 'bear -- make'
 lspconfig.clangd.setup{}
 
 lspconfig.pyright.setup{}

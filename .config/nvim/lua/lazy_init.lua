@@ -44,9 +44,15 @@ require("lazy").setup({
     {"vim-airline/vim-airline-themes"},
     {"jiangmiao/auto-pairs"},
     {"L3MON4D3/LuaSnip"},
-    {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/nvim-cmp'},
+    {
+        "neovim/nvim-lspconfig",
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/nvim-cmp",
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+        },
+    },
     {
 	'junegunn/fzf.vim',
         dependencies = {
