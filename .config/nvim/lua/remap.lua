@@ -10,7 +10,7 @@ map("n", "<down>", "<NOP>")
 map("n", "<up>", "<NOP>")
 map("n", "<right>", "<NOP>")
 
-map("n", "<C-n>", ":NERDTreeToggle<CR>")
+map("n", "<C-n>", ":NvimTreeToggle<CR>")
 map("n", "<C-u>", ":UndotreeToggle<CR>")
 
 -- Vertical resize

@@ -60,7 +60,16 @@ require("lazy").setup({
         },
     },
     {"mbbill/undotree"},
-    {"preservim/nerdtree"},
+    -- "preservim/nerdtree"},
+    -- Consider using CHADTree
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        config = function()
+            require("nvim-tree").setup {}
+        end,
+    },
     {"nvim-java/nvim-java"},
     {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
