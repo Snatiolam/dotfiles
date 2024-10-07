@@ -63,8 +63,12 @@ PS1='%B%F{yellow}%n%F{green}@%F{blue}%M %F{magenta}%~ %{$fg_bold[red]%}$vcs_info
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
 
+# Environments
+export TERM='xterm-256color'
+
 # . "$HOME/.asdf/asdf.sh"
 # . "$HOME/.asdf/plugins/java/set-java-home.zsh"
+
 
 export PATH=$PATH:/home/snatiolam/.local/share/eclipse-jdtls/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
