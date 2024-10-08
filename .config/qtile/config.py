@@ -24,7 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
+import subprocess
+
 from libqtile import bar, layout, qtile, widget, layout
+from libqtile import hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -38,8 +42,6 @@ keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
-    Key([mod], "b", lazy.spawn("firefox"), desc="Launch Browser"),
-    Key([mod], "e", lazy.spawn("thunar"), desc="Launch File Manager"),
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
@@ -81,6 +83,15 @@ keys = [
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    
+    # --------- App configs ---------
+
+    Key([mod], "m", lazy.spawn("rofi -show drun"), desc="Launch Menu"),
+    Key([mod, "shift"], "m", lazy.spawn("rofi -show"), desc="Launch Window Navigator"),
+    Key([mod], "b", lazy.spawn("firefox"), desc="Launch Browser"),
+    Key([mod], "e", lazy.spawn("thunar"), desc="Launch File Manager"),
+
+    # --------- System configs ---------
     Key([], "XF86AudioLowerVolume", lazy.spawn(
         "pactl set-sink-volume @DEFAULT_SINK@ -5%"
     )),
@@ -138,9 +149,16 @@ for i, group in enumerate(groups):
         ]
     )
 
+layout_conf = {
+        #'border_normal' : colors["orange"],
+        'border_focus' : colors["magenta"],
+        'border_width' : 1,
+        'margin' : 4,
+        }
+
 layouts = [
     layout.Max(),
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=1, margin=4),
+    layout.Columns(**layout_conf),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -287,3 +305,8 @@ wl_xcursor_size = 24
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+@hook.subscribe.startup_once
+def autostart():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.run([home])
