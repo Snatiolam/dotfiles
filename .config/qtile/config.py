@@ -163,6 +163,7 @@ extension_defaults = widget_defaults.copy()
 
 groupbox = widget.GroupBox(
         foreground= colors["cyan"],
+        background= colors["black"],
         active = colors["fg"],
         inactive = colors["cyan"],
         fontsize=19,
@@ -184,29 +185,45 @@ groupbox = widget.GroupBox(
         hide_unused = False,
 )
 
+def powerline(fg="fg", bg="bg"):
+    return widget.TextBox(
+               text="", # Icon: nf-oct-triangle_left
+               fontsize=37,
+               padding=0,
+               foreground = colors[fg],
+               background = colors[bg],
+            )
+
 screens = [
     Screen(
+        wallpaper="~/.config/qtile/rose-pine.png",
         top=bar.Bar(
             [
-                #widget.GroupBox(),
                 groupbox,
                 widget.Prompt(),
-                widget.WindowName(background = colors["fg_gutter"]),
+                powerline(fg="fg_gutter", bg="black"),
+                widget.WindowName(background=colors["fg_gutter"]),
                 widget.Systray(),
+                powerline(fg="yellow", bg="fg_gutter"),
                 widget.CPU(format=" {freq_current}GHz {load_percent}%", background=colors["yellow"], foreground= colors["bg"]),
+                powerline(fg="magenta", bg="yellow"),
                 widget.Battery(format="  {char} {percent:2.0%}", background=colors["magenta"], foreground= colors["bg"]),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
+                # widget.Chord(
+                #     chords_colors={
+                #         "launch": ("#ff0000", "#ffffff"),
+                #     },
+                #     name_transform=lambda name: name.upper(),
+                # ),
+                powerline(fg="pink", bg="magenta"),
                 widget.Net(format="\u2193 {down} \u2191 {up}", background=colors['pink'], interface='wlp2s0'),
-                widget.Memory(format=": {MemUsed:.2f}/{MemTotal:.2f}{mm}", measure_mem = "G"),
+                powerline(fg="black", bg="pink"),
+                widget.Memory(format=": {MemUsed:.2f}/{MemTotal:.2f}{mm}", measure_mem = "G", background=colors["black"]),
+                powerline(fg="pink", bg="black"),
                 widget.CurrentLayout(background=colors["pink"]),
                 # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
+                powerline(fg="orange", bg="pink"),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p", background=colors["orange"]),
                 # widget.QuickExit(),
             ],
