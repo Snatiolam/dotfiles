@@ -161,9 +161,8 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
-                # widget.CurrentLayout(),
                 widget.GroupBox(fontsize=19, margin_x=0, margin_y=3, padding_x=5, padding_y=8, borderwidth=1, rounded=False, disable_drag=True),
                 widget.Sep(linewidth=0, padding=5),
                 widget.Prompt(),
@@ -174,12 +173,16 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                widget.Net(interface='wlp2s0'),
+                widget.Sep(linewidth=2, padding=5),
+                widget.CurrentLayout(),
+                widget.Sep(linewidth=2, padding=5),
+                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 widget.Systray(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Sep(linewidth=2, padding=5),
                 widget.QuickExit(),
             ],
             24,
