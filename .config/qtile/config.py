@@ -29,6 +29,8 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+from color import colors # My own theme
+
 mod = "mod4"
 terminal = guess_terminal()
 
@@ -138,7 +140,7 @@ for i, group in enumerate(groups):
 
 layouts = [
     layout.Max(),
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=1),
+    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=1, margin=4),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -153,37 +155,60 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="sans",
+    font="Hack Nerd Font",
     fontsize=14,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
 
+groupbox = widget.GroupBox(
+        foreground= colors["cyan"],
+        active = colors["fg"],
+        inactive = colors["cyan"],
+        fontsize=19,
+        margin_x=0,
+        margin_y=3,
+        padding_x=5,
+        padding_y=8,
+        borderwidth=1,
+        highlight_method = "text",
+        highlight_color=[colors["fg"], colors["yellow"]],
+        rounded=False,
+        disable_drag=True,
+        spacing = 5,
+        this_current_screen_border = colors["yellow"],
+        block_highlight_text_color = colors["white"],
+        urgent_alert_method = "line",
+        urgent_text = colors["red"],
+        urgent_border = colors["red"],
+        hide_unused = False,
+)
+
 screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(fontsize=19, margin_x=0, margin_y=3, padding_x=5, padding_y=8, borderwidth=1, rounded=False, disable_drag=True),
-                widget.Sep(linewidth=0, padding=5),
+                #widget.GroupBox(),
+                groupbox,
                 widget.Prompt(),
-                widget.WindowName(),
+                widget.WindowName(background = colors["fg_gutter"]),
+                widget.Systray(),
+                widget.CPU(format=" {freq_current}GHz {load_percent}%", background=colors["yellow"], foreground= colors["bg"]),
+                widget.Battery(format="  {char} {percent:2.0%}", background=colors["magenta"], foreground= colors["bg"]),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Net(interface='wlp2s0'),
-                widget.Sep(linewidth=2, padding=5),
-                widget.CurrentLayout(),
-                widget.Sep(linewidth=2, padding=5),
+                widget.Net(format="\u2193 {down} \u2191 {up}", background=colors['pink'], interface='wlp2s0'),
+                widget.Memory(format=": {MemUsed:.2f}/{MemTotal:.2f}{mm}", measure_mem = "G"),
+                widget.CurrentLayout(background=colors["pink"]),
                 # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.Sep(linewidth=2, padding=5),
-                widget.QuickExit(),
+                widget.Clock(format="%Y-%m-%d %a %I:%M %p", background=colors["orange"]),
+                # widget.QuickExit(),
             ],
             24,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
