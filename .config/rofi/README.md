@@ -3,7 +3,7 @@
 Install *rofi* and dependencies:
 
 ```bash
-git clone git@github.com:w8ste/Tokyonight-rofi-theme.git tokyonight-rofi
+git clone https://github.com/w8ste/Tokyonight-rofi-theme.git tokyonight-rofi
 sudo mv tokyonight-rofi/tokyonight.rasi /usr/share/rofi/themes
 ```
 
