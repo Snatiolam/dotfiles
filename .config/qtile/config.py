@@ -83,6 +83,8 @@ keys = [
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+
+    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     
     # --------- App configs ---------
 
@@ -90,6 +92,8 @@ keys = [
     Key([mod, "shift"], "m", lazy.spawn("rofi -show"), desc="Launch Window Navigator"),
     Key([mod], "b", lazy.spawn("firefox"), desc="Launch Browser"),
     Key([mod], "e", lazy.spawn("thunar"), desc="Launch File Manager"),
+    Key([mod], "s", lazy.spawn("scrot 'screenshot_%Y-%m-%d-%T_$wx$h.png' -e 'mkdir -p ~/images/screenshots/ | mv $f ~/images/screenshots/'")),
+    Key([mod, "shift"], "s", lazy.spawn("scrot -s")),
 
     # --------- System configs ---------
     Key([], "XF86AudioLowerVolume", lazy.spawn(
@@ -101,7 +105,12 @@ keys = [
     Key([], "XF86AudioMute", lazy.spawn(
         "pactl set-sink-mute @DEFAULT_SINK@ toggle"
     )),   
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "Print", lazy.spawn(
+        "scrot 'screenshot_%Y-%m-%d-%T_$wx$h.png' -e 'mkdir -p ~/images/screenshots/ | mv $f ~/images/screenshots/'"
+    )),   
+    Key([mod, "shift"], "Print", lazy.spawn(
+        "scrot -s"
+    )),   
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -120,7 +129,7 @@ for vt in range(1, 8):
 
 # groups = [Group(i) for i in "123456789"]
 groups = [Group(i) for i in [
-        "   ", "   ", "   ", "   ", "  ", "   ", "   ", "   ", "   ",
+        "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ",
     ]]
 
 
