@@ -15,7 +15,12 @@ install_binaries(){
 }
 
 install_fonts() {
-    echo "Installing fonts (Hack Nerd Font) and (Monaspice Nerd Font)"
+    echo "Installing fonts Hack, UbuntuMono and Monaspice Nerd Fonts"
+    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/UbuntuMono.zip \
+    && cd ~/.local/share/fonts \
+    && unzip UbuntuMono.zip \
+    && rm UbuntuMono.zip
+
     wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip \
     && cd ~/.local/share/fonts \
     && unzip Hack.zip \
