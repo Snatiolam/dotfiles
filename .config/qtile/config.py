@@ -230,6 +230,8 @@ screens = [
                 widget.Prompt(),
                 powerline(fg="fg_gutter", bg="black"),
                 widget.WindowName(background=colors["fg_gutter"]),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
                 widget.Systray(),
                 powerline(fg="yellow", bg="fg_gutter"),
                 widget.CPU(format="  {freq_current}GHz {load_percent}%", background=colors["yellow"], foreground= colors["bg"]),
@@ -243,8 +245,6 @@ screens = [
                 widget.CurrentLayoutIcon(background=colors["pink"], scale=0.8),
                 widget.CurrentLayout(background=colors["pink"], padding=5),
                 # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                widget.StatusNotifier(),
                 powerline(fg="orange", bg="pink"),
                 widget.Clock(format="  %Y-%m-%d %a %I:%M %p", background=colors["orange"]),
                 # widget.QuickExit(),
