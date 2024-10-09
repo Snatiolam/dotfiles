@@ -181,10 +181,12 @@ layouts = [
     # layout.Zoomy(),
 ]
 
+# Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
+
 widget_defaults = dict(
-    font="Hack Nerd Font",
-    fontsize=14,
-    padding=3,
+    font="UbuntuMono Nerd Font",
+    fontsize=15,
+    padding=5,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -238,12 +240,12 @@ screens = [
                 powerline(fg="magenta", bg="yellow"),
                 widget.Battery(format=" {char} {percent:2.0%}", background=colors["magenta"], foreground= colors["bg"]),
                 powerline(fg="pink", bg="magenta"),
-                widget.Net(format="  {interface}: {down:3.0f}{down_suffix:<2}   {up:3.0f}{up_suffix:<2}", background=colors['pink'], interface='wlp2s0', padding=5),
+                widget.Net(format="  {interface}: {down:3.0f}{down_suffix:<2}   {up:3.0f}{up_suffix:<2}", background=colors['pink'], interface='wlp2s0'),
                 powerline(fg="black", bg="pink"),
-                widget.Memory(format=": {MemUsed:.2f}/{MemTotal:.2f}{mm}", measure_mem = "G", background=colors["black"], padding=5),
+                widget.Memory(format=": {MemUsed:.2f}/{MemTotal:.2f}{mm}", measure_mem = "G", background=colors["black"]),
                 powerline(fg="pink", bg="black"),
                 widget.CurrentLayoutIcon(background=colors["pink"], scale=0.8),
-                widget.CurrentLayout(background=colors["pink"], padding=5),
+                widget.CurrentLayout(background=colors["pink"]),
                 # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 powerline(fg="orange", bg="pink"),
                 widget.Clock(format="  %d/%m/%Y - %H:%M ", background=colors["orange"]),
