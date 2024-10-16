@@ -15,26 +15,27 @@ install_binaries(){
 }
 
 install_fonts() {
-    echo "Installing fonts Hack, UbuntuMono and Monaspice Nerd Fonts"
+
+    #wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip \
+    #&& cd ~/.local/share/fonts \
+    #&& unzip -n Hack.zip \
+    #&& rm Hack.zip
+
+    echo "Installing fonts UbuntuMono and Monaspice Nerd Fonts"
     wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/UbuntuMono.zip \
     && cd ~/.local/share/fonts \
-    && unzip UbuntuMono.zip \
+    && unzip -n UbuntuMono.zip \
     && rm UbuntuMono.zip
-
-    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip \
-    && cd ~/.local/share/fonts \
-    && unzip Hack.zip \
-    && rm Hack.zip
 
     wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Monaspace.zip \
     && cd ~/.local/share/fonts \
-    && unzip Monaspace.zip \
+    && unzip -n Monaspace.zip \
     && rm Monaspace.zip
 }
 
 setup_tmux() {
     echo "Installing TMUX configuration files"
-    FILE=$HOME/.tmux.conf
+    FILE="$HOME"/.tmux.conf
     if [ -f "$FILE" ]; then
         echo "File $FILE exist"
         read -p "Do you want to overwrite it? Y/N -> " -n 1 -r
