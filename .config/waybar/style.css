@@ -1,229 +1,133 @@
-@import "macchiato.css";
+/* --- Catppuccin Mocha Palette --- */
+@define-color base   #1e1e2e;
+@define-color mantle #181825;
+@define-color crust  #11111b;
+
+@define-color text     #cdd6f4;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+
+@define-color blue      #89b4fa;
+@define-color lavender  #b4befe;
+@define-color sapphire  #74c7ec;
+@define-color sky       #89dceb;
+@define-color teal      #94e2d5;
+@define-color green     #a6e3a1;
+@define-color yellow    #f9e2af;
+@define-color peach     #fab387;
+@define-color maroon    #eba0ac;
+@define-color red       #f38ba8;
+@define-color mauve     #cba6f7;
+@define-color pink      #f5c2e7;
+@define-color flamingo  #f2cdcd;
+@define-color rosewater #f5e0dc;
 
 * {
-     color: @lavender;
-     border: 0px;
-     padding: 0px 0px;
-     font-family: UbuntuMono Nerd Font;
-     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-     /* font-family: "Hack Nerd Font"; */
-     font-size: 16px;
-     font-weight: bold;
-     /* padding-bottom:4px;
-     padding-top: 4px; */
- }
+    /* Updated to your specific font */
+    font-family: "MonaspiceNe Nerd Font Mono", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
 
- window#waybar {
-     border: 0px solid rgba(0, 0, 0, 0);
-     /* border-radius: 10px; */
-     /* background:#2d2a2e; */
-     /* background-color: rgba(36, 39, 58, 0.85); */
-     background-color: rgba(0, 0, 0, 0);
-     /* background-color: shade(#1e1e2e, 0.95); */
- }
+window#waybar {
+    background-color: transparent;
+    color: @text;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
 
- #workspaces button {
-     color: @base;
-     border-radius: 50%;
-     margin: 0px 0px;
-     padding: 4px 6px 2px 0px;
-     margin: 0px 8px 0px 8px;
- }
+/* --- Rounded Module Pills --- */
+#workspaces,
+#window,
+#idle_inhibitor,
+#clock,
+#cpu,
+#memory,
+#temperature,
+#battery,
+#backlight,
+#network,
+#pulseaudio,
+#language,
+#tray {
+    background-color: @base;
+    padding: 0px 15px; /* Increased side padding for Monaspace spacing */
+    margin: 4px 5px;
+    border-radius: 10px;
+    /* DELICATE FIX: Thinner 1px border using Mauve pastel */
+    border: 1px solid @mauve; 
+}
 
- #workspaces button:hover {
-     color: @mauve;
-     /* border-radius: 20px; */
-     box-shadow: none;
-     /* Remove predefined box-shadow */
-     text-shadow: none;
-     /* Remove predefined text-shadow */
-     border: 0px;
-     background: none;
- }
+/* --- Specific Colors --- */
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: @subtext0;
+}
 
- #workspaces button:hover * {
-     color: @mauve;
- }
+#workspaces button.focused {
+    color: @mauve;
+}
 
- #workspaces * {
-     color: whitesmoke;
- }
+#window {
+    color: @lavender;
+}
 
-  #workspaces {
-     border-style: solid;
-     /* background-color: @base; */
-     background-color: rgba(36, 39, 58, 0.6);
-     opacity: 1;
-     border-radius: 10px;
-     margin: 8px 8px 8px 8px;
- }
-
- #workspaces button.active {
-     color: @mauve;
-     border-radius: 20px;
-     /* background-color: @flamingo; */
- }
-
- #workspaces button.active * {
-     color: @mauve;
- }
-
- #clock,
- #custom-swap,
- #custom-cava-internal,
- #battery,
- #cpu,
- #memory,
- #idle_inhibitor,
- #temperature,
- #custom-keyboard-layout,
- #language,
- #backlight,
- #network,
- #pulseaudio,
- #mode,
- #tray,
- #custom-power,
- #custom-pacman,
- #custom-launcher,
- #mpd {
-     padding: 6px 9px;
-     border-style: solid;
-     /* background-color: shade(@base, 1); */
-     background-color: rgba(36, 39, 58, 0.6);
-     opacity: 1;
-     margin: 8px 0px;
- }
+#idle_inhibitor {
+    color: @maroon;
+}
 
 #clock {
-     /* background-color:#a3be8c; */
-     color: @sky;
-     border-radius: 10px;
-     margin: 8px 10px;
- }
- 
- #backlight {
-     color: @yellow;
-     /* border-bottom: 2px solid @yellow; */
-     border-radius: 10px 0px 0px 10px;
- }
- 
- #battery {
-     color: #d8dee9;
-     /* border-bottom: 2px solid #d8dee9; */
-     border-radius: 0px 10px 10px 0px;
-     margin-right: 10px;
- }
- 
- #battery.charging {
-     color: #81a1c1;
-     /* border-bottom: 2px solid #81a1c1; */
- }
- 
- @keyframes blink {
-     to {
-         color: @red;
-         /* border-bottom: 2px solid @red; */
-     }
- }
- 
- #battery.critical:not(.charging) {
-     color: #bf616a;
-     /* border-bottom: 2px solid #bf616a; */
-     animation-name: blink;
-     animation-duration: 0.5s;
-     animation-timing-function: linear;
-     animation-iteration-count: infinite;
-     animation-direction: alternate;
- }
- 
- #cpu {
-     color: @sky;
-     /* border-bottom: 2px solid @sky; */
- }
- 
- #cpu #cpu-icon {
-     color: @sky;
- }
- 
- #memory {
-     color: @sky;
- }
- 
- #network.disabled {
-     color: #bf616a;
-     /* border-bottom: 2px solid #bf616a; */
- }
- 
- #network {
-     color: @green;
-     /* border-bottom: 2px solid @green; */
-     border-radius: 10px;
-     margin-right: 5px;
- }
- 
- #network.disconnected {
-     color: #bf616a;
-     /* border-bottom: 2px solid #bf616a; */
- }
- 
- #pulseaudio {
-     color: @flamingo;
-     /* border-radius: 0 10px 10px 0; */
-     /* margin-right: 10px; */
-     /* border-bottom: 2px solid @flamingo; */
- }
- 
- #pulseaudio.muted {
-     color: #3b4252;
-     /* border-bottom: 2px solid #3b4252; */
- }
- 
- #temperature {
-     color: @teal;
-     /* border-bottom: 2px solid @teal; */
-     border-radius: 10px 0px 0px 10px;
- }
- 
- #temperature.critical {
-     color: @red;
-     /* border-bottom: 2px solid @red; */
- }
- 
- #idle_inhibitor {
-     background-color: #ebcb8b;
-     color: @base;
- }
- 
- #tray {
-     /* background-color: @base; */
-     margin: 8px 10px;
-     border-radius: 10px;
- }
+    color: @rosewater;
+}
 
- #window {
-     border-style: hidden;
-     margin-left: 10px;
-     /* margin-top:1px;  
-     padding: 8px 1rem; */
-     margin-right: 10px;
-     color: #eceff4;
- }
- 
- #mode {
-     margin-bottom: 3px;
- }
- 
- #custom-keyboard-layout {
-     color: @peach;
-     /* border-bottom: 2px solid @peach; */
-     border-radius: 0px 10px 10px 0px;
-     margin-right: 10px;
- }
- 
- #language {
-     color: @peach;
-     /* border-bottom: 2px solid @peach; */
-     border-radius: 0px 10px 10px 0px;
-     margin-right: 10px;
- }
+#cpu {
+    color: @blue;
+}
+
+#memory {
+    color: @flamingo;
+}
+
+#temperature {
+    color: @teal;
+}
+
+#battery {
+    color: @green;
+}
+
+#battery.critical {
+    color: @red;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#network {
+    color: @sapphire;
+}
+
+#pulseaudio {
+    color: @pink;
+}
+
+/* --- Tooltip Styling --- */
+tooltip {
+    background: @base;
+    border: 1px solid @mauve;
+    border-radius: 10px;
+}
+
+@keyframes blink {
+    to {
+        color: @base;
+        background-color: @red;
+    }
+}
