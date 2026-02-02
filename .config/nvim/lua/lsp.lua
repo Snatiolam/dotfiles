@@ -1,20 +1,29 @@
--- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- ============
+-- Dependencies
+-- ============
 
-local lspconfig = require('lspconfig')
+require('java').setup()
 
--- luasnip setup
 local luasnip = require 'luasnip'
-
--- nvim-cmp setup
 local cmp = require 'cmp'
+
+-- Deprecated
+local lspconfig = require('lspconfig')
 
 -- Install servers
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "lua_ls", "clangd", "pyright" },
+    ensure_installed = {
+        "lua_ls",
+        "clangd",
+        "pyright",
+        "jdtls"
+    },
 })
+
+-- ==============
+-- Autocompletion
+-- ==============
 
 cmp.setup {
     snippet = {
@@ -56,75 +65,85 @@ cmp.setup {
     },
 }
 
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+-- ===========
+-- Capabilites
+-- ===========
 
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', vim.lsp.buf.format, bufopts)
-end
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-lspconfig.lua_ls.setup{
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { 'vim' }
-            }
-        }
-    }
-}
+-- ===========
+-- Keybindings
+-- ===========
 
--- Generate compile_commandsjson with 'bear -- make'
-lspconfig.clangd.setup{}
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
+    callback = function(event)
+        local opts = { buffer = event.buf, silent = true }
 
-lspconfig.pyright.setup{}
+        -- Navigation
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
 
-lspconfig.gopls.setup{
-    cmd = { "gopls", "serve" },
-    settings = {
-        gopls = {
-            analyses = {
-                unusedparams = true,
+        -- Documentation
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+
+        -- Actions
+        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set('n', '<space>f', function() 
+            vim.lsp.buf.format { async = true } 
+        end, opts)
+
+        -- Workspace
+        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    end,
+})
+
+-- =====================
+-- Server configurations
+-- =====================
+
+local servers = {
+    -- LUA
+    lua_ls = {
+        settings = {
+            Lua = {
+                diagnostics = { globals = { 'vim' } },
+                workspace = { checkThirdParty = false },
+                telemetry = { enable = false },
             },
-            staticcheck = true,
         },
     },
-}
-
-lspconfig.rust_analyzer.setup{
-    cmd = {"rust-analyzer"},
-    setting = {
-        ["rust-analyzer"] = {}
+    -- PYTHON
+    pyright = {
+        settings = { python = { analysis = { typeCheckingMode = "basic" } } },
+    },
+    -- GO
+    gopls = {
+        settings = { gopls = { analyses = { unusedparams = true }, staticcheck = true, gofumpt = true } },
+    },
+    -- RUST
+    rust_analyzer = {
+        settings = {
+            ["rust-analyzer"] = {
+                checkOnSave = { command = "clippy" },
+                procMacro = { enable = true },
+            },
+        },
+    },
+    -- C / C++
+    clangd = {
+        -- Generate compile_commandsjson with 'bear -- make'
+        cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
     },
 }
 
--- nvim-java setup uses and installs jdtls 
-require('java').setup()
-lspconfig.jdtls.setup{}
-
-lspconfig.ts_ls.setup{}
-
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'lua_ls', 'clangd', 'pyright', 'gopls', 'rust_analyzer', 'jdtls', 'ts_ls'}
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities
-  }
+for name, config in ipairs(servers) do
+  config.capabilites = capabilities
+  lspconfig[name].setup(config)
 end
