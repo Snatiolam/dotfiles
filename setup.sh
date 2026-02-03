@@ -152,15 +152,60 @@ setup_zsh(){
     fi
 }
 
-main(){
-    install_binaries
-    install_fonts
-    setup_tmux
-    setup_nvim
-    setup_vim
-    setup_zsh
+show_help() {
+    echo "Usage: ./setup.sh [options]"
+    echo ""
+    echo "Options:"
+    echo "  -a, --all       Install everything"
+    echo "  -n, --nvim      Setup Neovim"
+    echo "  -z, --zsh       Setup ZSH"
+    echo "  -t, --tmux      Setup TMUX"
+    echo "  -f, --fonts     Install Fonts"
+    echo "  -b, --bin       Install Binaries"
+    echo "  -h, --help      Show this help message"
 }
 
-main
+main(){
+    if [ $# -eq 0 ]; then
+        echo "No arguments provided. Starting interactive mode..."
+
+        read -p "Install Neovim config? (y/n): " nvim_res
+        [[ "$nvim_res" =~ ^[Yy]$ ]] && setup_nvim
+
+        read -p "Install ZSH config? (y/n): " zsh_res
+        [[ "$zsh_res" =~ ^[Yy]$ ]] && setup_zsh
+
+        read -p "Install Fonts? (y/n): " font_res
+        [[ "$font_res" =~ ^[Yy]$ ]] && install_fonts
+
+        return
+    fi
+
+    # Parse flags
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -a|--all)
+                install_binaries; install_fonts; setup_tmux; setup_nvim; setup_zsh
+                shift ;;
+            -n|--nvim)
+                setup_nvim; shift ;;
+            -z|--zsh)
+                setup_zsh; shift ;;
+            -t|--tmux)
+                setup_tmux; shift ;;
+            -f|--fonts)
+                install_fonts; shift ;;
+            -b|--bin)
+                install_binaries; shift ;;
+            -h|--help)
+                show_help; exit 0 ;;
+            *)
+                echo "Unknown option: $1"
+                show_help; exit 1 ;;
+        esac
+    done
+}
+
+main $@
 
 exit 0
