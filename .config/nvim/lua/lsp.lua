@@ -8,7 +8,7 @@ local luasnip = require 'luasnip'
 local cmp = require 'cmp'
 
 -- Deprecated
-local lspconfig = require('lspconfig')
+-- local lspconfig = require('lspconfig')
 
 -- Install servers
 require("mason").setup()
@@ -113,8 +113,17 @@ local servers = {
     lua_ls = {
         settings = {
             Lua = {
-                diagnostics = { globals = { 'vim' } },
-                workspace = { checkThirdParty = false },
+                runtime = {
+                -- Tell the language server which version of Lua you're using
+                version = 'LuaJIT',
+                },
+                diagnostics = {
+                    globals = { 'vim' }
+                },
+                workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                    checkThirdParty = false
+                },
                 telemetry = { enable = false },
             },
         },
@@ -143,7 +152,8 @@ local servers = {
     },
 }
 
-for name, config in ipairs(servers) do
+for name, config in pairs(servers) do
   config.capabilites = capabilities
-  lspconfig[name].setup(config)
+  vim.lsp.config(name, config)
+  vim.lsp.enable(name)
 end
