@@ -53,6 +53,7 @@ window#waybar {
 #network,
 #pulseaudio,
 #language,
+#custom-power,
 #tray {
     background-color: @base;
     padding: 0px 15px; /* Increased side padding for Monaspace spacing */
