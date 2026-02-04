@@ -67,9 +67,18 @@ map("n", "Y", 'y$')
 
 -- Highlight yanked text
 vim.api.nvim_create_autocmd(
-    'TextYankPost',
-    {
-        pattern = '*',
-        command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
-    }
+  'TextYankPost',
+  {
+    pattern = '*',
+    command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
+  }
 )
+
+-- Open the Chat Sidebar
+vim.keymap.set({ "n", "v" }, "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+
+-- Inline rewrite (Highlight code and hit <leader>ai)
+vim.keymap.set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true })
+
+-- Add selected code to the current chat
+vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
