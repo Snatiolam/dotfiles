@@ -15,6 +15,11 @@ autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats $'\Uf126 %b ' # Format vcs_info_msg_0_ variable
 
+# Makes Ctrl+W stop at slashes, dots, and underscores
+# Perfect for navigating Linux paths and Python namespaces
+autoload -U select-word-style
+select-word-style bash
+
 alias cdf='cd $(find * -type d | fzf)'
 
 # Aliases
@@ -72,5 +77,4 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#000,bg=#777,bold,underline"
 
 export PATH=$PATH:/home/snatiolam/.local/share/eclipse-jdtls/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
-export PATH=$PATH:/opt/gradle/gradle-8.10/bin
-export PATH=$PATH:"$HOME/.local/bin"
+
