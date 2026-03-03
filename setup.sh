@@ -197,10 +197,12 @@ main(){
                 install_fonts; shift ;;
             -b|--bin)
                 install_binaries; shift ;;
-            -h|--help)
-                show_help; exit 0 ;;
+            -g|--git)
+                ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
             --firefox)
                 sudo ln -s $(realpath ./firefox/policies.json) /usr/lib64/firefox/distribution/policies.json; shift ;;
+            -h|--help)
+                show_help; exit 0 ;;
             *)
                 echo "Unknown option: $1"
                 show_help; exit 1 ;;

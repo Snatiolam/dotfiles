@@ -3,5 +3,6 @@
 	name = Snatiolam
 [alias]
 	tree = log --graph --decorate --oneline --all
+	st = status
 [init]
 	defaultBranch = main
