@@ -4,5 +4,9 @@
 [alias]
 	tree = log --graph --decorate --oneline --all
 	st = status
+	ci = commit
+	co = checkout
+	unstage = reset HEAD --
+	last = log -1 HEAD
 [init]
 	defaultBranch = main
