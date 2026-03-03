@@ -1,0 +1,34 @@
+{
+  "policies": {
+    "ExtensionSettings": {
+      "*": {
+        "installation_mode": "allowed"
+      },
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+	"private_browsing": "allowed"
+      },
+      "blocknsfw@extension.local": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/blocknsfw-porn-adult-content/latest.xpi",
+	"private_browsing": "allowed"
+      },
+      "nordpassStandalone@nordsecurity.com": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/nordpass-password-management/latest.xpi",
+        "private_browsing": "allowed"
+      },
+      "myallychou@gmail.com": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/youtube-recommended-videos/latest.xpi",
+        "private_browsing": "allowed"
+      },
+      "{8e41107d-2be2-454d-b4b8-c3d7e54d77de}": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/igplus-extension/latest.xpi",
+        "private_browsing": "allowed"
+      }
+    }
+  }
+}
