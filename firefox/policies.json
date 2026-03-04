@@ -28,6 +28,11 @@
         "installation_mode": "force_installed",
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/igplus-extension/latest.xpi",
         "private_browsing": "allowed"
+      },
+      "{732216ec-0dab-43bb-ac85-4b5e1977599d}": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/surfshark-vpn-proxy/latest.xpi",
+        "private_browsing": false
       }
     }
   }
