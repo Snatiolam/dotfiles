@@ -33,6 +33,11 @@
         "installation_mode": "force_installed",
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/surfshark-vpn-proxy/latest.xpi",
         "private_browsing": false
+      },
+      "{30b15d56-b2fa-4cb2-98fd-7b5e26306483}": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/stayfree/latest.xpi",
+        "private_browsing": "allowed"
       }
     }
   }
