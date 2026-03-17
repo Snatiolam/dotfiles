@@ -1,7 +1,17 @@
 #!/bin/bash
 
+set -euo pipefail
 
 INSTALL_DIR="$HOME"
+
+die() {
+    echo "Error: $1" >&2
+    exit 1
+}
+
+check_command() {
+    command -v "$1" >/dev/null 2>&1 || die "$1 is required but not installed"
+}
 
 install_binaries(){
     echo "Installing shell scripts in ~/.local/bin"
@@ -15,22 +25,24 @@ install_binaries(){
 }
 
 install_fonts() {
-
-    #wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip \
-    #&& cd ~/.local/share/fonts \
-    #&& unzip -n Hack.zip \
-    #&& rm Hack.zip
+    check_command wget
+    check_command unzip
 
     echo "Installing fonts UbuntuMono and Monaspice Nerd Fonts"
-    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/UbuntuMono.zip \
-    && cd ~/.local/share/fonts \
-    && unzip -n UbuntuMono.zip \
-    && rm UbuntuMono.zip
+    FONT_DIR="$HOME/.local/share/fonts"
+    mkdir -p "$FONT_DIR"
 
-    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Monaspace.zip \
-    && cd ~/.local/share/fonts \
-    && unzip -n Monaspace.zip \
-    && rm Monaspace.zip
+    local font_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1"
+    wget -P "$FONT_DIR" "$font_url/UbuntuMono.zip" || die "Failed to download UbuntuMono fonts"
+    unzip -n "$FONT_DIR/UbuntuMono.zip" -d "$FONT_DIR" || die "Failed to extract UbuntuMono fonts"
+    rm "$FONT_DIR/UbuntuMono.zip"
+
+    wget -P "$FONT_DIR" "$font_url/Monaspace.zip" || die "Failed to download Monaspace fonts"
+    unzip -n "$FONT_DIR/Monaspace.zip" -d "$FONT_DIR" || die "Failed to extract Monaspace fonts"
+    rm "$FONT_DIR/Monaspace.zip"
+
+    fc-cache -f "$FONT_DIR" || die "Failed to refresh font cache"
+    echo "Fonts installed successfully"
 }
 
 setup_tmux() {
@@ -72,7 +84,8 @@ setup_vim() {
         echo "Vim Plug is already installed."
     else
         echo "Vim Plug is not installed. Installing Vim Plug plugin."
-        curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+            || die "Failed to install vim-plug"
     fi
 
 }
@@ -92,24 +105,23 @@ install_nvim_files() {
     echo "Installing Neovim config"
     mkdir -p "$HOME/.config/nvim"
 
-    cp .config/nvim/init.lua "$HOME/.config/nvim/"
-    cp -r .config/nvim/lua "$HOME/.config/nvim/"
+    cp .config/nvim/init.lua "$HOME/.config/nvim/" || die "Failed to copy nvim init.lua"
+    cp -r .config/nvim/lua "$HOME/.config/nvim/" || die "Failed to copy nvim lua directory"
 
-    # curl fails is uncommented
-    # PATH="${XDG_DATA_HOME:-$HOME/.local/share}";
-    #
     if [ -d ~/.fzf ]; then
         echo "FZF is already installed"
     else
         echo "FZF is not installed. Installing FZF"
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf \
+            || die "Failed to clone fzf"
     fi
 
     if [ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim ]; then
         echo "Vim Plug is already installed"
     else
         echo "Vim Plug is not installed. Installing Vim Plug"
-        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+            || die "Failed to install vim-plug for neovim"
     fi
 }
 
@@ -124,15 +136,11 @@ setup_zsh(){
             printf "\nFile is going to be replaced"
             rm "$ZSHRC"
             cp .zshrc "$ZSHRC"
-            # ln -s "$(realpath $ROOT_DIR/.zshrc)" "$ZSHRC"
-            # cp "$ROOT_DIR/.zprofile" "$HOME/"
         fi
         printf "\n"
     else
         echo "File $ZSHRC does not exist. Installing..."
         cp .zshrc "$ZSHRC"
-        # ln -s $(realpath "$ROOT_DIR/.zshrc") "$ZSHRC"
-        # cp "$ROOT_DIR/.zprofile" "$HOME/"
     fi
 
     mkdir -p ~/.cache/zsh
@@ -141,14 +149,16 @@ setup_zsh(){
         echo "zsh-autosuggestions plugin is already installed."
     else
         echo "zsh-autosuggestions plugin is not installed. Installing zsh-autosuggestions plugin."
-        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions \
+            || die "Failed to clone zsh-autosuggestions"
     fi
 
     if [ -d ~/.zsh/zsh-syntax-highlighting ]; then
         echo "zsh-syntax-highlighting plugin is already installed."
     else
         echo "zsh-syntax-highlighting plugin is not installed. Installing zsh-syntax-highlighting plugin."
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting \
+            || die "Failed to clone zsh-syntax-highlighting"
     fi
 }
 
@@ -160,8 +170,10 @@ show_help() {
     echo "  -n, --nvim      Setup Neovim"
     echo "  -z, --zsh       Setup ZSH"
     echo "  -t, --tmux      Setup TMUX"
+    echo "  -v, --vim       Setup VIM"
     echo "  -f, --fonts     Install Fonts"
     echo "  -b, --bin       Install Binaries"
+    echo "  -g, --git       Setup Git config"
     echo "  -h, --help      Show this help message"
 }
 
@@ -193,6 +205,8 @@ main(){
                 setup_zsh; shift ;;
             -t|--tmux)
                 setup_tmux; shift ;;
+            -v|--vim)
+                setup_vim; shift ;;
             -f|--fonts)
                 install_fonts; shift ;;
             -b|--bin)
