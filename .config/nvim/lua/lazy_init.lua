@@ -72,8 +72,9 @@ require("lazy").setup({
   },
   {"nvim-java/nvim-java"},
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    -- or                              , branch = '0.1.x',
+    'nvim-telescope/telescope.nvim', 
+    branch = 'master',
+    -- tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
   {
