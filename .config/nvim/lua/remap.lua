@@ -39,6 +39,8 @@ map("n", "<leader>l", ":wincmd l<cr>")
 -- Alias to substite al occurrences
 map("n", "<leader>s", ":%s//gI<left><left><left>")
 
+-- Get rid of search highlights
+map("n", "<leader>/", ":nohlsearch<cr>", { silent = true })
 
 -- fzf keymaps
 map("n", "<leader>p", ":Files<CR>")
@@ -65,6 +67,19 @@ map("v", "<leader>y", '"+y')
 
 -- Same as D or C, so it is more intuitive
 map("n", "Y", 'y$')
+
+-- ============
+-- Autocommands
+-- ============
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*",
+    callback = function()
+        local save_cursor = vim.fn.getpos(".")
+        vim.cmd([[%s/\s\+$//e]])
+        vim.fn.setpos(".", save_cursor)
+    end,
+})
+
 
 -- Highlight yanked text
 vim.api.nvim_create_autocmd(
