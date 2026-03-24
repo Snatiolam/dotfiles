@@ -94,13 +94,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Actions
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<space>f', function() 
-      vim.lsp.buf.format { async = true } 
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
     end, opts)
 
     -- Workspace
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+
+    -- Diagnostics
+    vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+    vim.keymap.set('n', '<space>[d', vim.diagnostic.goto_prev, opts)
+    vim.keymap.set('n', '<space>]d', vim.diagnostic.goto_next, opts)
   end,
 })
 
