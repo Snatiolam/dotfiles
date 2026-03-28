@@ -29,14 +29,15 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    config = function () 
-      local configs = require("nvim-treesitter")
+    branch = "master",
+    config = function ()
+      local configs = require("nvim-treesitter.configs")
 
       configs.setup({
-        ensure_installed = { "c", "java", "lua", "vim", "vimdoc", "rust", "typescript", "javascript", "html" },
+        ensure_installed = { "c", "go", "java", "lua", "vim", "vimdoc", "rust", "typescript", "javascript", "html" },
         sync_install = false,
         highlight = { enable = true },
-        -- indent = { enable = true },  
+        -- indent = { enable = true },
       })
     end
   },
@@ -72,7 +73,7 @@ require("lazy").setup({
   },
   {"nvim-java/nvim-java"},
   {
-    'nvim-telescope/telescope.nvim', 
+    'nvim-telescope/telescope.nvim',
     branch = 'master',
     -- tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' },
