@@ -34,7 +34,7 @@ require("lazy").setup({
       local configs = require("nvim-treesitter.configs")
 
       configs.setup({
-        ensure_installed = { "c", "go", "java", "lua", "vim", "vimdoc", "rust", "typescript", "javascript", "html" },
+        ensure_installed = { "lua", "python", "go", "c", "vim", "vimdoc", "typescript", "javascript", "html" },
         sync_install = false,
         highlight = { enable = true },
         -- indent = { enable = true },
@@ -71,7 +71,6 @@ require("lazy").setup({
       require("nvim-tree").setup {}
     end,
   },
-  {"nvim-java/nvim-java"},
   {
     'nvim-telescope/telescope.nvim',
     branch = 'master',

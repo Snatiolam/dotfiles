@@ -107,6 +107,7 @@ install_nvim_files() {
 
     cp .config/nvim/init.lua "$HOME/.config/nvim/" || die "Failed to copy nvim init.lua"
     cp -r .config/nvim/lua "$HOME/.config/nvim/" || die "Failed to copy nvim lua directory"
+    cp -r .config/nvim/ftplugin "$HOME/.config/nvim/" || die "Failed to copy ftplugin directory"
 
     if [ -d ~/.fzf ]; then
         echo "FZF is already installed"

@@ -2,8 +2,6 @@
 -- Dependencies
 -- ============
 
-require('java').setup()
-
 local luasnip = require 'luasnip'
 local cmp = require 'cmp'
 
@@ -15,9 +13,10 @@ require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = {
     "lua_ls",
-    "clangd",
     "pyright",
-    "jdtls"
+    "gopls",
+    -- "clangd",
+    -- "jdtls"
   },
 })
 
