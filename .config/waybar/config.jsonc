@@ -65,6 +65,14 @@
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
+    "sway/window": {
+        "format": "{}",
+        "max-length": 50,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "🦊 $1",
+            "(.*) - ghostty": "👻  $1"
+        }
+    },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
         "format-disconnected": "Disconnected ",
