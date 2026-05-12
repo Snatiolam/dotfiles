@@ -171,17 +171,16 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "format-wifi": "{essid} {icon}",
+        "format-ethernet": "{ipaddr}/{cidr} 󰀂",
         "tooltip-format": "{ifname} via {gwaddr} ",
         "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
+        "format-disconnected": "Disconnected 󰤮",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "sway/language": {
-        "format": "  {short}",  // {short} gives you "us" or "es" instead of the full name
-        "format-en": "  US",
-        "format-es": "  ES",
+        "format": "  {short}",
         "min-length": 5,
         "tooltip": false,
         "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
@@ -191,16 +190,11 @@
         "format": "{volume}% {icon}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": "{volume}% ",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
+        "scroll-step": 5,
+        "format-muted": "{volume}% ",
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
+            "headset": "",
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
