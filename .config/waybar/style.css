@@ -31,11 +31,14 @@
 /* =============================================================================
  * Variables
  * =========================================================================== */
-@define-color theme_bg      @base;
+/* The main bar is now pitch black (Crust) */
+@define-color bar_bg        @crust;
 @define-color theme_fg      @text;
-@define-color module_bg     @mantle;
-/* Invisible borders so the gradient text stands out */
-@define-color module_border @mantle;
+
+/* The pills are lighter (Base) to float above the dark bar */
+@define-color module_bg     @base;
+/* A subtle border to define the pill edges */
+@define-color module_border @surface0;
 @define-color accent        @mauve;
 
 /* =============================================================================
@@ -49,7 +52,8 @@
 }
 
 window#waybar {
-    background-color: transparent;
+    /* The bar is solid dark */
+    background-color: @bar_bg;
     color: @theme_fg;
     transition: background-color 0.5s ease;
 }
@@ -80,11 +84,12 @@ window#waybar.empty #window {
 #custom-power,
 #tray {
     background-color: @module_bg;
-    padding: 2px 16px;
-    margin: 6px 5px;
-    border-radius: 12px;
+    padding: 2px 14px;
+    margin: 4px 4px;
+    border-radius: 10px;
     border: 1px solid @module_border;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+    /* Drop shadow to make the lighter pills float above the dark bar */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* =============================================================================
@@ -99,7 +104,7 @@ window#waybar.empty #window {
     margin: 2px 2px;
     background-color: transparent;
     color: @subtext0;
-    border-radius: 8px;
+    border-radius: 6px;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -109,58 +114,29 @@ window#waybar.empty #window {
     box-shadow: none;
 }
 
-/* Mauve start */
 #workspaces button.active,
 #workspaces button.focused {
     background-color: @accent;
     color: @crust;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
 }
 
-/* Pink */
-#mode {
-    color: @pink;
-}
-
-/* Rosewater */
-#scratchpad {
-    color: @rosewater;
-}
+#mode { color: @pink; }
+#scratchpad { color: @rosewater; }
 
 /* =============================================================================
  * Center Modules
  * =========================================================================== */
-/* Peach */
-#clock {
-    color: @peach;
-}
+#clock { color: @peach; }
 
 /* =============================================================================
  * Right Modules
  * =========================================================================== */
-/* Yellow */
-#pulseaudio {
-    color: @yellow;
-}
-
-/* Green */
-#network {
-    color: @green;
-}
-
-/* Teal */
-#language {
-    color: @teal;
-}
-
-/* Sky */
-#battery {
-    color: @sky;
-}
-
-/* Sapphire */
-#custom-power {
-    color: @sapphire;
-}
+#pulseaudio { color: @yellow; }
+#network { color: @green; }
+#language { color: @teal; }
+#battery { color: @sky; }
+#custom-power { color: @sapphire; }
 
 /* =============================================================================
  * Alerts & Animations
@@ -186,9 +162,10 @@ window#waybar.empty #window {
  * Tooltips
  * =========================================================================== */
 tooltip {
-    background: @theme_bg;
-    border: 1px solid @accent;
-    border-radius: 10px;
+    background: @module_bg;
+    border: 1px solid @module_border;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 tooltip label {
