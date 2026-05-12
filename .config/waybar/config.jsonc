@@ -12,7 +12,8 @@
         "sway/scratchpad"
     ],
     "modules-center": [
-        "sway/window"
+        //"sway/window"
+        "clock"
     ],
     "modules-right": [
         //"idle_inhibitor",
@@ -25,7 +26,6 @@
         //"backlight",
         "sway/language",
         "battery",
-        "clock",
         "tray",
         "custom/power"
     ],
@@ -116,8 +116,9 @@
     },
     "clock": {
         // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+        "format": "{:L%A %H:%M}",
+        "format-alt": "{:L%d %B W%V %Y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "cpu": {
         "format": "{usage}% ",
