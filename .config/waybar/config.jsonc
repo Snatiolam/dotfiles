@@ -26,6 +26,7 @@
         //"temperature",
         //"backlight",
         "sway/language",
+        "hyprland/language",
         "battery",
         "tray",
         "custom/power"
@@ -219,6 +220,13 @@
         "min-length": 5,
         "tooltip": false,
         "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
+    },
+    "hyprland/language": {
+        "format": "{} 󰌌",
+        "min-length": 5,
+        "format-en": "US",
+        "format-es": "ES",
+        "on-click": "hyprctl switchxkblayout all next"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
