@@ -1,0 +1,51 @@
+# =============================================================================
+# Mako Notification Config - Catppuccin Macchiato (Floating Cards Style)
+# =============================================================================
+
+anchor=top-right
+group-by=app-name,summary,body
+default-timeout=5000
+width=420
+outer-margin=20
+padding=10,15
+border-size=2
+icons=1
+max-icon-size=64
+icon-location=left
+font=MonaspiceNe Nerd Font 14px
+
+#icon-path=/usr/share/icons/Papirus-Dark:/usr/share/icons/Papirus:/usr/share/icons/hicolor:/usr/share/icons/Adwaita
+
+
+# -- Colores Base --
+background-color=#24273a
+# Texto principal: Text
+text-color=#cad3f5
+# Borde: Surface0
+border-color=#363a4f
+
+# -- Geometría y Espaciado --
+border-size=2
+border-radius=10
+margin=15
+padding=15
+width=350
+height=150
+
+# Formato del texto (Resalta el título en negrita)
+format=<b>%s</b>\n%b
+
+progress-color=over #c6a0f6
+
+[urgency=low]
+border-color=#363a4f
+default-timeout=4000
+
+[urgency=normal]
+border-color=#c6a0f6
+default-timeout=6000
+
+[urgency=critical]
+background-color=#181926
+border-color=#ed8796
+default-timeout=0
