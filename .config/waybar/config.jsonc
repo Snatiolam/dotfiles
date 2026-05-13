@@ -178,7 +178,7 @@
         "format-full": "{capacity}% {icon}",
         "format-plugged": "",
         "format-charging": "{capacity}% {icon}",
-        "format-discharging": "{icon}",
+        "format-discharging": "{capacity}% {icon}",
         "format-alt": "{time} {icon}",
         "format-icons": {
             "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
