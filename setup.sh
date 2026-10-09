@@ -197,8 +197,8 @@ setup_quickshell() {
 }
 
 setup_hypr_stack() {
-    setup_hypr
     setup_quickshell
+    setup_hypr
 }
 
 show_help() {
