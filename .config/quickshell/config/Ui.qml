@@ -38,6 +38,23 @@ Singleton {
         popout = "";
     }
 
+    // App launcher (independent of bar popups).
+    property bool launcher: false
+
+    function toggleLauncher(): void {
+        launcher = !launcher;
+        if (launcher) Ui.closePopout();
+    }
+
+    function openLauncher(): void {
+        launcher = true;
+        Ui.closePopout();
+    }
+
+    function closeLauncher(): void {
+        launcher = false;
+    }
+
     // External control: `qs ipc call popup open network` / `... close`
     IpcHandler {
         target: "popup"

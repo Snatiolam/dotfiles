@@ -9,4 +9,5 @@ ShellRoot {
     Toast {}
     NotificationCenter {}
     PowerMenu {}
+    Launcher {}
 }
