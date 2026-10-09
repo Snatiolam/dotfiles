@@ -55,8 +55,9 @@ Singleton {
     readonly property color accent: mauve
     readonly property color track: surface0
 
-    // Notification bell: soft pastel when idle, warm pastel when active.
-    readonly property color bellIdle: lavender
+    // Notification bell: same whitish as the rest of the widgets when idle,
+    // warm pastel when there are pending notifications.
+    readonly property color bellIdle: text
     readonly property color bellActive: yellow
 
     // Tinted translucent fill, useful for glows/backgrounds.
