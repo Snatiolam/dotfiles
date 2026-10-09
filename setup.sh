@@ -163,6 +163,44 @@ setup_zsh(){
     fi
 }
 
+install_config_dir() {
+    local src="$1"
+    local dest="$2"
+    local name="$3"
+
+    if [ -d "$dest" ]; then
+        echo "$name config already exists at $dest"
+        read -p "Do you want to recreate it? (current config will be deleted) Y/N -> " -r
+        printf "\n"
+        if [[ ! "$REPLY" =~ ^[Yy]$ ]]
+        then
+            echo "Skipping $name config"
+            return
+        fi
+        echo "Recreating $name config"
+        rm -rf "$dest" || die "Failed to remove $dest"
+    else
+        echo "$name config does not exist. Installing..."
+    fi
+
+    mkdir -p "$(dirname "$dest")"
+    cp -r "$src" "$dest" || die "Failed to copy $name config"
+    echo "$name config installed"
+}
+
+setup_hypr() {
+    install_config_dir ".config/hypr" "$HOME/.config/hypr" "Hyprland"
+}
+
+setup_quickshell() {
+    install_config_dir ".config/quickshell" "$HOME/.config/quickshell" "Quickshell"
+}
+
+setup_hypr_stack() {
+    setup_hypr
+    setup_quickshell
+}
+
 show_help() {
     echo "Usage: ./setup.sh [options]"
     echo ""
@@ -175,6 +213,7 @@ show_help() {
     echo "  -f, --fonts     Install Fonts"
     echo "  -b, --bin       Install Binaries"
     echo "  -g, --git       Setup Git config"
+    echo "  -H, --hypr      Setup Hyprland + Quickshell"
     echo "  -h, --help      Show this help message"
 }
 
@@ -191,6 +230,9 @@ main(){
         read -p "Install Fonts? (y/n): " font_res
         [[ "$font_res" =~ ^[Yy]$ ]] && install_fonts
 
+        read -p "Install Hyprland + Quickshell config? (y/n): " hypr_res
+        [[ "$hypr_res" =~ ^[Yy]$ ]] && setup_hypr_stack
+
         return
     fi
 
@@ -198,7 +240,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_binaries; install_fonts; setup_tmux; setup_nvim; setup_zsh
+                install_binaries; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -212,6 +254,8 @@ main(){
                 install_fonts; shift ;;
             -b|--bin)
                 install_binaries; shift ;;
+            -H|--hypr)
+                setup_hypr_stack; shift ;;
             -g|--git)
                 ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
             --firefox)
