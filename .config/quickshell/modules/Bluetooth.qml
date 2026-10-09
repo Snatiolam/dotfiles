@@ -22,7 +22,6 @@ Item {
 
     function btColor(): color {
         if (!root.adapter || !root.enabled) return Theme.overlay0;
-        if (root.connectedCount > 0) return Theme.blue;
         return Theme.text;
     }
 

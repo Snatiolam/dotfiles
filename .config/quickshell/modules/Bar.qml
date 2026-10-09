@@ -71,7 +71,7 @@ PanelWindow {
         Bluetooth { id: bluetoothWidget }
         Network { id: networkWidget }
         Volume { id: volumeWidget }
-        Battery {}
+        Battery { id: batteryWidget }
         Notifications {}
         PowerButton {}
     }
@@ -81,4 +81,5 @@ PanelWindow {
     BluetoothPopup { anchorItem: bluetoothWidget }
     NetworkPopup { anchorItem: networkWidget }
     AudioPopup { anchorItem: volumeWidget }
+    BatteryPopup { anchorItem: batteryWidget }
 }

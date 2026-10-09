@@ -6,11 +6,11 @@ import Quickshell
 // Nerd Font glyphs (Font Awesome), verified against the installed fonts.
 Singleton {
     // Audio
-    readonly property string volumeHigh:   "\uF028"
-    readonly property string volumeMedium: "\uF027"
-    readonly property string volumeLow:    "\uF025"
-    readonly property string volumeMute:   "\uF026"
-    readonly property string headphones:   "\uF025"
+    readonly property string volumeHigh:   "\uDB81\uDD7E"
+    readonly property string volumeMedium: "\uDB81\uDD80"
+    readonly property string volumeLow:    "\uDB81\uDD7F"
+    readonly property string volumeMute:   "\uDB81\uDF5F"
+    readonly property string headphones:   "\uDB80\uDECB"
 
     // Brightness
     readonly property string brightness: "\uF185"
@@ -22,6 +22,11 @@ Singleton {
     readonly property string batteryQuarter: "\uF243"
     readonly property string batteryEmpty:   "\uF244"
     readonly property string charging:       "\uF0E7"
+
+    // Power profiles
+    readonly property string leaf:       "\uF06C"
+    readonly property string balanced:   "\uF24E"
+    readonly property string performance: "\uF0E7"
 
     // Network
     readonly property string wifi:   "\uF1EB"

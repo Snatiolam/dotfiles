@@ -57,7 +57,7 @@ AnchoredPopup {
                 text: Icons.volumeHigh
                 color: Theme.mauve
                 font.family: Theme.font
-                font.pixelSize: 13
+                font.pixelSize: 14
             }
 
             Text {
@@ -90,7 +90,7 @@ AnchoredPopup {
                 color: (popup.sink && popup.sink.audio && popup.sink.audio.muted)
                        ? Theme.overlay0 : Theme.text
                 font.family: Theme.font
-                font.pixelSize: 15
+                font.pixelSize: 16
                 HoverHandler { cursorShape: Qt.PointingHandCursor }
                 MouseArea {
                     anchors.fill: parent

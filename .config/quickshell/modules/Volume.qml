@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 import qs.config
 
@@ -11,15 +12,54 @@ Item {
     implicitWidth: row.implicitWidth + 14
     implicitHeight: 26
 
-    readonly property var audio: Pipewire.defaultAudioSink ? Pipewire.defaultAudioSink.audio : null
+    readonly property var sink: Pipewire.defaultAudioSink
+    readonly property var audio: sink ? sink.audio : null
     readonly property real volume: audio ? audio.volume : 0
     readonly property bool muted: audio ? audio.muted : false
 
+    property string activePort: ""
+
+    readonly property bool headphones: {
+        if (!sink) return false;
+        const props = sink.properties || {};
+        const icon = String(props["device.icon-name"] || "").toLowerCase();
+        const name = String(sink.name || "").toLowerCase();
+        const label = (String(sink.description || "") + " " + String(sink.nickname || "")).toLowerCase();
+        if (icon.indexOf("headphone") !== -1 || icon.indexOf("headset") !== -1) return true;
+        if (name.indexOf("headphone") !== -1 || name.indexOf("headset") !== -1) return true;
+        if (label.indexOf("headphone") !== -1 || label.indexOf("headset") !== -1) return true;
+        const port = activePort.toLowerCase();
+        return port.indexOf("headphone") !== -1 || port.indexOf("headset") !== -1;
+    }
+
     function volumeIcon(): string {
         if (root.muted || root.volume <= 0.001) return Icons.volumeMute;
+        if (root.headphones) return Icons.headphones;
         if (root.volume < 0.34) return Icons.volumeLow;
         if (root.volume < 0.67) return Icons.volumeMedium;
         return Icons.volumeHigh;
+    }
+
+    function parseActivePort(text): void {
+        const target = sink ? sink.name : "";
+        if (!target) return;
+        const lines = text.split("\n");
+        let current = false;
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const name = line.match(/^\s*Name:\s*(\S+)/);
+            if (name) {
+                current = (name[1] === target);
+                continue;
+            }
+            if (!current) continue;
+            const port = line.match(/^\s*Active Port:\s*(\S+)/);
+            if (port) {
+                root.activePort = port[1];
+                return;
+            }
+        }
+        root.activePort = "";
     }
 
     Rectangle {
@@ -37,9 +77,25 @@ Item {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: root.volumeIcon()
-            color: root.muted ? Theme.overlay0 : Theme.flamingo
+            color: root.muted ? Theme.overlay0 : Theme.text
             font.family: Theme.font
-            font.pixelSize: Theme.iconSize
+            font.pixelSize: Theme.iconSize + 2
+        }
+    }
+
+    Timer {
+        interval: 2000
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: portQuery.running = true
+    }
+
+    Process {
+        id: portQuery
+        command: ["pactl", "list", "sinks"]
+        stdout: StdioCollector {
+            onStreamFinished: root.parseActivePort(this.text)
         }
     }
 
