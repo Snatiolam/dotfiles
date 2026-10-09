@@ -10,6 +10,10 @@ Singleton {
 
     signal received(var notification)
 
+    // Focus / do-not-disturb: suppress toast popups while notifications
+    // keep landing in the notification center.
+    property bool dnd: false
+
     readonly property var server: serverObj
     readonly property int count: serverObj.trackedNotifications.values.length
 

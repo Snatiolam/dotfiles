@@ -16,6 +16,9 @@ Singleton {
     property real value: 0           // 0..1
     property bool muted: false
 
+    // Current backlight fraction (0..1), updated by the watcher.
+    property real brightness: 0
+
     // Avoids showing the OSD during startup.
     property bool armed: false
     Timer {
@@ -79,10 +82,24 @@ Singleton {
         const raw = parseInt(brightnessFile.text());
         if (isNaN(raw)) return;
         const v = Math.max(0, Math.min(1, raw / osd.maxBrightness));
+        osd.brightness = v;
         if (Math.abs(v - osd.lastBrightness) < 0.004) return;
         osd.lastBrightness = v;
         if (!osd.armed) return;
         osd.showBrightness(v);
+    }
+
+    // Applies a new brightness (0..1) and shows the OSD.
+    function setBrightness(v: real): void {
+        setBrightProc.command = ["brightnessctl", "set",
+            Math.round(Math.max(0, Math.min(1, v)) * 100) + "%"];
+        setBrightProc.running = true;
+        osd.showBrightness(v);
+    }
+
+    Process {
+        id: setBrightProc
+        running: false
     }
 
     // ── API ───────────────────────────────────────────────────────

@@ -73,6 +73,7 @@ PanelWindow {
         Volume { id: volumeWidget }
         Battery { id: batteryWidget }
         Notifications {}
+        ControlCenterButton { id: controlCenterWidget }
         PowerButton {}
     }
 
@@ -82,4 +83,5 @@ PanelWindow {
     NetworkPopup { anchorItem: networkWidget }
     AudioPopup { anchorItem: volumeWidget }
     BatteryPopup { anchorItem: batteryWidget }
+    ControlCenterPopup { anchorItem: controlCenterWidget }
 }

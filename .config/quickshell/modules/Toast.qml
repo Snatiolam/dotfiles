@@ -50,7 +50,10 @@ PanelWindow {
 
     Connections {
         target: Notifs
-        function onReceived(n): void { win.push(n); }
+        function onReceived(n): void {
+            if (Notifs.dnd) return;
+            win.push(n);
+        }
     }
 
     Timer {

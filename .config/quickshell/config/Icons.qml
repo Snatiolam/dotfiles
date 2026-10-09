@@ -62,6 +62,16 @@ Singleton {
     // Audio input
     readonly property string microphone: "\uF130"
 
+    // Media
+    readonly property string play:      "\uF04B"
+    readonly property string pause:     "\uF04C"
+    readonly property string backward:  "\uF04A"
+    readonly property string forward:   "\uF04E"
+    readonly property string music:     "\uF001"
+
+    // Control center / misc
+    readonly property string grid:      "\uF009"
+
     // Lists / actions
     readonly property string eye:      "\uF06E"
     readonly property string eyeSlash: "\uF070"
