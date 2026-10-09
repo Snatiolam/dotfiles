@@ -10,12 +10,12 @@ Item {
     property color fillColor: Theme.text
     property real bodyWidth: 22
     property real bodyHeight: 12
-    property real borderWidth: 1.5
+    property real borderWidth: 1
     property bool showPercent: false
     property real percentSize: 8
 
     readonly property real capWidth: 2
-    readonly property real inset: borderWidth + 1
+    readonly property real inset: borderWidth
     readonly property color percentColor: (root.level >= 0.45) ? Theme.base : Theme.text
 
     implicitWidth: bodyWidth + capWidth
@@ -70,6 +70,6 @@ Item {
         text: Icons.charging
         color: Theme.base
         font.family: Theme.font
-        font.pixelSize: Math.min(root.bodyHeight - 2, 12)
+        font.pixelSize: Math.min(root.bodyHeight - 3, 9)
     }
 }

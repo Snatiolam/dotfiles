@@ -70,7 +70,7 @@ Singleton {
     readonly property string music:     "\uF001"
 
     // Control center / misc
-    readonly property string grid:      "\uF009"
+    readonly property string sliders:   "\uF1DE"
 
     // Lists / actions
     readonly property string eye:      "\uF06E"

@@ -18,7 +18,7 @@ Item {
 
     Text {
         anchors.centerIn: parent
-        text: Icons.grid
+        text: Icons.sliders
         color: Theme.text
         font.family: Theme.font
         font.pixelSize: Theme.iconSize
