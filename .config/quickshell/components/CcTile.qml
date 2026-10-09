@@ -17,7 +17,7 @@ Rectangle {
 
     signal clicked()
 
-    implicitHeight: t.pill ? 44 : 68
+    implicitHeight: t.pill ? 48 : 68
     radius: t.pill ? 22 : 14
     color: t.on ? Theme.tint(t.accent, 0.26) : Theme.surface0
     border.width: t.on ? 1 : 0
@@ -25,34 +25,43 @@ Rectangle {
     opacity: t.disabled ? 0.45 : 1
     Behavior on color { ColorAnimation { duration: 120 } }
 
-    // Pill layout (full-width, horizontal).
-    RowLayout {
+    // Pill layout: icon + label on top, state/sublabel underneath.
+    ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: 14
-        anchors.rightMargin: 14
-        spacing: 10
+        anchors.rightMargin: 12
+        anchors.topMargin: 9
+        anchors.bottomMargin: 9
+        spacing: 1
         visible: t.pill
 
-        Text {
-            text: t.tileIcon
-            color: t.on ? t.accent : Theme.subtext1
-            font.family: Theme.font
-            font.pixelSize: 15
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 8
+
+            Text {
+                text: t.tileIcon
+                color: t.on ? t.accent : Theme.subtext1
+                font.family: Theme.font
+                font.pixelSize: 14
+            }
+
+            Text {
+                Layout.fillWidth: true
+                text: t.label
+                elide: Text.ElideRight
+                color: t.on ? Theme.text : Theme.subtext0
+                font.family: Theme.font
+                font.pixelSize: 12
+                font.bold: true
+            }
         }
 
         Text {
             Layout.fillWidth: true
-            text: t.label
-            color: t.on ? Theme.text : Theme.subtext0
-            font.family: Theme.font
-            font.pixelSize: 12
-            font.bold: true
-            elide: Text.ElideRight
-        }
-
-        Text {
             visible: t.sublabel !== ""
             text: t.sublabel
+            elide: Text.ElideRight
             color: t.on ? Theme.subtext0 : Theme.overlay0
             font.family: Theme.font
             font.pixelSize: 10

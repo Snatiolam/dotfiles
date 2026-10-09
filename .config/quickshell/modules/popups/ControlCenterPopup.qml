@@ -63,20 +63,16 @@ AnchoredPopup {
         return null;
     }
 
-    readonly property string wifiLabel: {
-        if (!cc.ccWifi || !Networking.wifiEnabled) return "Wi-Fi";
-        if (cc.ccWifi.connected) {
+    readonly property string wifiLabel: "Wi-Fi"
+
+    readonly property string wifiSublabel: {
+        if (!Networking.wifiEnabled) return "Off";
+        if (cc.ccWifi && cc.ccWifi.connected) {
             const nets = cc.ccWifi.networks.values;
             for (let i = 0; i < nets.length; i++) {
                 if (nets[i].connected && nets[i].name) return nets[i].name;
             }
         }
-        return "Wi-Fi";
-    }
-
-    readonly property string wifiSublabel: {
-        if (!Networking.wifiEnabled) return "Off";
-        if (cc.ccWifi && cc.ccWifi.connected) return "";
         return "No connection";
     }
 
@@ -89,43 +85,60 @@ AnchoredPopup {
         spacing: 12
 
         // ══ Quick toggles ════════════════════════════════════════
-        GridLayout {
+        Item {
             Layout.fillWidth: true
-            columns: 4
-            columnSpacing: 8
-            rowSpacing: 8
+            Layout.preferredHeight: 104
+            Layout.fillHeight: false
 
-            CcTile {
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                pill: true
-                tileIcon: Icons.wifi
-                label: cc.wifiLabel
-                sublabel: cc.wifiSublabel
-                on: Networking.wifiEnabled
-                accent: Theme.blue
-                onClicked: Networking.wifiEnabled = !Networking.wifiEnabled
+            Column {
+                id: togglesCol
+                anchors.left: parent.left
+                anchors.top: parent.top
+                width: 132
+                spacing: 8
+
+                CcTile {
+                    width: parent.width
+                    height: 48
+                    pill: true
+                    tileIcon: Icons.wifi
+                    label: cc.wifiLabel
+                    sublabel: cc.wifiSublabel
+                    on: Networking.wifiEnabled
+                    accent: Theme.blue
+                    onClicked: Networking.wifiEnabled = !Networking.wifiEnabled
+                }
+
+                CcTile {
+                    width: parent.width
+                    height: 48
+                    pill: true
+                    tileIcon: Icons.bluetooth
+                    label: "Bluetooth"
+                    sublabel: (cc.btAdapter && cc.btAdapter.enabled) ? "On" : "Off"
+                    on: cc.btAdapter ? cc.btAdapter.enabled : false
+                    accent: Theme.sapphire
+                    onClicked: {
+                        if (cc.btAdapter) cc.btAdapter.enabled = !cc.btAdapter.enabled;
+                    }
+                }
             }
 
             PlaybackTile {
-                Layout.columnSpan: 2
-                Layout.rowSpan: 2
-                Layout.fillWidth: true
+                anchors.left: togglesCol.right
+                anchors.leftMargin: 8
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
             }
+        }
 
-            CcTile {
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-                pill: true
-                tileIcon: Icons.bluetooth
-                label: "Bluetooth"
-                sublabel: (cc.btAdapter && cc.btAdapter.enabled) ? "On" : "Off"
-                on: cc.btAdapter ? cc.btAdapter.enabled : false
-                accent: Theme.sapphire
-                onClicked: {
-                    if (cc.btAdapter) cc.btAdapter.enabled = !cc.btAdapter.enabled;
-                }
-            }
+        // ══ Toggle row ═══════════════════════════════════════════
+        GridLayout {
+            Layout.fillWidth: true
+            columns: 3
+            columnSpacing: 8
+            rowSpacing: 8
 
             CcTile {
                 Layout.fillWidth: true
