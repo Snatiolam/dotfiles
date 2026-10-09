@@ -43,6 +43,7 @@ local browser     = "firefox"
 local col_mauve       = "rgba(c6a0f6ee)"
 local col_rosewater   = "rgba(f4dbd6ee)"
 local col_baseAlpha00 = "rgba(00000000)"
+
 -------------------
 ---- AUTOSTART ----
 -------------------
@@ -52,11 +53,9 @@ local col_baseAlpha00 = "rgba(00000000)"
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 --
--- hl.on("hyprland.start", function ()
---   hl.exec_cmd(terminal)
---   hl.exec_cmd("nm-applet")
---   hl.exec_cmd("waybar & hyprpaper & firefox")
--- end)
+hl.on("hyprland.start", function ()
+    hl.exec_cmd("hyprpaper & quickshell")
+end)
 
 
 -------------------------------
