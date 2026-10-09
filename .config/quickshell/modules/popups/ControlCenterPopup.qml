@@ -77,7 +77,7 @@ AnchoredPopup {
     readonly property string wifiSublabel: {
         if (!Networking.wifiEnabled) return "Off";
         if (cc.ccWifi && cc.ccWifi.connected) return "";
-        return "Sin conexión";
+        return "No connection";
     }
 
     readonly property var btAdapter: Bluetooth.defaultAdapter
@@ -154,7 +154,7 @@ AnchoredPopup {
             CcTile {
                 Layout.fillWidth: true
                 tileIcon: Icons.moon
-                label: "Noche"
+                label: "Night"
                 on: cc.nightOn
                 accent: Theme.yellow
                 onClicked: cc.toggleNight()

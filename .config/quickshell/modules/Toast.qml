@@ -24,6 +24,7 @@ PanelWindow {
     property string nApp: ""
     property string nSummary: ""
     property string nBody: ""
+    property string nImage: ""
     property int nUrgency: 0
     property var nRef: null
 
@@ -33,6 +34,7 @@ PanelWindow {
     function push(n): void {
         nRef = n;
         nApp = n.appName || "";
+        nImage = n.image || "";
         nSummary = n.summary || "";
         nBody = n.body || "";
         nUrgency = n.urgency;
@@ -80,6 +82,22 @@ PanelWindow {
                 height: 36
                 radius: 2
                 color: win.nUrgency >= 2 ? Theme.red : Theme.mauve
+            }
+
+            Rectangle {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: 64
+                Layout.preferredHeight: 64
+                visible: win.nImage !== ""
+                radius: 10
+                color: Theme.surface1
+                clip: true
+
+                Image {
+                    anchors.fill: parent
+                    source: win.nImage
+                    fillMode: Image.PreserveAspectCrop
+                }
             }
 
             ColumnLayout {

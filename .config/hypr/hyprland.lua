@@ -310,6 +310,11 @@ hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl set 10%+"),      
 hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl set 10%-"),                         { locked = true, repeating = true })
 
 
+-- Screenshots: PRINT (fullscreen) and SHIFT+PRINT (selection), copy to clipboard + notify with preview
+hl.bind("print", hl.dsp.exec_cmd("sh -c 'f=$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png; grim \"$f\" && wl-copy -t image/png < \"$f\" && notify-send --hint=string:image-path:\"$f\" -a Screenshot \"Full screenshot\" \"Copied to clipboard\"'"), { locked = true })
+hl.bind("SHIFT + print", hl.dsp.exec_cmd("sh -c 'g=\"$(slurp)\"; [ -n \"$g\" ] && f=$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$g\" \"$f\" && wl-copy -t image/png < \"$f\" && notify-send --hint=string:image-path:\"$f\" -a Screenshot \"Selection screenshot\" \"Copied to clipboard\"'"), { locked = true })
+
+
 -- Requires playerctl
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
