@@ -31,11 +31,15 @@ PanelWindow {
     readonly property string launcherScript: "/home/snatiolam/.config/quickshell/modules/list_apps.py"
 
     // ── Startup: build the app list for fzf ──────────────────────
+    // Rebuilt every time the launcher opens so newly installed apps
+    // (e.g. flatpaks) show up without restarting the shell.
     Process {
         id: appScan
         running: true
         command: ["python3", win.launcherScript]
-        stdout: StdioCollector { }
+        stdout: StdioCollector {
+            onStreamFinished: if (win.visible) win.requestFilter()
+        }
     }
 
     // ── Filter through fzf ───────────────────────────────────────
@@ -103,6 +107,7 @@ PanelWindow {
         win.results = [];
         win.sel = -1;
         win.pendingFilter = false;
+        appScan.running = true;
         debounce.start();
         Qt.callLater(() => field.forceActiveFocus());
     }

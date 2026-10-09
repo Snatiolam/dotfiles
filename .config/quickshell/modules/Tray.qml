@@ -33,8 +33,31 @@ Row {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: cell.modelData.activate()
+                acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+
+                // Many tray apps (nm-applet, appindicators) expose a menu but do
+                // not implement Activate, so prefer the menu when one exists.
+                onClicked: (mouse) => {
+                    if (mouse.button === Qt.MiddleButton) {
+                        cell.modelData.secondaryActivate();
+                    } else if (cell.modelData.hasMenu) {
+                        menuAnchor.open();
+                    } else if (mouse.button === Qt.LeftButton) {
+                        cell.modelData.activate();
+                    }
+                }
+
                 onWheel: (wheel) => cell.modelData.scroll(wheel.angleDelta.y, false)
+            }
+
+            QsMenuAnchor {
+                id: menuAnchor
+                menu: cell.modelData.menu
+                anchor.window: cell.QsWindow.window
+                anchor.item: cell
+                anchor.edges: Edges.Bottom
+                anchor.gravity: Edges.Bottom
+                anchor.adjustment: PopupAdjustment.SlideX | PopupAdjustment.FlipY
             }
         }
     }
