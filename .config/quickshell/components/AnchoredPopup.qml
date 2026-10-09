@@ -16,7 +16,12 @@ PopupWindow {
     anchor.item: anchorItem
     anchor.edges: Edges.Bottom
     anchor.gravity: Edges.Bottom
-    anchor.margins.bottom: Theme.popupGap
+    // PopupAnchor *removes* margins from the anchor rect, so a positive bottom
+    // margin pulls the popup up into the bar. A negative one pushes it down.
+    // Bar items are vertically centered, so their bottom edge is at
+    // (barHeight + itemHeight) / 2; solving for the margin makes the popup's
+    // top land exactly Theme.popupGap below the bar for any item height.
+    anchor.margins.bottom: (Theme.barHeight + anchorItem.height) / 2 - Theme.barHeight - Theme.popupGap
     anchor.adjustment: PopupAdjustment.SlideX | PopupAdjustment.FlipY
 
     color: "transparent"

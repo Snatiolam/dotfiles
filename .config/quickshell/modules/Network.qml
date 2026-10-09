@@ -29,8 +29,8 @@ Item {
 
     function netColor(): color {
         if (!root.enabled) return Theme.overlay0;
-        if (root.connected) return Theme.text;
-        return Theme.overlay1;
+        if (root.connected) return Theme.green;
+        return Theme.subtext0;
     }
 
     Rectangle {

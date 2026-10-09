@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Wayland
 import qs.config
 import qs.modules.popups
 
@@ -18,8 +19,14 @@ PanelWindow {
     exclusiveZone: Theme.barHeight
     color: "transparent"
 
+    // Compositor-side blur behind the translucent bar (macOS-style).
+    BackgroundEffect.blurRegion: Region {
+        item: panelBg
+    }
+
     // Background
     Rectangle {
+        id: panelBg
         anchors.fill: parent
         color: Theme.barBg
 

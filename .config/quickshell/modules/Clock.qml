@@ -29,7 +29,7 @@ Item {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: Qt.formatDateTime(clock.date, "HH:mm")
-            color: Theme.text
+            color: Theme.sky
             font.family: Theme.font
             font.pixelSize: 14
             font.bold: true
@@ -45,7 +45,13 @@ Item {
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text: Qt.formatDateTime(clock.date, "ddd d MMM", Qt.locale("en_US"))
+            text: {
+                const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                return days[clock.date.getDay()] + " " + clock.date.getDate()
+                       + " " + months[clock.date.getMonth()];
+            }
             color: Theme.subtext0
             font.family: Theme.font
             font.pixelSize: 12

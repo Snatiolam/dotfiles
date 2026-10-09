@@ -9,7 +9,7 @@ PanelWindow {
 
     anchors.top: true
     anchors.right: true
-    margins.top: Theme.barHeight + 8
+    margins.top: Theme.popupGap
     margins.right: 10
 
     exclusiveZone: 0

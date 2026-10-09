@@ -47,7 +47,8 @@ Singleton {
     readonly property string font: "MonaspiceNe Nerd Font"
 
     // ── Derived pastel tones ──────────────────────────────────────
-    readonly property color barBg: Qt.rgba(base.r, base.g, base.b, 0.94)
+    // Translucent enough for the compositor blur (macOS-style) to show through.
+    readonly property color barBg: Qt.rgba(base.r, base.g, base.b, 0.55)
     readonly property color cardBg: Qt.rgba(crust.r, crust.g, crust.b, 0.96)
     readonly property color cardBorder: Qt.rgba(surface2.r, surface2.g, surface2.b, 0.5)
     readonly property color hover: Qt.rgba(surface1.r, surface1.g, surface1.b, 0.55)
@@ -66,6 +67,7 @@ Singleton {
     // ── Popups ────────────────────────────────────────────────────
     readonly property int popupRadius: 16
     readonly property int popupPadding: 14
-    readonly property int popupGap: 6
+    // Gap between the bar and any popup, in pixels.
+    readonly property int popupGap: 4
     readonly property int controlRadius: 8
 }
