@@ -34,7 +34,7 @@ Singleton {
     readonly property string globe:  "\uF0AC"
 
     // Bluetooth
-    readonly property string bluetooth: "\uF293"
+    readonly property string bluetooth: "\uF294"
 
     // Notifications
     readonly property string bell:      "\uF0F3"

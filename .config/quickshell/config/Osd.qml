@@ -5,8 +5,8 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 
-// OSD state: listens to real audio changes (Pipewire) and exposes
-// functions to trigger it from the bar or via `qs ipc call osd ...`.
+// OSD state. Listens to real volume (Pipewire) and brightness (backlight
+// sysfs) changes and exposes functions to trigger it via `qs ipc call osd`.
 Singleton {
     id: osd
 
@@ -24,7 +24,7 @@ Singleton {
         onTriggered: osd.armed = true
     }
 
-    // ── Default sink listener ─────────────────────────────────────
+    // ── Default sink listener (volume) ────────────────────────────
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var audio: sink ? sink.audio : null
 
@@ -41,6 +41,48 @@ Singleton {
     function onAudioChange(): void {
         if (!osd.armed || !osd.audio) return;
         osd.showVolume(osd.audio.volume, osd.audio.muted);
+    }
+
+    // ── Backlight listener (brightness) ───────────────────────────
+    readonly property string backlight: "intel_backlight"
+    property int maxBrightness: 0
+    property real lastBrightness: -1
+
+    FileView {
+        id: maxFile
+        path: "/sys/class/backlight/" + osd.backlight + "/max_brightness"
+        blockLoading: true
+        onLoaded: {
+            const n = parseInt(maxFile.text());
+            if (!isNaN(n) && n > 0) osd.maxBrightness = n;
+        }
+    }
+
+    FileView {
+        id: brightnessFile
+        path: "/sys/class/backlight/" + osd.backlight + "/brightness"
+        watchChanges: true
+        blockLoading: true
+        onFileChanged: reload()
+        onLoaded: osd.onBrightnessChange()
+    }
+
+    Timer {
+        interval: 500
+        running: true
+        repeat: true
+        onTriggered: brightnessFile.reload()
+    }
+
+    function onBrightnessChange(): void {
+        if (osd.maxBrightness <= 0) return;
+        const raw = parseInt(brightnessFile.text());
+        if (isNaN(raw)) return;
+        const v = Math.max(0, Math.min(1, raw / osd.maxBrightness));
+        if (Math.abs(v - osd.lastBrightness) < 0.004) return;
+        osd.lastBrightness = v;
+        if (!osd.armed) return;
+        osd.showBrightness(v);
     }
 
     // ── API ───────────────────────────────────────────────────────
