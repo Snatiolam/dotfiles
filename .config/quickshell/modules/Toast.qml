@@ -66,7 +66,7 @@ PanelWindow {
 
     Rectangle {
         anchors.fill: parent
-        radius: 16
+        radius: Theme.popupRadius
         color: Theme.cardBg
         border.width: 1
         border.color: win.nUrgency >= 2 ? Theme.red : Theme.cardBorder

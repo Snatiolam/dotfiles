@@ -1,24 +1,21 @@
 import QtQuick
 import Quickshell
 import qs.config
+import qs.components
 
 // Center clock: bold time + subtle date. Click opens the calendar.
-Item {
+BarButton {
     id: root
 
+    popoutId: "calendar"
     implicitWidth: row.implicitWidth + 16
     implicitHeight: Theme.barHeight
+
+    onClicked: Ui.togglePopout("calendar")
 
     SystemClock {
         id: clock
         precision: SystemClock.Minutes
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        radius: Theme.smallRadius
-        color: (hover.hovered || Ui.popout === "calendar") ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
     }
 
     Row {
@@ -56,13 +53,5 @@ Item {
             font.family: Theme.font
             font.pixelSize: 12
         }
-    }
-
-    HoverHandler { id: hover }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: Ui.togglePopout("calendar")
     }
 }

@@ -3,14 +3,16 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import qs.config
+import qs.components
 
 // Default sink volume control.
-// Left click = audio panel · wheel = ±5% · OSD appears automatically.
-Item {
+// Left click = audio panel · middle click = mute · wheel = ±5%.
+BarButton {
     id: root
 
+    popoutId: "audio"
     implicitWidth: row.implicitWidth + 14
-    implicitHeight: 26
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton
 
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var audio: sink ? sink.audio : null
@@ -19,17 +21,16 @@ Item {
 
     property string activePort: ""
 
+    // The active port comes from pactl because Pipewire exposes no direct
+    // "headphones plugged" property.
     readonly property bool headphones: {
+        function has(s) { return s.indexOf("headphone") !== -1 || s.indexOf("headset") !== -1; }
         if (!sink) return false;
         const props = sink.properties || {};
-        const icon = String(props["device.icon-name"] || "").toLowerCase();
-        const name = String(sink.name || "").toLowerCase();
-        const label = (String(sink.description || "") + " " + String(sink.nickname || "")).toLowerCase();
-        if (icon.indexOf("headphone") !== -1 || icon.indexOf("headset") !== -1) return true;
-        if (name.indexOf("headphone") !== -1 || name.indexOf("headset") !== -1) return true;
-        if (label.indexOf("headphone") !== -1 || label.indexOf("headset") !== -1) return true;
-        const port = activePort.toLowerCase();
-        return port.indexOf("headphone") !== -1 || port.indexOf("headset") !== -1;
+        if (has(String(props["device.icon-name"] || "").toLowerCase())) return true;
+        if (has(String(sink.name || "").toLowerCase())) return true;
+        if (has((String(sink.description || "") + " " + String(sink.nickname || "")).toLowerCase())) return true;
+        return has(activePort.toLowerCase());
     }
 
     function volumeIcon(): string {
@@ -46,14 +47,13 @@ Item {
         const lines = text.split("\n");
         let current = false;
         for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
-            const name = line.match(/^\s*Name:\s*(\S+)/);
+            const name = lines[i].match(/^\s*Name:\s*(\S+)/);
             if (name) {
                 current = (name[1] === target);
                 continue;
             }
             if (!current) continue;
-            const port = line.match(/^\s*Active Port:\s*(\S+)/);
+            const port = lines[i].match(/^\s*Active Port:\s*(\S+)/);
             if (port) {
                 root.activePort = port[1];
                 return;
@@ -62,25 +62,21 @@ Item {
         root.activePort = "";
     }
 
-    Rectangle {
-        anchors.fill: parent
-        radius: Theme.smallRadius
-        color: (hover.hovered || Ui.popout === "audio") ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
+    onClicked: (mouse) => {
+        if (mouse.button === Qt.MiddleButton) {
+            if (root.audio) root.audio.muted = !root.audio.muted;
+        } else {
+            Ui.togglePopout("audio");
+        }
     }
 
-    Row {
-        id: row
-        anchors.centerIn: parent
-        spacing: 5
-
-        Text {
-            anchors.verticalCenter: parent.verticalCenter
-            text: root.volumeIcon()
-            color: root.muted ? Theme.overlay0 : Theme.text
-            font.family: Theme.font
-            font.pixelSize: Theme.iconSize + 2
-        }
+    onWheeled: (wheel) => {
+        if (!root.audio) return;
+        const step = 0.05;
+        const next = root.audio.volume + (wheel.angleDelta.y > 0 ? step : -step);
+        root.audio.volume = Math.max(0, Math.min(1, next));
+        if (root.audio.volume > 0 && root.audio.muted)
+            root.audio.muted = false;
     }
 
     Timer {
@@ -99,29 +95,15 @@ Item {
         }
     }
 
-    HoverHandler { id: hover }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-
-        onClicked: (mouse) => {
-            if (mouse.button === Qt.MiddleButton) {
-                if (root.audio)
-                    root.audio.muted = !root.audio.muted;
-            } else {
-                Ui.togglePopout("audio");
-            }
-        }
-
-        onWheel: (wheel) => {
-            if (!root.audio) return;
-            const step = 0.05;
-            const next = root.audio.volume + (wheel.angleDelta.y > 0 ? step : -step);
-            root.audio.volume = Math.max(0, Math.min(1, next));
-            if (root.audio.volume > 0 && root.audio.muted)
-                root.audio.muted = false;
+    Row {
+        id: row
+        anchors.centerIn: parent
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: root.volumeIcon()
+            color: root.muted ? Theme.overlay0 : Theme.text
+            font.family: Theme.font
+            font.pixelSize: Theme.iconSize + 2
         }
     }
 }

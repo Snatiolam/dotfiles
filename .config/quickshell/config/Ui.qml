@@ -26,18 +26,6 @@ Singleton {
         popout = "";
     }
 
-    function togglePowerMenu(): void {
-        togglePopout("power");
-    }
-
-    function toggleNotifCenter(): void {
-        togglePopout("notifications");
-    }
-
-    function closeAll(): void {
-        popout = "";
-    }
-
     // App launcher (independent of bar popups).
     property bool launcher: false
 

@@ -18,6 +18,9 @@ AnchoredPopup {
     implicitWidth: 360
     implicitHeight: col.implicitHeight + Theme.popupPadding * 2
 
+    readonly property var sink: Pipewire.defaultAudioSink
+    readonly property var audio: sink ? sink.audio : null
+
     // ── Night light state ────────────────────────────────────────
     property bool nightOn: false
 
@@ -63,8 +66,6 @@ AnchoredPopup {
         return null;
     }
 
-    readonly property string wifiLabel: "Wi-Fi"
-
     readonly property string wifiSublabel: {
         if (!Networking.wifiEnabled) return "Off";
         if (cc.ccWifi && cc.ccWifi.connected) {
@@ -102,7 +103,7 @@ AnchoredPopup {
                     height: 48
                     pill: true
                     tileIcon: Icons.wifi
-                    label: cc.wifiLabel
+                    label: "Wi-Fi"
                     sublabel: cc.wifiSublabel
                     on: Networking.wifiEnabled
                     accent: Theme.blue
@@ -236,7 +237,4 @@ AnchoredPopup {
             }
         }
     }
-
-    readonly property var sink: Pipewire.defaultAudioSink
-    readonly property var audio: sink ? sink.audio : null
 }

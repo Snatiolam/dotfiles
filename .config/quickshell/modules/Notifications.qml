@@ -1,16 +1,18 @@
 import QtQuick
-import Quickshell
 import qs.config
+import qs.components
 
 // Bell with counter. Click = toggle the notification center.
-Item {
+BarButton {
     id: root
 
-    implicitWidth: 26
-    implicitHeight: 26
+    popoutId: "notifications"
+    activeColor: Theme.tint(root.bellColor, 0.18)
 
     readonly property bool hasNotifs: Notifs.count > 0
     readonly property color bellColor: hasNotifs ? Theme.bellActive : Theme.bellIdle
+
+    onClicked: Ui.togglePopout("notifications")
 
     // Soft pastel halo behind the bell while there are pending notifications.
     Rectangle {
@@ -22,15 +24,6 @@ Item {
         visible: root.hasNotifs
         opacity: visible ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 180 } }
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        radius: Theme.smallRadius
-        color: (hover.hovered || Ui.notifCenter)
-            ? Theme.tint(root.bellColor, 0.18)
-            : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
     }
 
     Text {
@@ -63,13 +56,5 @@ Item {
             font.pixelSize: 9
             font.bold: true
         }
-    }
-
-    HoverHandler { id: hover }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: Ui.toggleNotifCenter()
     }
 }

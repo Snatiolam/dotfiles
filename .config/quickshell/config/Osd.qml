@@ -51,6 +51,12 @@ Singleton {
     property int maxBrightness: 0
     property real lastBrightness: -1
 
+    // Writes are serialized: while brightnessctl runs, further slider moves are
+    // coalesced into pendingBrightness and applied when it exits. This keeps
+    // dragging smooth instead of spawning one process per pixel moved.
+    property real pendingBrightness: -1
+    property bool applying: false
+
     FileView {
         id: maxFile
         path: "/sys/class/backlight/" + osd.backlight + "/max_brightness"
@@ -61,23 +67,26 @@ Singleton {
         }
     }
 
+    // sysfs does not emit inotify events, so poll instead of watchChanges.
     FileView {
         id: brightnessFile
         path: "/sys/class/backlight/" + osd.backlight + "/brightness"
-        watchChanges: true
         blockLoading: true
-        onFileChanged: reload()
         onLoaded: osd.onBrightnessChange()
     }
 
     Timer {
-        interval: 500
+        // sysfs has no inotify, so poll. Fast enough that brightness keys feel
+        // instant without spawning an extra process per keypress.
+        interval: 50
         running: true
         repeat: true
         onTriggered: brightnessFile.reload()
     }
 
     function onBrightnessChange(): void {
+        // Ignore reads that race with our own write while it is in flight.
+        if (osd.applying || osd.pendingBrightness >= 0) return;
         if (osd.maxBrightness <= 0) return;
         const raw = parseInt(brightnessFile.text());
         if (isNaN(raw)) return;
@@ -89,17 +98,32 @@ Singleton {
         osd.showBrightness(v);
     }
 
-    // Applies a new brightness (0..1) and shows the OSD.
+    // Updates the UI instantly and schedules the actual brightness write.
     function setBrightness(v: real): void {
-        setBrightProc.command = ["brightnessctl", "set",
-            Math.round(Math.max(0, Math.min(1, v)) * 100) + "%"];
-        setBrightProc.running = true;
+        v = Math.max(0, Math.min(1, v));
+        osd.brightness = v;
+        osd.pendingBrightness = v;
         osd.showBrightness(v);
+        osd.applyNext();
+    }
+
+    function applyNext(): void {
+        if (osd.applying || osd.pendingBrightness < 0) return;
+        osd.applying = true;
+        setBrightProc.command = ["brightnessctl", "set",
+            Math.round(osd.pendingBrightness * 100) + "%"];
+        osd.pendingBrightness = -1;
+        setBrightProc.running = true;
     }
 
     Process {
         id: setBrightProc
         running: false
+        onExited: {
+            osd.applying = false;
+            osd.applyNext();
+            brightnessFile.reload();
+        }
     }
 
     // ── API ───────────────────────────────────────────────────────
@@ -130,7 +154,8 @@ Singleton {
         target: "osd"
 
         function brightness(value: string): void {
-            osd.showBrightness(parseFloat(value) / 100);
+            osd.brightness = Math.max(0, Math.min(1, parseFloat(value) / 100));
+            osd.showBrightness(osd.brightness);
         }
 
         function volume(value: string): void {

@@ -29,7 +29,7 @@ PopupWindow {
     visible: Ui.popout === popoutId
 
     // Click outside → Wayland closes the popup.
-    onClosed: if (Ui.popout === popoutId) Ui.popout = ""
+    onClosed: if (Ui.popout === popoutId) Ui.closePopout()
 
     Shortcut {
         sequence: "Escape"

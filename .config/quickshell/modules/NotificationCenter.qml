@@ -24,12 +24,12 @@ PanelWindow {
     Shortcut {
         sequence: "Escape"
         enabled: Ui.notifCenter
-        onActivated: Ui.closeAll()
+        onActivated: Ui.closePopout()
     }
 
     Rectangle {
         anchors.fill: parent
-        radius: 16
+        radius: Theme.popupRadius
         color: Theme.cardBg
         border.width: 1
         border.color: Theme.cardBorder
@@ -75,7 +75,7 @@ PanelWindow {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: Ui.closeAll()
+                        onClicked: Ui.closePopout()
                     }
                 }
             }
@@ -173,11 +173,6 @@ PanelWindow {
                             maximumLineCount: 2
                             elide: Text.ElideRight
                         }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.NoButton
                     }
                 }
             }

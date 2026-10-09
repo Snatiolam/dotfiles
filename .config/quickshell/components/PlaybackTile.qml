@@ -9,8 +9,7 @@ import qs.config
 Rectangle {
     id: t
 
-    property var _player: null
-    readonly property var player: t._player
+    property var player: null
     readonly property bool playing: !!t.player && t.player.isPlaying
 
     implicitHeight: 144
@@ -26,7 +25,7 @@ Rectangle {
             if (arr[i].isPlaying) { best = arr[i]; break; }
         }
         if (!best && arr.length > 0) best = arr[0];
-        t._player = best;
+        t.player = best;
     }
 
     Timer {

@@ -1,20 +1,14 @@
 import QtQuick
-import Quickshell
 import qs.config
+import qs.components
 
 // Control Center button (grid). Click opens the macOS-style panel.
-Item {
+BarButton {
     id: root
 
-    implicitWidth: 26
-    implicitHeight: 26
+    popoutId: "controlcenter"
 
-    Rectangle {
-        anchors.fill: parent
-        radius: Theme.smallRadius
-        color: (hover.hovered || Ui.popout === "controlcenter") ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
-    }
+    onClicked: Ui.togglePopout("controlcenter")
 
     Text {
         anchors.centerIn: parent
@@ -22,13 +16,5 @@ Item {
         color: Theme.text
         font.family: Theme.font
         font.pixelSize: Theme.iconSize
-    }
-
-    HoverHandler { id: hover }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: Ui.togglePopout("controlcenter")
     }
 }

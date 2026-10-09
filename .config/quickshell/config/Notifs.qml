@@ -27,10 +27,6 @@ Singleton {
         }
     }
 
-    function dismiss(notification): void {
-        notification.dismiss();
-    }
-
     function clearAll(): void {
         const values = serverObj.trackedNotifications.values.slice();
         for (let i = 0; i < values.length; i++)

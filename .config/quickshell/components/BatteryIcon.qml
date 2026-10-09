@@ -11,12 +11,9 @@ Item {
     property real bodyWidth: 22
     property real bodyHeight: 12
     property real borderWidth: 1
-    property bool showPercent: false
-    property real percentSize: 8
 
     readonly property real capWidth: 2
     readonly property real inset: borderWidth
-    readonly property color percentColor: (root.level >= 0.45) ? Theme.base : Theme.text
 
     implicitWidth: bodyWidth + capWidth
     implicitHeight: bodyHeight
@@ -52,16 +49,6 @@ Item {
         width: Math.max(0, Math.min(1, root.level)) * (body.width - root.inset * 2)
         Behavior on width { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
         Behavior on color { ColorAnimation { duration: 200 } }
-    }
-
-    Text {
-        anchors.centerIn: body
-        visible: root.showPercent && !root.charging
-        text: Math.round(root.level * 100)
-        color: root.percentColor
-        font.family: Theme.font
-        font.pixelSize: root.percentSize
-        font.bold: true
     }
 
     Text {

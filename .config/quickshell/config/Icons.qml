@@ -16,12 +16,7 @@ Singleton {
     readonly property string brightness: "\uF185"
 
     // Battery
-    readonly property string batteryFull:    "\uF240"
-    readonly property string batteryThree:   "\uF241"
-    readonly property string batteryHalf:    "\uF242"
-    readonly property string batteryQuarter: "\uF243"
-    readonly property string batteryEmpty:   "\uF244"
-    readonly property string charging:       "\uF0E7"
+    readonly property string charging: "\uF0E7"
 
     // Power profiles
     readonly property string leaf:       "\uF06C"
@@ -29,9 +24,8 @@ Singleton {
     readonly property string performance: "\uF0E7"
 
     // Network
-    readonly property string wifi:   "\uF1EB"
-    readonly property string wired:  "\uF1E6"
-    readonly property string globe:  "\uF0AC"
+    readonly property string wifi:  "\uF1EB"
+    readonly property string wired: "\uF1E6"
 
     // Bluetooth
     readonly property string bluetooth: "\uF294"
@@ -52,7 +46,6 @@ Singleton {
     readonly property string check: "\uF00C"
 
     // Calendar / navigation
-    readonly property string calendar:     "\uF133"
     readonly property string chevronLeft:  "\uF053"
     readonly property string chevronRight: "\uF054"
     readonly property string chevronUp:    "\uF077"
@@ -63,11 +56,10 @@ Singleton {
     readonly property string microphone: "\uF130"
 
     // Media
-    readonly property string play:      "\uF04B"
-    readonly property string pause:     "\uF04C"
-    readonly property string backward:  "\uF04A"
-    readonly property string forward:   "\uF04E"
-    readonly property string music:     "\uF001"
+    readonly property string play:     "\uF04B"
+    readonly property string pause:    "\uF04C"
+    readonly property string forward:  "\uF04E"
+    readonly property string music:    "\uF001"
 
     // Control center / misc
     readonly property string sliders:   "\uF1DE"
@@ -75,7 +67,6 @@ Singleton {
     // Lists / actions
     readonly property string eye:      "\uF06E"
     readonly property string eyeSlash: "\uF070"
-    readonly property string trash:    "\uF1F8"
-    readonly property string search:   "\uF002"
-    readonly property string link:     "\uF0C1"
+    readonly property string trash:  "\uF1F8"
+    readonly property string search: "\uF002"
 }

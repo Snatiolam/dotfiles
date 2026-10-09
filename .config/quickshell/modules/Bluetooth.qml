@@ -2,10 +2,14 @@ import QtQuick
 import Quickshell
 import Quickshell.Bluetooth
 import qs.config
+import qs.components
 
-// Bluetooth. Click opens the devices panel.
-Item {
+// Bluetooth status. Click opens the devices panel.
+BarButton {
     id: root
+
+    popoutId: "bluetooth"
+    implicitWidth: row.implicitWidth + 14
 
     readonly property var adapter: Bluetooth.defaultAdapter
     readonly property bool enabled: adapter ? adapter.enabled : false
@@ -17,19 +21,11 @@ Item {
         return n;
     }
 
-    implicitWidth: row.implicitWidth + 14
-    implicitHeight: 26
+    onClicked: Ui.togglePopout("bluetooth")
 
     function btColor(): color {
         if (!root.adapter || !root.enabled) return Theme.overlay0;
         return Theme.text;
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        radius: Theme.smallRadius
-        color: (hover.hovered || Ui.popout === "bluetooth") ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
     }
 
     Row {
@@ -53,13 +49,5 @@ Item {
             font.family: Theme.font
             font.pixelSize: 11
         }
-    }
-
-    HoverHandler { id: hover }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: Ui.togglePopout("bluetooth")
     }
 }

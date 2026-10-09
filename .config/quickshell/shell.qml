@@ -20,7 +20,7 @@ ShellRoot {
     // confirmation/passkey (keyboards, earbuds, ...).
     Process {
         id: btAgent
-        command: ["python3", Quickshell.configDir + "/scripts/bt-agent.py"]
+        command: ["python3", Quickshell.shellDir + "/scripts/bt-agent.py"]
         running: true
         onExited: btAgentRestart.restart()
     }

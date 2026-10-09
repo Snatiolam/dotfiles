@@ -23,13 +23,13 @@ PanelWindow {
     // Closes on click outside the card
     MouseArea {
         anchors.fill: parent
-        onClicked: Ui.closeAll()
+        onClicked: Ui.closePopout()
     }
 
     Shortcut {
         sequence: "Escape"
         enabled: Ui.powerMenu
-        onActivated: Ui.closeAll()
+        onActivated: Ui.closePopout()
     }
 
     Rectangle {
@@ -97,7 +97,7 @@ PanelWindow {
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
                                 parent.parent.action();
-                                Ui.closeAll();
+                                Ui.closePopout();
                             }
                         }
                     }

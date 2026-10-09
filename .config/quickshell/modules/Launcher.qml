@@ -28,14 +28,14 @@ PanelWindow {
     property int sel: -1
     property bool pendingFilter: false
 
-    readonly property string launcherScript: "/home/snatiolam/.config/quickshell/modules/list_apps.py"
+    readonly property string launcherScript: Quickshell.shellDir + "/modules/list_apps.py"
 
     // ── Startup: build the app list for fzf ──────────────────────
     // Rebuilt every time the launcher opens so newly installed apps
     // (e.g. flatpaks) show up without restarting the shell.
     Process {
         id: appScan
-        running: true
+        running: false
         command: ["python3", win.launcherScript]
         stdout: StdioCollector {
             onStreamFinished: if (win.visible) win.requestFilter()

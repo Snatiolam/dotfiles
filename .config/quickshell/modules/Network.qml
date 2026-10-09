@@ -2,10 +2,13 @@ import QtQuick
 import Quickshell
 import Quickshell.Networking
 import qs.config
+import qs.components
 
 // Network status (WiFi). Click opens the networks panel.
-Item {
+BarButton {
     id: root
+
+    popoutId: "network"
 
     readonly property var wifi: {
         const devs = Networking.devices.values;
@@ -16,27 +19,16 @@ Item {
         return null;
     }
 
-    readonly property bool connected: wifi ? wifi.connected : false
     readonly property bool enabled: Networking.wifiEnabled
 
-    implicitWidth: 26
-    implicitHeight: 26
+    onClicked: Ui.togglePopout("network")
 
     function netIcon(): string {
-        if (!root.wifi) return Icons.wired;
-        return Icons.wifi;
+        return root.wifi ? Icons.wifi : Icons.wired;
     }
 
     function netColor(): color {
-        if (!root.enabled) return Theme.overlay0;
-        return Theme.text;
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        radius: Theme.smallRadius
-        color: (hover.hovered || Ui.popout === "network") ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
+        return root.enabled ? Theme.text : Theme.overlay0;
     }
 
     Text {
@@ -45,13 +37,5 @@ Item {
         color: root.netColor()
         font.family: Theme.font
         font.pixelSize: Theme.iconSize
-    }
-
-    HoverHandler { id: hover }
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: Ui.togglePopout("network")
     }
 }
