@@ -27,7 +27,7 @@ Row {
                 sourceSize.width: 16
                 sourceSize.height: 16
                 smooth: true
-                source: cell.modelData.icon ? Quickshell.iconPath(cell.modelData.icon, "image-missing") : ""
+                source: cell.modelData.icon
             }
 
             MouseArea {
