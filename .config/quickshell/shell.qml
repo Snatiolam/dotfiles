@@ -13,6 +13,7 @@ ShellRoot {
     NotificationCenter {}
     PowerMenu {}
     Launcher {}
+    LockScreen {}
 
     // BlueZ pairing agent. Quickshell 0.3.2 provides no org.bluez.Agent1,
     // so without this the panel cannot pair devices that require a
