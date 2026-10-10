@@ -21,8 +21,8 @@ Rectangle {
     readonly property color red:      "#ed8796"
 
     function tryLogin() {
-        if (userInput.text.trim().length === 0) {
-            userInput.forceActiveFocus()
+        if (!userCombo.currentText || userCombo.currentText.trim().length === 0) {
+            userCombo.forceActiveFocus()
             return
         }
         if (passwordInput.text.length === 0) {
@@ -31,7 +31,7 @@ Rectangle {
         }
         passwordInput.enabled = false
         loginButton.enabled = false
-        sddm.login(userInput.text.trim(), passwordInput.text, sessionModel.currentIndex)
+        sddm.login(userCombo.currentText.trim(), passwordInput.text, sessionCombo.currentIndex)
     }
 
     Image {
@@ -94,7 +94,7 @@ Rectangle {
     Rectangle {
         id: card
         width: 440
-        height: 380
+        height: 460
         anchors.centerIn: parent
         radius: 16
         color: root.base
@@ -117,8 +117,8 @@ Rectangle {
 
                 Text {
                     anchors.centerIn: parent
-                    text: userInput.text.trim().length > 0
-                          ? userInput.text.trim().charAt(0).toUpperCase()
+                    text: userCombo.currentText && userCombo.currentText.length > 0
+                          ? userCombo.currentText.charAt(0).toUpperCase()
                           : "?"
                     color: root.mauve
                     font.pixelSize: 34
@@ -127,23 +127,70 @@ Rectangle {
                 }
             }
 
-            TextField {
-                id: userInput
+            ComboBox {
+                id: userCombo
                 anchors.left: parent.left
                 anchors.right: parent.right
                 implicitHeight: 44
-                placeholderText: "Username"
-                placeholderTextColor: root.overlay0
-                color: root.text
-                font.pixelSize: 16
+                model: userModel
+                textRole: "name"
                 font.family: "MonaspiceNe Nerd Font"
+                font.pixelSize: 16
+                contentItem: Text {
+                    leftPadding: 12
+                    rightPadding: userCombo.indicator.width + 12
+                    text: userCombo.displayText
+                    color: root.text
+                    font: userCombo.font
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+                indicator: Text {
+                    x: userCombo.width - width - 12
+                    y: userCombo.topPadding + (userCombo.availableHeight - height) / 2
+                    text: "\u25be"
+                    color: root.subtext0
+                    font.pixelSize: 16
+                    font.family: "MonaspiceNe Nerd Font"
+                }
                 background: Rectangle {
                     radius: 10
                     color: root.mantle
-                    border.color: userInput.activeFocus ? root.blue : root.surface0
+                    border.color: userCombo.activeFocus ? root.blue : root.surface0
                     border.width: 1
                 }
-                onAccepted: tryLogin()
+                delegate: ItemDelegate {
+                    width: userCombo.width
+                    highlighted: userCombo.highlightedIndex === index
+                    contentItem: Text {
+                        text: model.name
+                        color: root.text
+                        font: userCombo.font
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: 12
+                    }
+                    background: Rectangle {
+                        color: highlighted ? root.surface0 : "transparent"
+                    }
+                }
+                popup: Popup {
+                    y: userCombo.height
+                    width: userCombo.width
+                    implicitHeight: contentItem.implicitHeight
+                    padding: 1
+                    contentItem: ListView {
+                        clip: true
+                        implicitHeight: contentHeight
+                        model: userCombo.popup.visible ? userCombo.delegateModel : null
+                        currentIndex: userCombo.highlightedIndex
+                    }
+                    background: Rectangle {
+                        radius: 10
+                        color: root.base
+                        border.color: root.surface1
+                        border.width: 1
+                    }
+                }
             }
 
             TextField {
@@ -164,6 +211,72 @@ Rectangle {
                     border.width: 1
                 }
                 onAccepted: tryLogin()
+            }
+
+            ComboBox {
+                id: sessionCombo
+                anchors.left: parent.left
+                anchors.right: parent.right
+                implicitHeight: 44
+                model: sessionModel
+                textRole: "name"
+                font.family: "MonaspiceNe Nerd Font"
+                font.pixelSize: 16
+                contentItem: Text {
+                    leftPadding: 12
+                    rightPadding: sessionCombo.indicator.width + 12
+                    text: sessionCombo.displayText
+                    color: root.text
+                    font: sessionCombo.font
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+                indicator: Text {
+                    x: sessionCombo.width - width - 12
+                    y: sessionCombo.topPadding + (sessionCombo.availableHeight - height) / 2
+                    text: "\u25be"
+                    color: root.subtext0
+                    font.pixelSize: 16
+                    font.family: "MonaspiceNe Nerd Font"
+                }
+                background: Rectangle {
+                    radius: 10
+                    color: root.mantle
+                    border.color: sessionCombo.activeFocus ? root.blue : root.surface0
+                    border.width: 1
+                }
+                delegate: ItemDelegate {
+                    width: sessionCombo.width
+                    highlighted: sessionCombo.highlightedIndex === index
+                    contentItem: Text {
+                        text: model.name
+                        color: root.text
+                        font: sessionCombo.font
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: 12
+                    }
+                    background: Rectangle {
+                        color: highlighted ? root.surface0 : "transparent"
+                    }
+                }
+                popup: Popup {
+                    y: sessionCombo.height
+                    width: sessionCombo.width
+                    implicitHeight: contentItem.implicitHeight
+                    padding: 1
+                    contentItem: ListView {
+                        clip: true
+                        implicitHeight: contentHeight
+                        model: sessionCombo.popup.visible ? sessionCombo.delegateModel : null
+                        currentIndex: sessionCombo.highlightedIndex
+                    }
+                    background: Rectangle {
+                        radius: 10
+                        color: root.base
+                        border.color: root.surface1
+                        border.width: 1
+                    }
+                }
             }
 
             Button {
@@ -215,12 +328,13 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        sessionModel.currentIndex = sessionModel.lastIndex
-        userInput.text = userModel.lastUser || ""
-        if (userInput.text.length > 0) {
+        userCombo.currentIndex = userModel.lastIndex >= 0 ? userModel.lastIndex : 0
+        sessionCombo.currentIndex = sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
+        sessionModel.currentIndex = sessionCombo.currentIndex
+        if (userCombo.currentText.length > 0) {
             passwordInput.forceActiveFocus()
         } else {
-            userInput.forceActiveFocus()
+            userCombo.forceActiveFocus()
         }
     }
 }
