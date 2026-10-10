@@ -201,6 +201,96 @@ setup_hypr_stack() {
     setup_hypr
 }
 
+install_sddm_package() {
+    if command -v sddm &>/dev/null; then
+        echo "SDDM is already installed"
+        return
+    fi
+
+    if command -v pacman &>/dev/null; then
+        sudo pacman -S --needed --noconfirm sddm || die "Failed to install SDDM"
+    elif command -v apt-get &>/dev/null; then
+        sudo apt-get update && sudo apt-get install -y sddm || die "Failed to install SDDM"
+    elif command -v dnf &>/dev/null; then
+        sudo dnf install -y sddm || die "Failed to install SDDM"
+    else
+        die "Unsupported package manager. Install SDDM manually."
+    fi
+}
+
+setup_sddm() {
+    check_command sudo
+    check_command systemctl
+    check_command tee
+
+    install_sddm_package
+
+    echo "Installing Catppuccin Macchiato SDDM theme"
+    local theme_dir="/usr/share/sddm/themes/catppuccin-macchiato"
+    sudo mkdir -p "$theme_dir" || die "Failed to create theme directory"
+    sudo cp -f .config/sddm/macchiato/* "$theme_dir/" || die "Failed to copy theme files"
+    sudo cp -f .config/hypr/cat-waves.png "$theme_dir/" || die "Failed to copy wallpaper"
+
+    # The greeter runs as root and cannot read user fonts, so make them system-wide
+    local font_glob=~/.local/share/fonts/Monaspice*
+    if compgen -G "$font_glob" >/dev/null; then
+        echo "Installing Monaspice Nerd Font system-wide for the greeter"
+        sudo mkdir -p /usr/local/share/fonts/MonaspiceNerdFont
+        sudo cp -f $font_glob /usr/local/share/fonts/MonaspiceNerdFont/
+        sudo fc-cache -f /usr/local/share/fonts >/dev/null || die "Failed to refresh system font cache"
+    else
+        echo "WARNING: Monaspice Nerd Font not found in ~/.local/share/fonts, the theme will fall back to the default font."
+    fi
+
+    echo "Writing SDDM configuration"
+    sudo mkdir -p /etc/sddm.conf.d || die "Failed to create SDDM config directory"
+
+    # SDDM reads EVERY file inside /etc/sddm.conf.d (ConfigBase::load() uses
+    # QDir::Files with no *.conf filter), so leftover configs that point at an
+    # old theme/ThemeDir must be moved OUT of the directory, not renamed. A
+    # ThemeDir inside a 700 home dir is also unreadable by the greeter user,
+    # which makes SDDM fall back to its built-in theme.
+    local backup_dir="/etc/sddm.conf.d.disabled"
+    for f in /etc/sddm.conf.d/*; do
+        [ -f "$f" ] || continue
+        [ "$(basename "$f")" = "10-catppuccin.conf" ] && continue
+        if grep -qE "^(Current|ThemeDir)=" "$f" 2>/dev/null; then
+            echo "Moving conflicting config out of the way: $f"
+            sudo mkdir -p "$backup_dir"
+            sudo mv "$f" "$backup_dir/" || die "Failed to move $f"
+        fi
+    done
+
+    sudo tee /etc/sddm.conf.d/10-catppuccin.conf >/dev/null <<'EOF'
+[Theme]
+ThemeDir=/usr/share/sddm/themes
+Current=catppuccin-macchiato
+EOF
+    # SDDM does not read ~/.config/sddm/sddm.conf, but a stale copy is a common
+    # source of confusion while debugging the greeter.
+    if [ -f "$HOME/.config/sddm/sddm.conf" ]; then
+        echo "Moving unused user config aside: $HOME/.config/sddm/sddm.conf"
+        mv "$HOME/.config/sddm/sddm.conf" "$HOME/.config/sddm/sddm.conf.bak"
+    fi
+
+    if [ -f /etc/sddm.conf ] && grep -q "^Current=" /etc/sddm.conf; then
+        echo "NOTE: /etc/sddm.conf sets Current= and may override the theme."
+    fi
+    [ -f /etc/sddm.conf ] && ! grep -q "^Current=" /etc/sddm.conf && \
+        echo "NOTE: /etc/sddm.conf exists, it may override the theme."
+
+    echo "Enabling SDDM as display manager"
+    sudo systemctl enable sddm || die "Failed to enable SDDM"
+    for dm in lightdm gdm gdm3 lxdm slim xdm; do
+        if systemctl is-enabled --quiet "$dm" 2>/dev/null; then
+            echo "Disabling $dm to avoid conflicts..."
+            sudo systemctl disable "$dm" || die "Failed to disable $dm"
+        fi
+    done
+
+    echo "SDDM setup complete"
+}
+
 show_help() {
     echo "Usage: ./setup.sh [options]"
     echo ""
@@ -214,6 +304,7 @@ show_help() {
     echo "  -b, --bin       Install Binaries"
     echo "  -g, --git       Setup Git config"
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
+    echo "  -s, --sddm      Install SDDM + Catppuccin Macchiato theme"
     echo "  -h, --help      Show this help message"
 }
 
@@ -233,6 +324,9 @@ main(){
         read -p "Install Hyprland + Quickshell config? (y/n): " hypr_res
         [[ "$hypr_res" =~ ^[Yy]$ ]] && setup_hypr_stack
 
+        read -p "Install SDDM + Catppuccin Macchiato theme? (y/n): " sddm_res
+        [[ "$sddm_res" =~ ^[Yy]$ ]] && setup_sddm
+
         return
     fi
 
@@ -240,7 +334,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_binaries; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack
+                install_binaries; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_sddm
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -256,6 +350,8 @@ main(){
                 install_binaries; shift ;;
             -H|--hypr)
                 setup_hypr_stack; shift ;;
+            -s|--sddm)
+                setup_sddm; shift ;;
             -g|--git)
                 ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
             --firefox)
