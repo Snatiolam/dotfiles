@@ -1,0 +1,19 @@
+[display]
+show_time = true
+time_format = "%a, %d %b %Y - %H:%M"
+greeting = "Welcome to the system!"
+issue = false
+
+[secret]
+mode = "characters"
+characters = "*"
+
+[theme]
+border = "magenta"
+text = "cyan"
+prompt = "green"
+time = "red"
+action = "blue"
+button = "yellow"
+container = "black"
+input = "red"
