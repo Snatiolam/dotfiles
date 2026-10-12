@@ -4,6 +4,11 @@ time_format = "%a, %d %b %Y - %H:%M"
 greeting = "Welcome to the system!"
 issue = false
 
+[remember]
+username = true
+session = true
+user_session = false
+
 [secret]
 mode = "characters"
 characters = "*"
