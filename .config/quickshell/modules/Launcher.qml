@@ -75,7 +75,7 @@ PanelWindow {
         win.pendingFilter = false;
         const safe = win.sanitize(win.query);
         filterProc.command = ["sh", "-c",
-            "fzf --exact --delimiter='\\t' --nth=1 --filter='" + safe + "' < /tmp/qs_apps.tsv | head -n 8"];
+            "fzf --exact --delimiter='\\t' --nth=1 --tiebreak=begin,index --filter='" + safe + "' < /tmp/qs_apps.tsv | head -n 8"];
         filterProc.running = true;
     }
 
