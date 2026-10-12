@@ -196,6 +196,13 @@ setup_quickshell() {
     install_config_dir ".config/quickshell" "$HOME/.config/quickshell" "Quickshell"
 }
 
+setup_tuigreet() {
+    echo "Installing Tuigreet config"
+    sudo mkdir -p /etc/tuigreet
+    sudo cp -f .config/tuigreet/config.toml /etc/tuigreet/config.toml || die "Failed to copy Tuigreet config"
+    echo "Tuigreet config installed"
+}
+
 setup_hypr_stack() {
     setup_quickshell
     setup_hypr
@@ -256,6 +263,7 @@ show_help() {
     echo "  -b, --bin       Install Binaries"
     echo "  -g, --git       Setup Git config"
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
+    echo "  -u, --tuigreet  Setup Tuigreet config"
     echo "  -s, --sddm      Install SDDM + Catppuccin Macchiato theme"
     echo "  -h, --help      Show this help message"
 }
@@ -276,6 +284,9 @@ main(){
         read -p "Install Hyprland + Quickshell config? (y/n): " hypr_res
         [[ "$hypr_res" =~ ^[Yy]$ ]] && setup_hypr_stack
 
+        read -p "Install Tuigreet config? (y/n): " tuigreet_res
+        [[ "$tuigreet_res" =~ ^[Yy]$ ]] && setup_tuigreet
+
         read -p "Install SDDM + Catppuccin Macchiato theme? (y/n): " sddm_res
         [[ "$sddm_res" =~ ^[Yy]$ ]] && setup_sddm
 
@@ -286,7 +297,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_binaries; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_sddm
+                install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_tuigreet
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -302,6 +313,8 @@ main(){
                 install_binaries; shift ;;
             -H|--hypr)
                 setup_hypr_stack; shift ;;
+            -u|--tuigreet)
+                setup_tuigreet; shift ;;
             -s|--sddm)
                 setup_sddm; shift ;;
             -g|--git)
