@@ -3,6 +3,7 @@
 set -euo pipefail
 
 INSTALL_DIR="$HOME"
+PACKAGES_FILE="$(dirname "$(realpath "$0")")/packages.txt"
 
 die() {
     echo "Error: $1" >&2
@@ -22,6 +23,42 @@ install_binaries(){
         cp -f "$file" "$INSTALL_BIN/"
     done
     echo "Shell scripts installed"
+}
+
+install_packages() {
+    local pkg_file="${1:-$PACKAGES_FILE}"
+
+    [ -f "$pkg_file" ] || die "Package list not found: $pkg_file"
+    check_command pacman
+
+    # Drop comments and blank lines
+    local pkgs
+    pkgs=$(sed -e 's/#.*//' -e '/^[[:space:]]*$/d' "$pkg_file")
+    [ -n "$pkgs" ] || die "No packages found in $pkg_file"
+
+    echo "Installing packages from $pkg_file"
+
+    # Single transaction (-Syu) so we never leave the system in a partial upgrade
+    if sudo pacman -Syu --needed --noconfirm $pkgs; then
+        echo "All packages installed"
+        return
+    fi
+
+    # A single bad name aborts the whole transaction, so retry one by one:
+    # valid packages still get installed and we report exactly what failed.
+    echo "Bulk install failed, retrying package by package..." >&2
+    local pkg
+    local failed=()
+    while read -r pkg; do
+        [ -n "$pkg" ] || continue
+        sudo pacman -S --needed --noconfirm "$pkg" || failed+=("$pkg")
+    done <<< "$pkgs"
+
+    if [ ${#failed[@]} -gt 0 ]; then
+        echo "Failed to install: ${failed[*]}" >&2
+        return 1
+    fi
+    echo "All packages installed"
 }
 
 install_fonts() {
@@ -268,6 +305,7 @@ show_help() {
     echo "  -v, --vim       Setup VIM"
     echo "  -f, --fonts     Install Fonts"
     echo "  -b, --bin       Install Binaries"
+    echo "  -p, --packages  Install packages listed in packages.txt"
     echo "  -g, --git       Setup Git config"
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
     echo "  -u, --tuigreet  Setup Tuigreet config"
@@ -278,6 +316,9 @@ show_help() {
 main(){
     if [ $# -eq 0 ]; then
         echo "No arguments provided. Starting interactive mode..."
+
+        read -p "Install packages from packages.txt? (y/n): " pkg_res
+        [[ "$pkg_res" =~ ^[Yy]$ ]] && install_packages
 
         read -p "Install Neovim config? (y/n): " nvim_res
         [[ "$nvim_res" =~ ^[Yy]$ ]] && setup_nvim
@@ -304,7 +345,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_tuigreet
+                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_tuigreet
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -318,6 +359,8 @@ main(){
                 install_fonts; shift ;;
             -b|--bin)
                 install_binaries; shift ;;
+            -p|--packages)
+                install_packages; shift ;;
             -H|--hypr)
                 setup_hypr_stack; shift ;;
             -u|--tuigreet)

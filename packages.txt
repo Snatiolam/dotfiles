@@ -1,0 +1,119 @@
+# Packages to install on a freshly installed Arch system.
+#
+# Format: one package per line. Blank lines and lines starting with '#'
+# are ignored (compatible with archinstall's package list).
+#
+# Usage:
+#   ./setup.sh --packages
+#
+# Packages are installed with: sudo pacman -Syu --needed --noconfirm
+# '--needed' makes re-running safe: whatever is already installed is left alone.
+
+# --- Base and boot (archinstall already handles most of this) ---
+base
+linux
+linux-firmware
+intel-ucode
+mkinitcpio
+btrfs-progs
+efibootmgr
+sudo
+networkmanager
+wpa_supplicant
+zram-generator
+
+# --- Shell and base utilities ---
+git
+which
+less
+man-db
+zsh
+tmux
+fzf
+unzip
+wget
+curl
+jq
+ripgrep
+fd
+eza
+bat
+btop
+
+# --- Development ---
+neovim
+vim
+gcc
+go
+npm
+
+# --- Desktop: Hyprland and its stack ---
+hyprland
+hyprpaper
+hyprlock
+hypridle
+quickshell
+uwsm
+waybar
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+polkit
+hyprpolkitagent
+
+# --- Terminals and launchers ---
+ghostty
+kitty
+alacritty
+foot
+rofi
+wofi
+
+# --- Notifications and clipboard ---
+dunst
+mako
+libnotify
+wl-clipboard
+cliphist
+
+# --- Screenshots ---
+grim
+slurp
+
+# --- Audio and video ---
+pipewire
+pipewire-pulse
+pipewire-alsa
+wireplumber
+pavucontrol
+playerctl
+mpv
+
+# --- Network, Bluetooth and printing ---
+network-manager-applet
+bluez
+bluez-utils
+blueman
+
+# --- Files and applications ---
+thunar
+file-roller
+zathura
+ranger
+firefox
+
+# --- Theming and fonts ---
+qt5ct
+qt6ct
+lxappearance
+nwg-look
+kvantum
+brightnessctl
+udiskie
+ttf-jetbrains-mono-nerd
+ttf-nerd-fonts-symbols
+
+# --- Display manager (pick ONE; greetd or sddm) ---
+greetd
+greetd-tuigreet
+# sddm

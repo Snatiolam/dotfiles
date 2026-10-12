@@ -7,6 +7,24 @@
 - [vimfile](.vimrc)
 - [polybar](.config/polybar/config)
 
+# Fresh install
+
+After installing Arch with `archinstall` (keep it minimal: base, kernel,
+bootloader, drivers, `networkmanager` and `git`), clone this repo and let
+`setup.sh` install the packages and the configs:
+
+```sh
+git clone <url-of-this-repo> ~/dotfiles
+cd ~/dotfiles
+./setup.sh --packages   # installs everything in packages.txt
+./setup.sh --all        # configs (nvim, zsh, hypr, fonts, ...)
+```
+
+The package list lives in [`packages.txt`](packages.txt): one package per
+line, with `#` comments. To add something new just edit that file and run
+`./setup.sh --packages` again; since it uses `pacman --needed`, whatever is
+already installed is left alone, so it is always safe to re-run.
+
 # Table of contents
 - [Software](#software-i-use)
   - [Basic utilities](#basic)
