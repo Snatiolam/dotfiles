@@ -27,17 +27,24 @@ install_binaries(){
 install_fonts() {
     check_command wget
     check_command unzip
+    check_command curl
 
     echo "Installing fonts UbuntuMono and Monaspice Nerd Fonts"
     FONT_DIR="$HOME/.local/share/fonts"
     mkdir -p "$FONT_DIR"
 
-    local font_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1"
-    wget -P "$FONT_DIR" "$font_url/UbuntuMono.zip" || die "Failed to download UbuntuMono fonts"
+    local font_url="https://github.com/ryanoasis/nerd-fonts/releases/download"
+    local tag
+    tag=$(curl -fsSL https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest \
+        | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1)
+    [ -n "$tag" ] || die "Failed to determine latest Nerd Fonts release"
+    echo "Using Nerd Fonts release $tag"
+
+    wget -P "$FONT_DIR" "$font_url/$tag/UbuntuMono.zip" || die "Failed to download UbuntuMono fonts"
     unzip -n "$FONT_DIR/UbuntuMono.zip" -d "$FONT_DIR" || die "Failed to extract UbuntuMono fonts"
     rm "$FONT_DIR/UbuntuMono.zip"
 
-    wget -P "$FONT_DIR" "$font_url/Monaspace.zip" || die "Failed to download Monaspace fonts"
+    wget -P "$FONT_DIR" "$font_url/$tag/Monaspace.zip" || die "Failed to download Monaspace fonts"
     unzip -n "$FONT_DIR/Monaspace.zip" -d "$FONT_DIR" || die "Failed to extract Monaspace fonts"
     rm "$FONT_DIR/Monaspace.zip"
 
