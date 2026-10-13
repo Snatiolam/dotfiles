@@ -52,10 +52,30 @@ AnchoredPopup {
     property string psk: ""
     property bool showPsk: false
 
+    // True while a WiFi scan is (probably) in flight. The backend exposes no
+    // "scanning" signal, so this is driven by a timeout purely for feedback.
+    property bool scanning: false
+
     // Scan only while the panel is open.
     onVisibleChanged: {
-        if (popup.wifi)
-            popup.wifi.scannerEnabled = popup.visible;
+        if (!popup.wifi)
+            return;
+        popup.wifi.scannerEnabled = popup.visible;
+        popup.scanning = popup.visible;
+        if (popup.visible)
+            scanTimeout.restart();
+        else
+            scanTimeout.stop();
+    }
+
+    // Kick off a fresh scan and show the spinner for a moment.
+    function rescan(): void {
+        if (popup.wifi) {
+            popup.wifi.scannerEnabled = false;
+            popup.wifi.scannerEnabled = true;
+        }
+        popup.scanning = true;
+        scanTimeout.restart();
     }
 
     function onNetworkClicked(n): void {
@@ -81,6 +101,14 @@ AnchoredPopup {
         popup.showPsk = false;
     }
 
+    // A WiFi scan reports no completion, so keep the spinner up briefly.
+    Timer {
+        id: scanTimeout
+        interval: 3000
+        repeat: false
+        onTriggered: popup.scanning = false
+    }
+
     ColumnLayout {
         id: col
         anchors.fill: parent
@@ -101,21 +129,36 @@ AnchoredPopup {
                 font.bold: true
             }
 
-            Text {
-                text: Icons.refresh
-                color: scanHover.hovered ? Theme.text : Theme.overlay0
-                font.family: Theme.font
-                font.pixelSize: 13
+            Item {
+                implicitWidth: scanIcon.implicitWidth
+                implicitHeight: scanIcon.implicitHeight
+                Layout.alignment: Qt.AlignVCenter
+
+                Text {
+                    id: scanIcon
+                    anchors.centerIn: parent
+                    text: Icons.refresh
+                    color: popup.scanning
+                           ? Theme.blue
+                           : (scanHover.hovered ? Theme.text : Theme.overlay0)
+                    font.family: Theme.font
+                    font.pixelSize: 13
+
+                    // Spin while a scan is in flight.
+                    RotationAnimator on rotation {
+                        running: popup.scanning
+                        from: 0
+                        to: 360
+                        duration: 900
+                        loops: Animation.Infinite
+                    }
+                }
+
                 HoverHandler { id: scanHover }
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: {
-                        if (popup.wifi) {
-                            popup.wifi.scannerEnabled = false;
-                            popup.wifi.scannerEnabled = true;
-                        }
-                    }
+                    onClicked: popup.rescan()
                 }
             }
 
@@ -245,7 +288,7 @@ AnchoredPopup {
 
             Text {
                 anchors.centerIn: parent
-                text: popup.wifi && popup.wifi.scannerEnabled
+                text: popup.scanning
                       ? "Scanning for networks…"
                       : "No networks found"
                 color: Theme.overlay0
