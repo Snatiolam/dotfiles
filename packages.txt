@@ -97,6 +97,7 @@ blueman
 
 # --- Power management (battery profiles in the Quickshell panel) ---
 power-profiles-daemon
+wlsunset
 
 # --- Files and applications ---
 thunar
