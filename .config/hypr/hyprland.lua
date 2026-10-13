@@ -275,6 +275,8 @@ hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("qs ipc call launcher toggle"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("qs ipc call lock lock"))    -- lock screen
+hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))  -- togglefloating
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" })) -- fullscreen
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
