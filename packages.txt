@@ -95,6 +95,9 @@ bluez
 bluez-utils
 blueman
 
+# --- Power management (battery profiles in the Quickshell panel) ---
+power-profiles-daemon
+
 # --- Files and applications ---
 thunar
 file-roller
