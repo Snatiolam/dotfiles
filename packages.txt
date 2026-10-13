@@ -64,14 +64,11 @@ hyprpolkitagent
 # --- Terminals and launchers ---
 ghostty
 kitty
-alacritty
 foot
 rofi
-wofi
 
 # --- Notifications and clipboard ---
-dunst
-mako
+# Notifications are served by Quickshell (see quickshell/config/Notifs.qml).
 libnotify
 wl-clipboard
 cliphist
@@ -97,21 +94,19 @@ blueman
 
 # --- Power management (battery profiles in the Quickshell panel) ---
 power-profiles-daemon
-wlsunset
+hyprsunset
 
 # --- Files and applications ---
 thunar
 file-roller
-zathura
+evince
 ranger
 firefox
+fastfetch
 
 # --- Theming and fonts ---
-qt5ct
 qt6ct
-lxappearance
 nwg-look
-kvantum
 brightnessctl
 udiskie
 ttf-jetbrains-mono-nerd

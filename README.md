@@ -1,11 +1,16 @@
 # Snatiolam Dotfiles & Configs
 
-![i3-preview](.screenshots/preview.png)
+![Hyprland + Quickshell](.screenshots/hypr_preview.png)
 
 ***Quick links***
-- [i3wm-config](.config/i3/config)
-- [vimfile](.vimrc)
-- [polybar](.config/polybar/config)
+
+| Config | Entry point | More |
+| --- | --- | --- |
+| **Hyprland** | [hyprland.conf](.config/hypr/hyprland.conf) | [colores · macchiato.conf](.config/hypr/macchiato.conf) · [wallpaper · hyprpaper.conf](.config/hypr/hyprpaper.conf) |
+| **Neovim** | [init.lua](.config/nvim/init.lua) | [lua/](.config/nvim/lua) (lazy, lsp, remap, vars) · [ftplugin/](.config/nvim/ftplugin) |
+| **Quickshell** | [shell.qml](.config/quickshell/shell.qml) | [modules/](.config/quickshell/modules) · [components/](.config/quickshell/components) · [config/](.config/quickshell/config) |
+
+Legacy: [i3wm](.config/i3/config) · [vim](.vimrc) · [polybar](.config/polybar/config)
 
 # Fresh install
 
@@ -42,7 +47,7 @@ already installed is left alone, so it is always safe to re-run.
 | pulseaudio                                                            | Proxy for sound/sound system                 |
 | pavucontrol                                                           | GUI for pulse audio                          |
 | [udiskie](https://wiki.archlinux.org/index.php/udisks)                | Wrapper of udisks for automount              |
-| [dunst](https://wiki.archlinux.org/index.php/Dunst)                   | Notification system                          |
+| [Quickshell](https://quickshell.org/)                                 | Notification system (built-in server)        |
 | [lightdm](https://wiki.archlinux.org/title/LightDM)                   | Display Manager (Login)                      |
 | [rofi](https://github.com/davatorium/rofi) / dmenu                    | Application Launcher                         |
 

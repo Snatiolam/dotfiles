@@ -1,7 +1,7 @@
 export PATH=$PATH:$HOME/.local/bin
 
 export EDITOR="vim"
-export TERMINAL="terminator"
+export TERMINAL="ghostty"
 export BROWSER="firefox"
-export READER="zathura"
+export READER="evince"
 

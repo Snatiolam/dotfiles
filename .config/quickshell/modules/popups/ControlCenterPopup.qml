@@ -21,8 +21,13 @@ AnchoredPopup {
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var audio: sink ? sink.audio : null
 
-    // ── Night light state ────────────────────────────────────────
+    // ── Night light (hyprsunset, Hyprland-native) ────────────────
+    // Tune these two to taste:
+    //   nightTemp  = colour temperature in Kelvin (1000-20000, lower = warmer)
+    //   nightGamma = display gamma in % (100 = unchanged, <100 dims the panel)
     property bool nightOn: false
+    property int nightTemp: 4000
+    property int nightGamma: 100
 
     Timer {
         interval: 3000
@@ -33,7 +38,7 @@ AnchoredPopup {
 
     Process {
         id: nightCheck
-        command: ["pgrep", "-x", "wlsunset"]
+        command: ["pgrep", "-x", "hyprsunset"]
         stdout: StdioCollector {
             onStreamFinished: cc.nightOn = (this.text || "").trim() !== ""
         }
@@ -48,13 +53,15 @@ AnchoredPopup {
     Process {
         id: nightStart
         running: false
-        command: ["sh", "-c", "setsid wlsunset -t 3000 -T 3100 >/dev/null 2>&1 &"]
+        command: ["sh", "-c",
+            "setsid hyprsunset -t " + cc.nightTemp + " -g " + cc.nightGamma
+            + " >/dev/null 2>&1 &"]
     }
 
     Process {
         id: nightStop
         running: false
-        command: ["sh", "-c", "pkill -x wlsunset"]
+        command: ["sh", "-c", "pkill -x hyprsunset"]
     }
 
     // ── Wi-Fi helpers ────────────────────────────────────────────

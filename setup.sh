@@ -240,6 +240,10 @@ setup_quickshell() {
     install_config_dir ".config/quickshell" "$HOME/.config/quickshell" "Quickshell"
 }
 
+setup_fastfetch() {
+    install_config_dir ".config/fastfetch" "$HOME/.config/fastfetch" "Fastfetch"
+}
+
 setup_tuigreet() {
     echo "Installing Tuigreet config"
     sudo mkdir -p /etc/tuigreet
@@ -308,6 +312,7 @@ show_help() {
     echo "  -p, --packages  Install packages listed in packages.txt"
     echo "  -g, --git       Setup Git config"
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
+    echo "  -F, --fastfetch Setup Fastfetch config"
     echo "  -u, --tuigreet  Setup Tuigreet config"
     echo "  -s, --sddm      Install SDDM + Catppuccin Macchiato theme"
     echo "  -h, --help      Show this help message"
@@ -332,6 +337,9 @@ main(){
         read -p "Install Hyprland + Quickshell config? (y/n): " hypr_res
         [[ "$hypr_res" =~ ^[Yy]$ ]] && setup_hypr_stack
 
+        read -p "Install Fastfetch config? (y/n): " fastfetch_res
+        [[ "$fastfetch_res" =~ ^[Yy]$ ]] && setup_fastfetch
+
         read -p "Install Tuigreet config? (y/n): " tuigreet_res
         [[ "$tuigreet_res" =~ ^[Yy]$ ]] && setup_tuigreet
 
@@ -345,7 +353,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_tuigreet
+                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_fastfetch; setup_tuigreet
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -363,6 +371,8 @@ main(){
                 install_packages; shift ;;
             -H|--hypr)
                 setup_hypr_stack; shift ;;
+            -F|--fastfetch)
+                setup_fastfetch; shift ;;
             -u|--tuigreet)
                 setup_tuigreet; shift ;;
             -s|--sddm)
