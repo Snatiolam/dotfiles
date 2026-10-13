@@ -38,11 +38,58 @@ AnchoredPopup {
         return n.security === WifiSecurityType.Open;
     }
 
+    // A connection attempt in flight.
+    function isConnecting(n): bool {
+        return !!n && n.state === ConnectionState.Connecting;
+    }
+
+    // Sort priority: the network being connected first, then the connected one,
+    // then everything else by signal strength.
+    function netRank(n): int {
+        if (popup.isConnecting(n)) return 0;
+        if (n.connected) return 1;
+        return 2;
+    }
+
+    // Human-readable failure reason for the password prompt.
+    function failText(reason): string {
+        switch (reason) {
+        case ConnectionFailReason.NoSecrets: return "Wrong password";
+        case ConnectionFailReason.WifiAuthTimeout: return "Authentication timed out";
+        case ConnectionFailReason.WifiClientFailed: return "Authentication failed";
+        case ConnectionFailReason.WifiNetworkLost: return "Network lost";
+        case ConnectionFailReason.WifiClientDisconnected: return "Disconnected";
+        default: return "Connection failed";
+        }
+    }
+
+    // A wrong password can surface as different reasons depending on the
+    // driver/NetworkManager version, so treat everything as retryable except a
+    // network that simply vanished.
+    function isAuthFail(reason): bool {
+        return reason !== ConnectionFailReason.WifiNetworkLost;
+    }
+
+    // NetworkManager saves the profile on the failed attempt, so without
+    // forgetting it every later click would reconnect with the bad secret and
+    // fail instantly. Drop it and reopen the prompt so the user can retry.
+    function onConnectionFailed(n, reason): void {
+        popup.pskError = popup.failText(reason);
+        if (popup.isAuthFail(reason) && !popup.isOpen(n)) {
+            n.forget();
+            popup.pendingNetwork = n;
+            popup.psk = "";
+            popup.showPsk = false;
+        }
+    }
+
     readonly property var networks: {
         if (!popup.wifi || !popup.wifi.networks) return [];
         const arr = popup.wifi.networks.values.slice();
         arr.sort((a, b) => {
-            if (a.connected !== b.connected) return a.connected ? -1 : 1;
+            const ra = popup.netRank(a);
+            const rb = popup.netRank(b);
+            if (ra !== rb) return ra - rb;
             return popup.normSignal(b) - popup.normSignal(a);
         });
         return arr;
@@ -51,6 +98,8 @@ AnchoredPopup {
     property var pendingNetwork: null
     property string psk: ""
     property bool showPsk: false
+    // Message shown in the password prompt after a failed attempt.
+    property string pskError: ""
 
     // True while a WiFi scan is (probably) in flight. The backend exposes no
     // "scanning" signal, so this is driven by a timeout purely for feedback.
@@ -62,10 +111,13 @@ AnchoredPopup {
             return;
         popup.wifi.scannerEnabled = popup.visible;
         popup.scanning = popup.visible;
-        if (popup.visible)
+        if (popup.visible) {
+            popup.pskError = "";
+            popup.pendingNetwork = null;
             scanTimeout.restart();
-        else
+        } else {
             scanTimeout.stop();
+        }
     }
 
     // Kick off a fresh scan and show the spinner for a moment.
@@ -79,23 +131,32 @@ AnchoredPopup {
     }
 
     function onNetworkClicked(n): void {
+        popup.pskError = "";
         if (n.connected) {
             n.disconnect();
+            return;
+        }
+        // Clicking the pending network again closes its prompt.
+        if (popup.pendingNetwork === n) {
+            popup.pendingNetwork = null;
             return;
         }
         if (popup.isOpen(n) || n.known) {
             n.connect();
             return;
         }
-        popup.pendingNetwork = (popup.pendingNetwork === n) ? null : n;
+        popup.pendingNetwork = n;
         popup.psk = "";
         popup.showPsk = false;
     }
 
     function submitPsk(): void {
         const n = popup.pendingNetwork;
-        if (n && popup.psk.length > 0)
-            n.connectWithPsk(popup.psk);
+        // Ignore empty submits so Enter does not dismiss the prompt.
+        if (!n || popup.psk.length === 0)
+            return;
+        popup.pskError = "";
+        n.connectWithPsk(popup.psk);
         popup.pendingNetwork = null;
         popup.psk = "";
         popup.showPsk = false;
@@ -240,24 +301,56 @@ AnchoredPopup {
 
                             SignalBars {
                                 value: popup.normSignal(modelData)
-                                accent: modelData.connected ? Theme.green : Theme.text
+                                accent: modelData.connected ? Theme.green
+                                        : popup.isConnecting(modelData) ? Theme.blue
+                                        : Theme.text
                             }
 
                             Text {
                                 Layout.fillWidth: true
                                 text: modelData.name
-                                color: modelData.connected ? Theme.text : Theme.subtext1
+                                color: modelData.connected ? Theme.text
+                                       : popup.isConnecting(modelData) ? Theme.blue
+                                       : Theme.subtext1
                                 font.family: Theme.font
                                 font.pixelSize: 12
                                 elide: Text.ElideRight
                             }
 
                             Text {
-                                visible: !popup.isOpen(modelData)
+                                visible: !popup.isOpen(modelData) && !popup.isConnecting(modelData)
                                 text: Icons.lock
                                 color: Theme.overlay0
                                 font.family: Theme.font
                                 font.pixelSize: 10
+                            }
+
+                            // Connection attempt in progress.
+                            RowLayout {
+                                visible: popup.isConnecting(modelData)
+                                spacing: 4
+
+                                Text {
+                                    text: Icons.refresh
+                                    color: Theme.blue
+                                    font.family: Theme.font
+                                    font.pixelSize: 10
+
+                                    RotationAnimator on rotation {
+                                        running: popup.isConnecting(modelData)
+                                        from: 0
+                                        to: 360
+                                        duration: 900
+                                        loops: Animation.Infinite
+                                    }
+                                }
+
+                                Text {
+                                    text: "connecting…"
+                                    color: Theme.blue
+                                    font.family: Theme.font
+                                    font.pixelSize: 10
+                                }
                             }
 
                             Text {
@@ -273,6 +366,14 @@ AnchoredPopup {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: popup.onNetworkClicked(modelData)
+                        }
+
+                        // Surface connect failures (e.g. wrong password).
+                        Connections {
+                            target: modelData
+                            function onConnectionFailed(reason) {
+                                popup.onConnectionFailed(modelData, reason);
+                            }
                         }
                     }
                 }
@@ -314,9 +415,15 @@ AnchoredPopup {
 
         // ── Password ──────────────────────────────────────────────
         ColumnLayout {
+            id: pskSection
             Layout.fillWidth: true
             visible: popup.pendingNetwork !== null
             spacing: 6
+
+            // Focus the field as soon as the prompt appears. Doing this on the
+            // section (not the TextInput) is what actually fires: a child item's
+            // own `visible` never changes when the parent is toggled.
+            onVisibleChanged: if (visible) Qt.callLater(pskInput.forceActiveFocus)
 
             RowLayout {
                 Layout.fillWidth: true
@@ -345,6 +452,16 @@ AnchoredPopup {
                 }
             }
 
+            Text {
+                Layout.fillWidth: true
+                visible: popup.pskError !== ""
+                text: popup.pskError
+                color: Theme.red
+                font.family: Theme.font
+                font.pixelSize: 11
+                elide: Text.ElideRight
+            }
+
             Rectangle {
                 Layout.fillWidth: true
                 height: 32
@@ -366,8 +483,11 @@ AnchoredPopup {
                     font.pixelSize: 12
                     echoMode: popup.showPsk ? TextInput.Normal : TextInput.Password
                     selectByMouse: true
+                    // Keep the field and the model in sync. textEdited fires only
+                    // on user input, so this one-way binding never loops.
+                    text: popup.psk
+                    onTextEdited: popup.psk = text
                     onAccepted: popup.submitPsk()
-                    onVisibleChanged: if (visible) forceActiveFocus()
                 }
             }
 
@@ -418,7 +538,10 @@ AnchoredPopup {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: popup.pendingNetwork = null
+                        onClicked: {
+                            popup.pendingNetwork = null;
+                            popup.pskError = "";
+                        }
                     }
                 }
             }
