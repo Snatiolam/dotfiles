@@ -28,6 +28,15 @@ hl.monitor({
     scale    = "auto",
 })
 
+-- XWayland cannot scale by fractional amounts (compensates the 1.5 scale).
+-- Stop Hyprland from rescaling X11 apps (Steam, etc.) so they stay sharp;
+-- those apps scale themselves per toolkit.
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
+})
+
 
 ---------------------
 ---- MY PROGRAMS ----
