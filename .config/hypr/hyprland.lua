@@ -44,9 +44,10 @@ hl.config({
 
 -- Set programs that you use
 local terminal    = "kitty" -- ghostty
-local fileManager = "nautilus"
+local fileManager = "thunar"
 local menu        = "rofi -show drun -theme ~/.config/rofi/config.rasi"
 local browser     = "firefox"
+local calculator  = "qalculate-qt"
 
 
 local col_mauve       = "rgba(c6a0f6ee)"
@@ -281,6 +282,7 @@ hl.bind(mainMod .. " + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(calculator))  -- Qalculate!
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("qs ipc call launcher toggle"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())

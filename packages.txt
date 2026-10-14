@@ -98,11 +98,19 @@ hyprsunset
 
 # --- Files and applications ---
 thunar
+tumbler
 file-roller
 evince
+imv
 ranger
 firefox
 fastfetch
+
+# --- Office and productivity ---
+# LibreOffice "fresh" (rama más reciente) + paquete de idioma español.
+libreoffice-fresh
+libreoffice-fresh-es
+qalculate-qt
 
 # --- Theming and fonts ---
 qt6ct
