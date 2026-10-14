@@ -29,15 +29,14 @@ AnchoredPopup {
     property int nightTemp: 4000
     property int nightGamma: 100
 
-    Timer {
-        interval: 3000
-        running: true
-        triggeredOnStart: true
-        onTriggered: nightCheck.running = true
-    }
+    // hyprsunset exposes no status signal, so probe only when the panel is
+    // actually opened and keep `nightOn` in sync from toggleNight() after that.
+    // No `pgrep` every few seconds while the panel is closed.
+    onVisibleChanged: if (visible) nightCheck.running = true
 
     Process {
         id: nightCheck
+        running: false
         command: ["pgrep", "-x", "hyprsunset"]
         stdout: StdioCollector {
             onStreamFinished: cc.nightOn = (this.text || "").trim() !== ""

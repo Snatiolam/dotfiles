@@ -67,7 +67,10 @@ Singleton {
         }
     }
 
-    // sysfs does not emit inotify events, so poll instead of watchChanges.
+    // sysfs does not emit inotify events, so it cannot be watched. Instead of
+    // polling, we read on demand: the compositor's brightness keybinds call
+    // `qs ipc call osd refresh` and the control-center slider refreshes on its
+    // own, so nothing here keeps the CPU awake while idle.
     FileView {
         id: brightnessFile
         path: "/sys/class/backlight/" + osd.backlight + "/brightness"
@@ -75,14 +78,8 @@ Singleton {
         onLoaded: osd.onBrightnessChange()
     }
 
-    Timer {
-        // sysfs has no inotify, so poll. Fast enough that brightness keys feel
-        // instant without spawning an extra process per keypress.
-        interval: 50
-        running: true
-        repeat: true
-        onTriggered: brightnessFile.reload()
-    }
+    // One initial read so the slider shows the real value before any keypress.
+    Component.onCompleted: brightnessFile.reload()
 
     function onBrightnessChange(): void {
         // Ignore reads that race with our own write while it is in flight.
@@ -160,6 +157,12 @@ Singleton {
 
         function volume(value: string): void {
             osd.showVolume(parseFloat(value) / 100, false);
+        }
+
+        // Re-read the backlight. Call this after changing brightness externally
+        // (e.g. from a Hyprland keybind) so the OSD reflects the real value.
+        function refresh(): void {
+            brightnessFile.reload();
         }
     }
 }

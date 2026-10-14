@@ -79,21 +79,51 @@ BarButton {
             root.audio.muted = false;
     }
 
-    Timer {
-        interval: 2000
+    // Reactive: one long-lived subscription to PipeWire events. The active port
+    // (headphones vs speakers) only changes on a jack plug, a profile switch or
+    // a default-sink change — all of which emit a pulse event — so we re-read
+    // the port only then, instead of polling every couple of seconds.
+    Process {
+        id: portEvents
         running: true
-        repeat: true
-        triggeredOnStart: true
+        command: ["pactl", "subscribe"]
+        stdout: SplitParser {
+            onRead: (line) => {
+                if (line.indexOf("sink") !== -1
+                        || line.indexOf("card") !== -1
+                        || line.indexOf("server") !== -1)
+                    portDebounce.restart();
+            }
+        }
+        // subscribe should stay up for the whole session; revive it if it dies.
+        onExited: portEventsRestart.restart()
+    }
+
+    Timer {
+        id: portEventsRestart
+        interval: 2000
+        repeat: false
+        onTriggered: portEvents.running = true
+    }
+
+    // A held volume key emits a burst of sink events; collapse them into one read.
+    Timer {
+        id: portDebounce
+        interval: 300
         onTriggered: portQuery.running = true
     }
 
     Process {
         id: portQuery
+        running: false
         command: ["pactl", "list", "sinks"]
         stdout: StdioCollector {
             onStreamFinished: root.parseActivePort(this.text)
         }
     }
+
+    // One initial read so the icon is correct before the first event.
+    Component.onCompleted: portQuery.running = true
 
     Row {
         id: row
