@@ -29,8 +29,12 @@ Rectangle {
     }
 
     Timer {
+        // Poll continuously: the MPRIS player list is empty for the first
+        // moments after startup and players may appear later (e.g. Firefox
+        // registering its MPRIS interface only when playback starts).
         interval: 1000
         running: true
+        repeat: true
         triggeredOnStart: true
         onTriggered: t.refreshPlayers()
     }
