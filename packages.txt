@@ -106,6 +106,9 @@ ranger
 firefox
 fastfetch
 
+# --- Flatpak (sandboxed app distribution) ---
+flatpak
+
 # --- Office and productivity ---
 # LibreOffice "fresh" (latest branch) + Spanish language pack.
 libreoffice-fresh
