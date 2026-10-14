@@ -107,7 +107,7 @@ firefox
 fastfetch
 
 # --- Office and productivity ---
-# LibreOffice "fresh" (rama más reciente) + paquete de idioma español.
+# LibreOffice "fresh" (latest branch) + Spanish language pack.
 libreoffice-fresh
 libreoffice-fresh-es
 qalculate-qt
@@ -119,8 +119,8 @@ brightnessctl
 udiskie
 ttf-jetbrains-mono-nerd
 ttf-nerd-fonts-symbols
-# Noto base + CJK (chino/japonés/coreano) + emoji: sin esto el navegador
-# pinta los glifos CJK y los emoji con cualquier fuente de fallback.
+# Noto base + CJK (Chinese/Japanese/Korean) + emoji: without these the browser
+# renders CJK glyphs and emoji with whatever fallback font it finds.
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji

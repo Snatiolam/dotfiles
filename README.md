@@ -6,7 +6,7 @@
 
 | Config | Entry point | More |
 | --- | --- | --- |
-| **Hyprland** | [hyprland.conf](.config/hypr/hyprland.conf) | [colores · macchiato.conf](.config/hypr/macchiato.conf) · [wallpaper · hyprpaper.conf](.config/hypr/hyprpaper.conf) |
+| **Hyprland** | [hyprland.lua](.config/hypr/hyprland.lua) | [colors · macchiato.conf](.config/hypr/macchiato.conf) · [wallpaper · hyprpaper.conf](.config/hypr/hyprpaper.conf) |
 | **Neovim** | [init.lua](.config/nvim/init.lua) | [lua/](.config/nvim/lua) (lazy, lsp, remap, vars) · [ftplugin/](.config/nvim/ftplugin) |
 | **Quickshell** | [shell.qml](.config/quickshell/shell.qml) | [modules/](.config/quickshell/modules) · [components/](.config/quickshell/components) · [config/](.config/quickshell/config) |
 
