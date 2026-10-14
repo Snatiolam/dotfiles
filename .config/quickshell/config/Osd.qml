@@ -37,12 +37,45 @@ Singleton {
 
     Connections {
         target: osd.audio
-        function onVolumesChanged(): void { osd.onAudioChange(); }
+        // Normal changes are shown immediately so holding the volume key keeps
+        // the OSD live. A volume of exactly 0 is the ambiguous case: unplugging
+        // USB headphones makes the outgoing node emit a final 0 while it is
+        // still `osd.audio`, and the switch to the next sink emits no change of
+        // its own. Deferring only the 0 means it is re-read once things settle,
+        // from whichever sink is default by then — no flash, no stuck 0%.
+        function onVolumesChanged(): void {
+            if (osd.audio && osd.audio.volume <= 0.001) osd.deferAudio();
+            else osd.onAudioChange();
+        }
         function onMutedChanged(): void { osd.onAudioChange(); }
+    }
+
+    // A default-sink switch (jack unplug, device selection) always re-shows the
+    // new sink's volume, after letting it settle/bind.
+    onSinkChanged: osd.deferAudio()
+
+    property int audioRetries: 0
+
+    function deferAudio(): void {
+        osd.audioRetries = 0;
+        audioDebounce.restart();
+    }
+
+    Timer {
+        id: audioDebounce
+        interval: 100
+        onTriggered: osd.onAudioChange();
     }
 
     function onAudioChange(): void {
         if (!osd.armed || !osd.audio) return;
+        // The new sink may still be binding; retry briefly so we never latch
+        // onto its not-yet-populated (0) volume.
+        if (osd.sink && !osd.sink.ready && osd.audioRetries < 5) {
+            osd.audioRetries++;
+            audioDebounce.restart();
+            return;
+        }
         osd.showVolume(osd.audio.volume, osd.audio.muted);
     }
 
