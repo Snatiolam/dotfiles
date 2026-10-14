@@ -59,6 +59,7 @@ Singleton {
     readonly property string play:     "\uF04B"
     readonly property string pause:    "\uF04C"
     readonly property string forward:  "\uF04E"
+    readonly property string back:     "\uF04A"
     readonly property string music:    "\uF001"
 
     // Control center / misc

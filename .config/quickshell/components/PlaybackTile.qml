@@ -74,6 +74,21 @@ Rectangle {
                 Layout.preferredHeight: 1
             }
 
+            Text {
+                text: Icons.back
+                color: (t.player && t.player.canGoPrevious)
+                       ? Theme.text : Theme.overlay0
+                font.family: Theme.font
+                font.pixelSize: 14
+                Layout.alignment: Qt.AlignVCenter
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: { if (t.player) t.player.previous(); }
+                }
+            }
+
             Rectangle {
                 width: 26
                 height: 26
