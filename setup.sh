@@ -256,48 +256,6 @@ setup_hypr_stack() {
     setup_hypr
 }
 
-setup_sddm() {
-    if ! command -v sddm &>/dev/null; then
-        echo "Installing SDDM"
-        if command -v pacman &>/dev/null; then
-            sudo pacman -S --needed --noconfirm sddm || die "Failed to install SDDM"
-        elif command -v apt-get &>/dev/null; then
-            sudo apt-get install -y sddm || die "Failed to install SDDM"
-        elif command -v dnf &>/dev/null; then
-            sudo dnf install -y sddm || die "Failed to install SDDM"
-        else
-            die "Unsupported package manager. Install SDDM manually."
-        fi
-    fi
-
-    echo "Installing Catppuccin Macchiato SDDM theme"
-    local theme_dir=/usr/share/sddm/themes/catppuccin-macchiato
-    sudo mkdir -p "$theme_dir"
-    sudo cp -f .config/sddm/macchiato/* .config/hypr/cat-waves.png "$theme_dir/"
-
-    # The greeter runs as another user and cannot read ~/.local/share/fonts
-    if compgen -G "$HOME/.local/share/fonts/Monaspice*" >/dev/null; then
-        sudo mkdir -p /usr/local/share/fonts
-        sudo cp -f "$HOME"/.local/share/fonts/Monaspice* /usr/local/share/fonts/
-        sudo fc-cache -f /usr/local/share/fonts >/dev/null
-    fi
-
-    # SDDM loads every file in sddm.conf.d, so stray theme configs must go
-    sudo mkdir -p /etc/sddm.conf.d /etc/sddm.conf.d.disabled
-    for f in /etc/sddm.conf.d/*; do
-        [ -f "$f" ] && [ "$(basename "$f")" != 10-catppuccin.conf ] && \
-            grep -qE '^(Current|ThemeDir)=' "$f" && sudo mv "$f" /etc/sddm.conf.d.disabled/
-    done
-    printf '[Theme]\nThemeDir=/usr/share/sddm/themes\nCurrent=catppuccin-macchiato\n' \
-        | sudo tee /etc/sddm.conf.d/10-catppuccin.conf >/dev/null
-
-    sudo systemctl enable sddm || die "Failed to enable SDDM"
-    for dm in lightdm gdm gdm3 lxdm slim xdm; do
-        systemctl is-enabled --quiet "$dm" 2>/dev/null && sudo systemctl disable "$dm"
-    done
-    echo "SDDM setup complete"
-}
-
 show_help() {
     echo "Usage: ./setup.sh [options]"
     echo ""
@@ -314,7 +272,6 @@ show_help() {
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
     echo "  -F, --fastfetch Setup Fastfetch config"
     echo "  -u, --tuigreet  Setup Tuigreet config"
-    echo "  -s, --sddm      Install SDDM + Catppuccin Macchiato theme"
     echo "  -h, --help      Show this help message"
 }
 
@@ -342,9 +299,6 @@ main(){
 
         read -p "Install Tuigreet config? (y/n): " tuigreet_res
         [[ "$tuigreet_res" =~ ^[Yy]$ ]] && setup_tuigreet
-
-        read -p "Install SDDM + Catppuccin Macchiato theme? (y/n): " sddm_res
-        [[ "$sddm_res" =~ ^[Yy]$ ]] && setup_sddm
 
         return
     fi
@@ -375,8 +329,6 @@ main(){
                 setup_fastfetch; shift ;;
             -u|--tuigreet)
                 setup_tuigreet; shift ;;
-            -s|--sddm)
-                setup_sddm; shift ;;
             -g|--git)
                 ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
             --firefox)

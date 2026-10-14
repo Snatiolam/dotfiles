@@ -6,7 +6,7 @@
 
 | Config | Entry point | More |
 | --- | --- | --- |
-| **Hyprland** | [hyprland.lua](.config/hypr/hyprland.lua) | [colors · macchiato.conf](.config/hypr/macchiato.conf) · [wallpaper · hyprpaper.conf](.config/hypr/hyprpaper.conf) |
+| **Hyprland** | [hyprland.lua](.config/hypr/hyprland.lua) | [wallpaper · hyprpaper.conf](.config/hypr/hyprpaper.conf) |
 | **Neovim** | [init.lua](.config/nvim/init.lua) | [lua/](.config/nvim/lua) (lazy, lsp, remap, vars) · [ftplugin/](.config/nvim/ftplugin) |
 | **Quickshell** | [shell.qml](.config/quickshell/shell.qml) | [modules/](.config/quickshell/modules) · [components/](.config/quickshell/components) · [config/](.config/quickshell/config) |
 
@@ -42,25 +42,26 @@ already installed is left alone, so it is always safe to re-run.
 
 | Software                                                              | Utility                                      |
 | --------------------------------------------------------------------- | -------------------------------------------- |
+| [Hyprland](https://hypr.land/)                                        | Wayland compositor (tiling WM)               |
+| [Quickshell](https://quickshell.org/)                                 | Status bar, notifications and launcher       |
+| [uwsm](https://github.com/Vladimir-csp/uwsm)                          | Wayland session manager                      |
+| [greetd](https://wiki.archlinux.org/title/Greetd) + tuigreet          | Display manager (login)                      |
 | [networkmanager](https://wiki.archlinux.org/index.php/NetworkManager) | Managing network                             |
 | network-manager-applet                                                | networkmanager tray                          |
-| pulseaudio                                                            | Proxy for sound/sound system                 |
-| pavucontrol                                                           | GUI for pulse audio                          |
+| [PipeWire](https://wiki.archlinux.org/title/PipeWire) + wireplumber   | Sound server                                 |
+| pavucontrol                                                           | GUI for PipeWire                             |
 | [udiskie](https://wiki.archlinux.org/index.php/udisks)                | Wrapper of udisks for automount              |
-| [Quickshell](https://quickshell.org/)                                 | Notification system (built-in server)        |
-| [lightdm](https://wiki.archlinux.org/title/LightDM)                   | Display Manager (Login)                      |
-| [rofi](https://github.com/davatorium/rofi) / dmenu                    | Application Launcher                         |
+| [rofi](https://github.com/davatorium/rofi)                            | Application launcher                         |
+| [cliphist](https://github.com/sentriz/cliphist) + wl-clipboard        | Clipboard history                            |
+| [hyprpaper](https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper/)         | Wallpaper                                    |
+| [hyprlock](https://wiki.hypr.land/Hypr-Ecosystem/hyprlock/) + hypridle | Lock screen / idle management                |
+| hyprsunset                                                            | Night light                                  |
+| [polkit](https://wiki.archlinux.org/title/Polkit) + hyprpolkitagent   | Privilege prompts                            |
 
 ---
 **NOTE**
 
-If you are using pulseaudio in an Asus Zenbook machine please read this: [Asus Zenbook UX390](https://wiki.archlinux.org/title/ASUS_Zenbook_UX390_(Espa%C3%B1ol))
-
-If you are using alsa in an Asus Zenbook machine please read this: [Asus Zenbook Fedora](https://discussion.fedoraproject.org/t/volume-control-not-working-only-mute-or-max-volume-after-fresh-install-of-fedora-34-gnome-40/73599/5?replies_to_post_number=3)
-
-Also headphones may also fail: [Here](https://askubuntu.com/questions/132440/headphone-jack-not-working)
-
-Configure .xprofile since your ~/.xinitrc won't be loaded if you are using lightdm
+Audio is handled by PipeWire; if a device or stream is muted, open `pavucontrol`.
 
 ---
 
@@ -69,31 +70,30 @@ Configure .xprofile since your ~/.xinitrc won't be loaded if you are using light
 
 | Software                                                        | Utility                         |
 | --------------------------------------------------------------- | ------------------------------- |
-| feh                                                             | CLI for setting wallpapers      |
-| picom                                                           | Compositor for Xorg             |
-| lxappearance                                                    | GUI for changing themes         |
-| [Material-Black-Cherry](https://www.gnome-look.org/p/1316887/)  | GTK-Theme                       |
-| [Material-Black-Cherry-Numix](https://www.pling.com/p/1333360/) | GTK-Icons                       |
-| [Nerd Fonts](https://www.nerdfonts.com/) (Hack)                 | Stable fonts (support glyphs)   |
+| [Catppuccin Macchiato](https://catppuccin.com/)                 | Color scheme                    |
+| [nwg-look](https://github.com/nwg-piotr/nwg-look)               | GUI for changing GTK themes     |
+| qt6ct                                                           | Qt6 theme configuration         |
+| [Nerd Fonts](https://www.nerdfonts.com/) (JetBrains Mono)       | Fonts with icons/glyphs         |
+| [Noto fonts](https://fonts.google.com/noto)                     | Base + CJK + emoji fonts        |
 
 ## Apps
 
-| Software                                                              | Utility                          |
-| ------------------------------------------------------------------------- | -------------------------------- |
-| Alacritty / rxvt-unicode (urxvt)                                          | Terminal emulator                |
-| Vim / Neovim                                                              | Best editor ever                 |
-| [maim](https://github.com/naelstrof/maim)                                 | Take screenshots                 |
-| redshift                                                                  | Eye care                         |
-| ranger                                                                    | Terminal file manager            |
-| thunar                                                                    | GUI file manager                 |
-| [mpd](https://wiki.archlinux.org/index.php/Music_Player_Daemon)           | music player daemon              |
-| ncmpcpp                                                                   | Client for mpd                   |
-| [OpenShot](https://www.openshot.org/)                                     | Video Editor                     |
-| [SongRec](https://github.com/marin-m/SongRec)                             | Song recognition (Shazam client) |
-| [OBS](https://obsproject.com/)                                            | Screen recording / streaming     |
-| [mpv](https://mpv.io/)/[vlc](https://www.videolan.org/vlc/)               | Video players                    |
-| [firejail](https://wiki.archlinux.org/title/firejail)                     | Reduce risk of security breaches |
-| [syncthing-gtk](https://wiki.archlinux.org/title/Syncthing#Syncthing-GTK) | Sync my pc with my phone         |
+| Software                                                                              | Utility                      |
+| ------------------------------------------------------------------------------------- | ---------------------------- |
+| [kitty](https://sw.kovidgoyal.net/kitty/) / [ghostty](https://ghostty.org/)           | Terminal emulator            |
+| [Neovim](https://neovim.io/) / vim                                                    | Editor                       |
+| [grim](https://github.com/emersion/grim) + [slurp](https://github.com/emersion/slurp) | Screenshots                  |
+| [firefox](https://www.mozilla.org/firefox/)                                           | Web browser                  |
+| [thunar](https://docs.xfce.org/xfce/thunar/start)                                     | GUI file manager             |
+| ranger                                                                                | Terminal file manager        |
+| [imv](https://sr.ht/~exec64/imv/)                                                     | Image viewer                 |
+| [evince](https://wiki.gnome.org/Apps/Evince)                                          | PDF / document viewer        |
+| [mpv](https://mpv.io/)                                                                | Video player                 |
+| [LibreOffice](https://www.libreoffice.org/)                                           | Office suite                 |
+| [Qalculate!](https://qalculate.github.io/)                                            | Calculator                   |
+| file-roller                                                                           | Archive manager              |
+| [btop](https://github.com/aristocratos/btop) / [fastfetch](https://github.com/fastfetch-cli/fastfetch) | System monitor / info |
+| [blueman](https://github.com/blueman-project/blueman) + bluez                         | Bluetooth management         |
 
 ### File Manager
 
