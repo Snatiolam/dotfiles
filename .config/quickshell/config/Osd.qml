@@ -117,6 +117,15 @@ Singleton {
     function onBrightnessChange(): void {
         // Ignore reads that race with our own write while it is in flight.
         if (osd.applying || osd.pendingBrightness >= 0) return;
+        // The two files load independently, so at startup `brightness` may
+        // finish before `max_brightness` and the scale would still be unknown
+        // (discarding the read below and leaving the OSD/CC stuck at 0%). Read
+        // it synchronously then; it is a one-shot because `maxBrightness` is
+        // remembered once set.
+        if (osd.maxBrightness <= 0) {
+            const m = parseInt(maxFile.text());
+            if (!isNaN(m) && m > 0) osd.maxBrightness = m;
+        }
         if (osd.maxBrightness <= 0) return;
         const raw = parseInt(brightnessFile.text());
         if (isNaN(raw)) return;
