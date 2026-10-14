@@ -111,6 +111,11 @@ brightnessctl
 udiskie
 ttf-jetbrains-mono-nerd
 ttf-nerd-fonts-symbols
+# Noto base + CJK (chino/japonés/coreano) + emoji: sin esto el navegador
+# pinta los glifos CJK y los emoji con cualquier fuente de fallback.
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
 
 # --- Display manager (pick ONE; greetd or sddm) ---
 greetd
