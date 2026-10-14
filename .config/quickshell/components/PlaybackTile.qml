@@ -9,7 +9,19 @@ import qs.config
 Rectangle {
     id: t
 
-    property var player: null
+    // Reactive player selection (no polling): this binding re-evaluates when
+    // the MPRIS player list changes (ObjectModel.valuesChanged) or when the
+    // playback state of any player changes, so it also picks up players that
+    // appear after the shell has started.
+    readonly property var player: {
+        const arr = Mpris.players.values;
+        let best = null;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].isPlaying) { best = arr[i]; break; }
+        }
+        if (!best && arr.length > 0) best = arr[0];
+        return best;
+    }
     readonly property bool playing: !!t.player && t.player.isPlaying
 
     implicitHeight: 144
@@ -17,27 +29,6 @@ Rectangle {
     color: t.playing ? Theme.tint(Theme.mauve, 0.18) : Theme.surface0
     border.width: t.playing ? 1 : 0
     border.color: Qt.rgba(Theme.mauve.r, Theme.mauve.g, Theme.mauve.b, 0.5)
-
-    function refreshPlayers(): void {
-        const arr = Mpris.players.values;
-        let best = null;
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].isPlaying) { best = arr[i]; break; }
-        }
-        if (!best && arr.length > 0) best = arr[0];
-        t.player = best;
-    }
-
-    Timer {
-        // Poll continuously: the MPRIS player list is empty for the first
-        // moments after startup and players may appear later (e.g. Firefox
-        // registering its MPRIS interface only when playback starts).
-        interval: 1000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: t.refreshPlayers()
-    }
 
     ColumnLayout {
         anchors.fill: parent
