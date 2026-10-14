@@ -320,6 +320,19 @@ hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
 
+-- Surfshark floating overlay -> send to scratchpad so we can toggle it
+hl.window_rule({
+    name      = "surfshark-overlay",
+    match     = { class = "^Surfshark$" },
+    float     = true,
+    pin       = false,
+    workspace = "special:surfshark silent",
+})
+
+-- Toggle Surfshark overlay
+hl.bind("SUPER + SHIFT + V", hl.dsp.workspace.toggle_special("surfshark"))
+
+
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------
