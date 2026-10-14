@@ -39,6 +39,12 @@
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/stayfree/latest.xpi",
         "private_browsing": true
       }
+    },
+    "Preferences": {
+      "media.audioFocus.management": {
+        "Value": true,
+        "Status": "locked"
+      }
     }
   }
 }
