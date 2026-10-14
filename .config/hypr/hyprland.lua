@@ -64,6 +64,8 @@ local col_baseAlpha00 = "rgba(00000000)"
 --
 hl.on("hyprland.start", function ()
     hl.exec_cmd("hyprpaper & quickshell")
+    -- Polkit authentication agent (needed for GUI privilege prompts)
+    hl.exec_cmd("systemctl --user start hyprpolkitagent")
 end)
 
 
