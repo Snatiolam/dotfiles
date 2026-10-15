@@ -105,6 +105,7 @@ evince
 imv
 ranger
 firefox
+thunderbird
 fastfetch
 
 # --- Flatpak (sandboxed app distribution) ---
