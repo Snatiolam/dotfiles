@@ -80,9 +80,30 @@ Singleton {
     }
 
     // ── Backlight listener (brightness) ───────────────────────────
-    readonly property string backlight: "intel_backlight"
+    // The device name differs per machine (intel_backlight, acpi_video0,
+    // amdgpu_bl0, ...), so it must be detected at startup. Hardcoding one name
+    // makes the slider and OSD stay at 0% on any machine using another device.
+    property string backlight: ""
     property int maxBrightness: 0
     property real lastBrightness: -1
+
+    function applyBacklight(name: string): void {
+        if (!name || name === osd.backlight) return;
+        osd.backlight = name;
+        // The FileView paths follow `backlight`; re-read both files so the
+        // value shows immediately after detection.
+        maxFile.reload();
+        brightnessFile.reload();
+    }
+
+    Process {
+        id: blDetect
+        running: false
+        command: ["sh", "-c", "ls -1 /sys/class/backlight | head -1"]
+        stdout: StdioCollector {
+            onStreamFinished: osd.applyBacklight(this.text.trim())
+        }
+    }
 
     // Writes are serialized: while brightnessctl runs, further slider moves are
     // coalesced into pendingBrightness and applied when it exits. This keeps
@@ -92,7 +113,7 @@ Singleton {
 
     FileView {
         id: maxFile
-        path: "/sys/class/backlight/" + osd.backlight + "/max_brightness"
+        path: osd.backlight ? ("/sys/class/backlight/" + osd.backlight + "/max_brightness") : ""
         blockLoading: true
         onLoaded: {
             const n = parseInt(maxFile.text());
@@ -106,13 +127,14 @@ Singleton {
     // own, so nothing here keeps the CPU awake while idle.
     FileView {
         id: brightnessFile
-        path: "/sys/class/backlight/" + osd.backlight + "/brightness"
+        path: osd.backlight ? ("/sys/class/backlight/" + osd.backlight + "/brightness") : ""
         blockLoading: true
         onLoaded: osd.onBrightnessChange()
     }
 
-    // One initial read so the slider shows the real value before any keypress.
-    Component.onCompleted: brightnessFile.reload()
+    // Detect the backlight device; `applyBacklight` performs the first read so
+    // the slider shows the real value before any keypress.
+    Component.onCompleted: blDetect.running = true
 
     function onBrightnessChange(): void {
         // Ignore reads that race with our own write while it is in flight.
