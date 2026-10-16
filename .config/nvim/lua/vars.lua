@@ -64,7 +64,7 @@ vim.o.softtabstop = 4
 vim.o.expandtab = true
 
 -- Undo
-vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.o.undodir = vim.fn.stdpath("data") .. "/undodir"
 vim.o.undofile = true
 
 -- Show spaces
@@ -72,5 +72,4 @@ vim.o.list = true
 vim.o.listchars = "tab:>-,space:·"
 
 -- Copy to clipboard
-vim.o.clipboard=unnamedplus
-vim.api.nvim_set_option("clipboard", "unnamedplus")
+vim.o.clipboard = "unnamedplus"

@@ -47,6 +47,8 @@ tree-sitter-cli
 gcc
 go
 npm
+rust
+rust-src
 
 # --- Desktop: Hyprland and its stack ---
 hyprland

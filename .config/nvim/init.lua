@@ -1,5 +1,4 @@
 require("vars")
-require("lazy_init")
+require("lazy")
 require("remap")
-require("lsp")
 

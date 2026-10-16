@@ -10,9 +10,6 @@ map("n", "<down>", "<NOP>")
 map("n", "<up>", "<NOP>")
 map("n", "<right>", "<NOP>")
 
-map("n", "<C-n>", ":NvimTreeToggle<CR>")
-map("n", "<C-u>", ":UndotreeToggle<CR>")
-
 -- Vertical resize
 map("n", "<leader>+", ":vertical resize +5<cr>")
 map("n", "<leader>-", ":vertical resize -5<cr>")
@@ -42,16 +39,9 @@ map("n", "<leader>s", ":%s//gI<left><left><left>")
 -- Get rid of search highlights
 map("n", "<leader>/", ":nohlsearch<cr>", { silent = true })
 
--- fzf keymaps
-map("n", "<leader>p", ":Files<CR>")
-map("n", "<leader>ob", ":Buffers<CR>")
-
--- Telescope
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+-- Note: file tree (<C-n>), undotree (<C-u>), telescope and codecompanion
+-- keymaps live in their plugin specs (lua/plugins/*.lua) so the plugins
+-- load only when those keys are pressed.
 
 -- Awesome Remaps
 -- Now undo breaks without exiting insert mode an loose everything you wrote
@@ -74,6 +64,11 @@ map("n", "Y", 'y$')
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     callback = function()
+        -- Skip special buffers (help, quickfix, plugin scratch...): fixing
+        -- whitespace there fails with E21 and just shows a noisy error.
+        if not vim.bo.modifiable or vim.bo.readonly or vim.bo.buftype ~= "" then
+            return
+        end
         local save_cursor = vim.fn.getpos(".")
         vim.cmd([[%s/\s\+$//e]])
         vim.fn.setpos(".", save_cursor)
@@ -90,11 +85,3 @@ vim.api.nvim_create_autocmd(
   }
 )
 
--- Open the Chat Sidebar
-vim.keymap.set({ "n", "v" }, "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-
--- Inline rewrite (Highlight code and hit <leader>ai)
-vim.keymap.set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true })
-
--- Add selected code to the current chat
-vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
