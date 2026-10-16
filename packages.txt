@@ -86,6 +86,7 @@ wireplumber
 pavucontrol
 playerctl
 mpv
+qt6-multimedia-ffmpeg
 
 # --- Network, Bluetooth and printing ---
 network-manager-applet
@@ -116,6 +117,9 @@ flatpak
 libreoffice-fresh
 libreoffice-fresh-es
 qalculate-qt
+# Study and note-taking
+anki
+xournalpp
 
 # --- Theming and fonts ---
 qt6ct
