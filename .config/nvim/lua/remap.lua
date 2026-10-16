@@ -26,10 +26,10 @@ map("n", "<leader>q", ":q<cr>")
 map("n", "<leader>w", ":w<cr>")
 
 -- Alias to split window with a new file
-map("n", "<leader>h", ":split<Space>")
+map("n", "<leader>sp", ":split<Space>")
 map("n", "<leader>v", ":vsplit<Space>")
 
--- Alias to split window with a new file
+-- Navigate between windows
 -- <C-w>h == :wincmd h<CR>
 map("n", "<leader>h", ":wincmd h<cr>")
 map("n", "<leader>j", ":wincmd j<cr>")

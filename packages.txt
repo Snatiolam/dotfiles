@@ -43,6 +43,7 @@ btop
 # --- Development ---
 neovim
 vim
+tree-sitter-cli
 gcc
 go
 npm
