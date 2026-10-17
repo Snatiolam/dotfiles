@@ -76,6 +76,24 @@ Audio is handled by PipeWire; if a device or stream is muted, open `pavucontrol`
 | [Nerd Fonts](https://www.nerdfonts.com/) (JetBrains Mono)       | Fonts with icons/glyphs         |
 | [Noto fonts](https://fonts.google.com/noto)                     | Base + CJK + emoji fonts        |
 
+### Dark mode
+
+Dark appearance is set **per toolkit**, because GTK3 and GTK4/libadwaita read it
+from different sources (there is no single switch that covers both):
+
+| Toolkit                              | Mechanism                              | Where                                                                                                                            |
+| ------------------------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| GTK3 (Thunar, Xfce apps, ...)         | `gtk-application-prefer-dark-theme=1`  | [.config/gtk-3.0/settings.ini](.config/gtk-3.0/settings.ini)                                                                      |
+| GTK4 / libadwaita (Ghostty, Nautilus) | freedesktop `color-scheme` (XDG portal) | `gsettings set org.gnome.desktop.interface color-scheme prefer-dark` (run at login from [hyprland.lua](.config/hypr/hyprland.lua)) |
+
+> On GTK 3.24 the theme names `Adwaita-dark` / `adw-gtk3-dark` do **not** turn
+> apps dark on their own: if that theme is not installed they silently fall back
+> to the *light* Adwaita. Only the `gtk-application-prefer-dark-theme` flag is
+> reliable for GTK3, which is why it lives in `settings.ini`.
+>
+> Note: GTK3 does not reload the theme at runtime, so already-open apps need to
+> be restarted after a change.
+
 ## Apps
 
 | Software                                                                              | Utility                      |

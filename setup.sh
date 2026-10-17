@@ -248,6 +248,14 @@ setup_ghostty() {
     install_config_dir ".config/ghostty" "$HOME/.config/ghostty" "Ghostty"
 }
 
+setup_gtk() {
+    # Dark mode for GTK3 apps (Thunar, Xfce apps, ...). GTK3 ignores the
+    # freedesktop `color-scheme`; it only honours `gtk-application-prefer-dark-theme`
+    # from settings.ini. GTK4/libadwaita apps (Ghostty, Nautilus, ...) are handled
+    # separately by `color-scheme prefer-dark` in hyprland.lua.
+    install_config_dir ".config/gtk-3.0" "$HOME/.config/gtk-3.0" "GTK3"
+}
+
 setup_tuigreet() {
     echo "Installing Tuigreet config"
     sudo mkdir -p /etc/tuigreet
@@ -277,6 +285,7 @@ show_help() {
     echo "  -F, --fastfetch Setup Fastfetch config"
     echo "  -u, --tuigreet  Setup Tuigreet config"
     echo "  -G, --ghostty   Setup Ghostty config"
+    echo "  -K, --gtk       Setup GTK3 dark mode (settings.ini)"
     echo "  -h, --help      Show this help message"
 }
 
@@ -308,6 +317,9 @@ main(){
         read -p "Install Ghostty config? (y/n): " ghostty_res
         [[ "$ghostty_res" =~ ^[Yy]$ ]] && setup_ghostty
 
+        read -p "Install GTK3 dark mode? (y/n): " gtk_res
+        [[ "$gtk_res" =~ ^[Yy]$ ]] && setup_gtk
+
         return
     fi
 
@@ -315,7 +327,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty
+                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -339,6 +351,8 @@ main(){
                 setup_tuigreet; shift ;;
             -G|--ghostty)
                 setup_ghostty; shift ;;
+            -K|--gtk)
+                setup_gtk; shift ;;
             -g|--git)
                 ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
             --firefox)
