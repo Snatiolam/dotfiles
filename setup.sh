@@ -244,6 +244,10 @@ setup_fastfetch() {
     install_config_dir ".config/fastfetch" "$HOME/.config/fastfetch" "Fastfetch"
 }
 
+setup_ghostty() {
+    install_config_dir ".config/ghostty" "$HOME/.config/ghostty" "Ghostty"
+}
+
 setup_tuigreet() {
     echo "Installing Tuigreet config"
     sudo mkdir -p /etc/tuigreet
@@ -272,6 +276,7 @@ show_help() {
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
     echo "  -F, --fastfetch Setup Fastfetch config"
     echo "  -u, --tuigreet  Setup Tuigreet config"
+    echo "  -G, --ghostty   Setup Ghostty config"
     echo "  -h, --help      Show this help message"
 }
 
@@ -300,6 +305,9 @@ main(){
         read -p "Install Tuigreet config? (y/n): " tuigreet_res
         [[ "$tuigreet_res" =~ ^[Yy]$ ]] && setup_tuigreet
 
+        read -p "Install Ghostty config? (y/n): " ghostty_res
+        [[ "$ghostty_res" =~ ^[Yy]$ ]] && setup_ghostty
+
         return
     fi
 
@@ -307,7 +315,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_fastfetch; setup_tuigreet
+                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -329,6 +337,8 @@ main(){
                 setup_fastfetch; shift ;;
             -u|--tuigreet)
                 setup_tuigreet; shift ;;
+            -G|--ghostty)
+                setup_ghostty; shift ;;
             -g|--git)
                 ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
             --firefox)
