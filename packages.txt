@@ -41,6 +41,7 @@ bat
 btop
 
 # --- Development ---
+base-devel
 neovim
 vim
 tree-sitter-cli
