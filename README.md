@@ -94,6 +94,16 @@ from different sources (there is no single switch that covers both):
 > Note: GTK3 does not reload the theme at runtime, so already-open apps need to
 > be restarted after a change.
 
+### Icon theme
+
+Qt apps (quickshell, ...) do not read the desktop icon theme on their own:
+without a platform theme they fall back to `hicolor`, which is nearly empty, so
+every themed icon fails to load. Quickshell then draws its magenta placeholder
+instead of the real icon (for example on "device can be removed" notifications).
+
+`QT_QPA_PLATFORMTHEME=gtk3` (set in [hyprland.lua](.config/hypr/hyprland.lua))
+makes Qt pick up the desktop icon theme (Adwaita) through GTK.
+
 ## Apps
 
 | Software                                                                              | Utility                      |

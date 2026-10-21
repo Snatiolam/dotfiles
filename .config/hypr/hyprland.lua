@@ -66,6 +66,12 @@ end)
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
+-- Let Qt (quickshell) read the desktop icon theme through GTK.
+-- Without this, Qt falls back to "hicolor" (nearly empty) and every themed
+-- icon fails to load, so notifications show Quickshell's magenta placeholder
+-- instead of the real icon.
+hl.env("QT_QPA_PLATFORMTHEME", "gtk3")
+
 
 -----------------------
 ----- PERMISSIONS -----

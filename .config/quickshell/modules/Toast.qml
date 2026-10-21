@@ -25,19 +25,76 @@ PanelWindow {
     property string nSummary: ""
     property string nBody: ""
     property string nImage: ""
+    property string nAppIcon: ""
     property int nUrgency: 0
     property var nRef: null
 
+    // Resolved icon source, plus a secondary source used when the first one
+    // cannot be loaded. Both are empty when there is nothing to show.
+    property string nIconUrl: ""
+    property string nIconAltUrl: ""
+
     implicitWidth: 360
     implicitHeight: Math.max(72, toastContent.implicitHeight + 24)
+
+    // Quickshell draws a magenta placeholder when a themed icon does not
+    // resolve, so every icon request gets a fallback icon attached.
+    function themedIconUrl(name: string, fallback: string): string {
+        if (name === "") return "";
+        let url = "image://icon/" + name;
+        if (fallback !== "" && fallback !== name)
+            url += "?fallback=" + fallback;
+        return url;
+    }
+
+    // A themed icon name never contains a slash; anything else is a file path.
+    function iconNameOf(value: string): string {
+        if (value === "" || value.indexOf("/") !== -1 || value.startsWith("file:"))
+            return "";
+        return value;
+    }
+
+    // Picks the best icon for a notification:
+    //   1. the icon name or image attached by the app
+    //   2. the app icon
+    //   3. a generic "missing image" icon
+    function resolveIcon(image: string, appIcon: string): void {
+        // Reset first: a notification without an icon must not inherit the
+        // icon of the previous one.
+        nIconUrl = "";
+        nIconAltUrl = "";
+        const appName = iconNameOf(appIcon);
+
+        if (image.startsWith("image://icon/")) {
+            // Quickshell turned the "image-path" hint into a themed icon.
+            const name = image.substring("image://icon/".length).split("?")[0];
+            const fb = (appName !== "" && appName !== name) ? appName : "image-missing";
+            nIconUrl = themedIconUrl(name, fb);
+            nIconAltUrl = themedIconUrl(fb, "image-missing");
+        } else if (image !== "") {
+            // A real picture sent by the app.
+            nIconUrl = image;
+            nIconAltUrl = appName !== "" ? themedIconUrl(appName, "image-missing") : "";
+        } else if (appName !== "") {
+            // No image, but the app advertised an icon.
+            nIconUrl = themedIconUrl(appName, "image-missing");
+            nIconAltUrl = themedIconUrl("image-missing", "");
+        } else if (appIcon !== "") {
+            // The app icon was given as a path instead of a name.
+            nIconUrl = appIcon;
+            nIconAltUrl = themedIconUrl("image-missing", "");
+        }
+    }
 
     function push(n): void {
         nRef = n;
         nApp = n.appName || "";
         nImage = n.image || "";
+        nAppIcon = n.appIcon || "";
         nSummary = n.summary || "";
         nBody = n.body || "";
         nUrgency = n.urgency;
+        resolveIcon(nImage, nAppIcon);
         showing = true;
         hideTimer.restart();
     }
@@ -86,17 +143,30 @@ PanelWindow {
 
             Rectangle {
                 Layout.alignment: Qt.AlignVCenter
-                Layout.preferredWidth: 64
-                Layout.preferredHeight: 64
-                visible: win.nImage !== ""
-                radius: 10
+                Layout.preferredWidth: 48
+                Layout.preferredHeight: 48
+                visible: win.nIconUrl !== ""
+                radius: 8
                 color: Theme.surface1
                 clip: true
 
                 Image {
+                    id: iconImg
                     anchors.fill: parent
-                    source: win.nImage
+                    source: win.nIconUrl
                     fillMode: Image.PreserveAspectCrop
+                    asynchronous: true
+
+                    // If the primary source fails to load, fall back to the
+                    // secondary one. Writing to the window property keeps the
+                    // binding of `source` intact.
+                    onStatusChanged: {
+                        if (status === Image.Error && win.nIconAltUrl !== "") {
+                            const alt = win.nIconAltUrl;
+                            win.nIconAltUrl = "";
+                            win.nIconUrl = alt;
+                        }
+                    }
                 }
             }
 
