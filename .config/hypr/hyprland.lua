@@ -337,7 +337,7 @@ hl.window_rule({
     match     = { class = "^Surfshark$" },
     float     = true,
     pin       = false,
-    workspace = "special:surfshark silent",
+    -- workspace = "special:surfshark silent",
 })
 
 -- Toggle Surfshark overlay
