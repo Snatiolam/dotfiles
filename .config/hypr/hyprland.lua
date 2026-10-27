@@ -393,3 +393,13 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+
+-- =========================
+-- MONITORS
+-- =========================
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/monitor-toggle.sh"))
+hl.bind(mainMod .. " + CTRL + left",  hl.dsp.focus({ monitor = "-1" }))
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.focus({ monitor = "+1" }))
+hl.bind(mainMod .. " + ALT + left",   hl.dsp.window.move({ monitor = "-1" }))
+hl.bind(mainMod .. " + ALT + right",  hl.dsp.window.move({ monitor = "+1" }))
