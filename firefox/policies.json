@@ -38,6 +38,11 @@
         "installation_mode": "force_installed",
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/stayfree/latest.xpi",
         "private_browsing": true
+      },
+      "jid1-ZAdIEUB7XOzOJw@jetpack": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/duckduckgo-for-firefox/latest.xpi",
+        "private_browsing": true
       }
     },
     "Preferences": {
