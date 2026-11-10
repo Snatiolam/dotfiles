@@ -89,6 +89,21 @@ install_fonts() {
     echo "Fonts installed successfully"
 }
 
+setup_dirs() {
+    echo "Creating XDG user directories"
+    if command -v xdg-user-dirs-update >/dev/null 2>&1; then
+        xdg-user-dirs-update
+    else
+        echo "xdg-user-dirs-update not found; skipping XDG user directories" >&2
+    fi
+
+    # The Hyprland screenshot bindings write to $HOME/Pictures/Screenshots,
+    # so create it even if the XDG pictures directory has another name.
+    echo "Creating screenshots directory"
+    mkdir -p "$HOME/Pictures/Screenshots"
+    echo "Screenshots directory ready: $HOME/Pictures/Screenshots"
+}
+
 setup_tmux() {
     echo "Installing TMUX configuration files"
     FILE="$HOME"/.tmux.conf
@@ -171,6 +186,7 @@ install_nvim_files() {
 }
 
 setup_zsh(){
+    check_command zsh
     ZSHRC="$HOME/.zshrc"
     echo "Installing ZSH configuration files"
     if [ -f "$ZSHRC" ]; then
@@ -204,6 +220,17 @@ setup_zsh(){
         echo "zsh-syntax-highlighting plugin is not installed. Installing zsh-syntax-highlighting plugin."
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting \
             || die "Failed to clone zsh-syntax-highlighting"
+    fi
+
+    local zsh_bin
+    zsh_bin="$(command -v zsh)"
+    grep -qx "$zsh_bin" /etc/shells || echo "$zsh_bin" | sudo tee -a /etc/shells >/dev/null
+
+    if [ "$(getent passwd "$USER" | cut -d: -f7)" = "$zsh_bin" ]; then
+        echo "zsh is already the default shell"
+    else
+        echo "Setting zsh as the default shell"
+        chsh -s "$zsh_bin" || die "Failed to set zsh as the default shell"
     fi
 }
 
@@ -264,6 +291,7 @@ setup_tuigreet() {
 }
 
 setup_hypr_stack() {
+    setup_dirs
     setup_quickshell
     setup_hypr
 }
@@ -327,7 +355,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_fonts; setup_tmux; setup_nvim; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
+                install_packages; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;

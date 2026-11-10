@@ -25,6 +25,10 @@ cd ~/dotfiles
 ./setup.sh --all        # configs (nvim, zsh, hypr, fonts, ...)
 ```
 
+`setup.sh` also sets zsh as the default shell, creates the XDG user
+directories and `~/Pictures/Screenshots`, and Hyprland's `monitors.lua` uses
+`scale = "auto"`, so it adapts to the monitor of each machine.
+
 The package list lives in [`packages.txt`](packages.txt): one package per
 line, with `#` comments. To add something new just edit that file and run
 `./setup.sh --packages` again; since it uses `pacman --needed`, whatever is
