@@ -70,4 +70,18 @@ Singleton {
     readonly property string eyeSlash: "\uF070"
     readonly property string trash:  "\uF1F8"
     readonly property string search: "\uF002"
+
+    // Bluetooth device types (mapped from BlueZ icon names, font-verified)
+    readonly property string keyboard: "\uF11C"
+    readonly property string mouse:    "\uEFBA"
+    readonly property string phone:    "\uF095"
+    readonly property string watch:    "\uEB7C"
+    readonly property string laptop:   "\uF109"
+    readonly property string tablet:   "\uED2E"
+    readonly property string printer:  "\uF02F"
+    readonly property string camera:   "\uF030"
+    readonly property string gamepad:  "\uF11B"
+
+    // Settings
+    readonly property string gear: "\uF013"
 }
