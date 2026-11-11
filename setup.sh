@@ -61,6 +61,63 @@ install_packages() {
     echo "All packages installed"
 }
 
+install_yay() {
+    # Idempotent: if yay is already available there is nothing to do.
+    if command -v yay >/dev/null 2>&1; then
+        echo "yay is already installed ($(command -v yay))"
+        return
+    fi
+
+    echo "yay not found. Installing yay from the AUR..."
+
+    # makepkg refuses to run as root, and yay has to be built as the normal user.
+    [ "$(id -u)" -ne 0 ] || die "yay must be built as a regular user, not root"
+    check_command git
+    check_command makepkg
+
+    # Build dependencies for makepkg. --needed keeps this safe to re-run.
+    sudo pacman -S --needed --noconfirm base-devel git \
+        || die "Failed to install yay build dependencies"
+
+    local build_dir
+    build_dir=$(mktemp -d)
+
+    if ! git clone --depth 1 https://aur.archlinux.org/yay.git "$build_dir/yay"; then
+        rm -rf "$build_dir"
+        die "Failed to clone yay from the AUR"
+    fi
+
+    if ! (cd "$build_dir/yay" && makepkg -si --noconfirm); then
+        rm -rf "$build_dir"
+        die "Failed to build and install yay"
+    fi
+
+    rm -rf "$build_dir"
+
+    command -v yay >/dev/null 2>&1 || die "yay was installed but is not on PATH"
+    echo "yay installed successfully"
+}
+
+setup_git() {
+    echo "Setting up Git config"
+    check_command git
+
+    local global_config="$HOME/.gitconfig"
+    local xdg_config="${XDG_CONFIG_HOME:-$HOME/.config}/git/config"
+
+    # Idempotent: respect any existing global configuration (classic or XDG).
+    if [ -e "$global_config" ] || [ -e "$xdg_config" ]; then
+        echo "Git config already exists; skipping"
+        return
+    fi
+
+    local repo_dir
+    repo_dir="$(dirname "$(realpath "$0")")"
+    ln -s "$repo_dir/.gitconfig" "$global_config" \
+        || die "Failed to link .gitconfig"
+    echo "Git config installed"
+}
+
 install_fonts() {
     check_command wget
     check_command unzip
@@ -308,6 +365,7 @@ show_help() {
     echo "  -f, --fonts     Install Fonts"
     echo "  -b, --bin       Install Binaries"
     echo "  -p, --packages  Install packages listed in packages.txt"
+    echo "  -y, --yay       Install yay (AUR helper) if it is not installed"
     echo "  -g, --git       Setup Git config"
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
     echo "  -F, --fastfetch Setup Fastfetch config"
@@ -323,6 +381,12 @@ main(){
 
         read -p "Install packages from packages.txt? (y/n): " pkg_res
         [[ "$pkg_res" =~ ^[Yy]$ ]] && install_packages
+
+        read -p "Install yay (AUR helper) if missing? (y/n): " yay_res
+        [[ "$yay_res" =~ ^[Yy]$ ]] && install_yay
+
+        read -p "Setup Git config if missing? (y/n): " git_res
+        [[ "$git_res" =~ ^[Yy]$ ]] && setup_git
 
         read -p "Install Neovim config? (y/n): " nvim_res
         [[ "$nvim_res" =~ ^[Yy]$ ]] && setup_nvim
@@ -355,7 +419,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
+                install_packages; install_yay; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -371,6 +435,8 @@ main(){
                 install_binaries; shift ;;
             -p|--packages)
                 install_packages; shift ;;
+            -y|--yay)
+                install_yay; shift ;;
             -H|--hypr)
                 setup_hypr_stack; shift ;;
             -F|--fastfetch)
@@ -382,7 +448,7 @@ main(){
             -K|--gtk)
                 setup_gtk; shift ;;
             -g|--git)
-                ln -s $(realpath ./.gitconfig) ~/ ; shift ;;
+                setup_git; shift ;;
             --firefox)
                 sudo ln -s $(realpath ./firefox/policies.json) /usr/lib64/firefox/distribution/policies.json; shift ;;
             -h|--help)

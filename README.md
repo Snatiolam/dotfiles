@@ -22,7 +22,9 @@ bootloader, drivers, `networkmanager` and `git`), clone this repo and let
 git clone <url-of-this-repo> ~/dotfiles
 cd ~/dotfiles
 ./setup.sh --packages   # installs everything in packages.txt
-./setup.sh --all        # configs (nvim, zsh, hypr, fonts, ...)
+./setup.sh --yay        # installs yay from the AUR (skipped if already present)
+./setup.sh --git        # links .gitconfig (skipped if a global config exists)
+./setup.sh --all        # configs (git, nvim, zsh, hypr, fonts, ...) + yay
 ```
 
 `setup.sh` also sets zsh as the default shell, creates the XDG user
