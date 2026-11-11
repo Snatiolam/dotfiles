@@ -39,3 +39,6 @@ hl.window_rule({
 
 -- App-specific window rules.
 require("hypr.apps.surfshark")
+require("hypr.apps.steam")
+require("hypr.apps.firefox")
+require("hypr.apps.thunar")
