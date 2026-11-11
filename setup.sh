@@ -4,6 +4,7 @@ set -euo pipefail
 
 INSTALL_DIR="$HOME"
 PACKAGES_FILE="$(dirname "$(realpath "$0")")/packages.txt"
+AUR_PACKAGES_FILE="$(dirname "$(realpath "$0")")/aur-packages.txt"
 
 die() {
     echo "Error: $1" >&2
@@ -96,6 +97,48 @@ install_yay() {
 
     command -v yay >/dev/null 2>&1 || die "yay was installed but is not on PATH"
     echo "yay installed successfully"
+}
+
+install_aur_packages() {
+    local pkg_file="${1:-$AUR_PACKAGES_FILE}"
+
+    [ -f "$pkg_file" ] || die "AUR package list not found: $pkg_file"
+
+    # yay is required to install AUR packages; install_yay is idempotent.
+    install_yay
+    check_command yay
+
+    # Drop comments and blank lines
+    local pkgs
+    pkgs=$(sed -e 's/#.*//' -e '/^[[:space:]]*$/d' "$pkg_file")
+    if [ -z "$pkgs" ]; then
+        echo "No AUR packages enabled in $pkg_file; skipping"
+        return
+    fi
+
+    echo "Installing AUR packages from $pkg_file"
+
+    # yay resolves dependencies and skips anything already installed (--needed).
+    if yay -S --needed --noconfirm $pkgs; then
+        echo "All AUR packages installed"
+        return
+    fi
+
+    # A single bad name aborts the whole transaction, so retry one by one:
+    # valid packages still get installed and we report exactly what failed.
+    echo "Bulk AUR install failed, retrying package by package..." >&2
+    local pkg
+    local failed=()
+    while read -r pkg; do
+        [ -n "$pkg" ] || continue
+        yay -S --needed --noconfirm "$pkg" || failed+=("$pkg")
+    done <<< "$pkgs"
+
+    if [ ${#failed[@]} -gt 0 ]; then
+        echo "Failed to install: ${failed[*]}" >&2
+        return 1
+    fi
+    echo "All AUR packages installed"
 }
 
 setup_git() {
@@ -366,6 +409,7 @@ show_help() {
     echo "  -b, --bin       Install Binaries"
     echo "  -p, --packages  Install packages listed in packages.txt"
     echo "  -y, --yay       Install yay (AUR helper) if it is not installed"
+    echo "  -A, --aur       Install AUR packages listed in aur-packages.txt"
     echo "  -g, --git       Setup Git config"
     echo "  -H, --hypr      Setup Hyprland + Quickshell"
     echo "  -F, --fastfetch Setup Fastfetch config"
@@ -384,6 +428,9 @@ main(){
 
         read -p "Install yay (AUR helper) if missing? (y/n): " yay_res
         [[ "$yay_res" =~ ^[Yy]$ ]] && install_yay
+
+        read -p "Install AUR packages from aur-packages.txt? (y/n): " aur_res
+        [[ "$aur_res" =~ ^[Yy]$ ]] && install_aur_packages
 
         read -p "Setup Git config if missing? (y/n): " git_res
         [[ "$git_res" =~ ^[Yy]$ ]] && setup_git
@@ -419,7 +466,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_yay; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
+                install_packages; install_yay; install_aur_packages; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -437,6 +484,8 @@ main(){
                 install_packages; shift ;;
             -y|--yay)
                 install_yay; shift ;;
+            -A|--aur)
+                install_aur_packages; shift ;;
             -H|--hypr)
                 setup_hypr_stack; shift ;;
             -F|--fastfetch)

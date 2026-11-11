@@ -43,7 +43,7 @@ nvidia-settings
 libva-nvidia-driver
 # 32-bit GPU libraries for Steam, Wine and 32-bit games. Comes from the
 # [multilib] repository: enable it in /etc/pacman.conf if it is not already.
-#lib32-nvidia-utils
+lib32-nvidia-utils
 
 # --- Intel iGPU machine (comment the NVIDIA block, uncomment below) ---
 # VA-API driver for Intel iGPUs: enables hardware video decoding in Firefox
@@ -146,6 +146,16 @@ ranger
 firefox
 thunderbird
 fastfetch
+
+# --- Gaming (official repos) ---
+# Minimal Steam setup: Steam + Gamemode + MangoHud.
+# Enable [multilib] in /etc/pacman.conf (Steam and the lib32-* packages need it).
+#steam
+#gamemode
+#mangohud
+# 32-bit games only. Add these if a game does not pick up Gamemode/MangoHud:
+#lib32-gamemode
+#lib32-mangohud
 
 # --- Flatpak (sandboxed app distribution) ---
 flatpak

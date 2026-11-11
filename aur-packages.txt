@@ -1,0 +1,25 @@
+# AUR-only packages, installed with yay.
+#
+# Format: one package per line. Blank lines and lines starting with '#'
+# are ignored.
+#
+# Usage:
+#   ./setup.sh --aur
+#
+# Packages are installed with: yay -S --needed --noconfirm
+# '--needed' makes re-running safe: whatever is already installed is left alone.
+#
+# Official-repo packages (steam, gamemode, mangohud, ...) belong in
+# packages.txt, not here.
+
+# --- Controllers ---
+# Udev rules so controllers (Xbox, PlayStation, Switch, 8BitDo, ...) work
+# without root and get the right permissions.
+game-devices-udev
+
+# --- AppImages ---
+# Integrates AppImages into the application menu and keeps them updated.
+appimagelauncher
+
+# PlayStation DualSense extras (LEDs, adaptive triggers, battery).
+#dualsensectl

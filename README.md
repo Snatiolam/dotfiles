@@ -23,8 +23,9 @@ git clone <url-of-this-repo> ~/dotfiles
 cd ~/dotfiles
 ./setup.sh --packages   # installs everything in packages.txt
 ./setup.sh --yay        # installs yay from the AUR (skipped if already present)
+./setup.sh --aur        # installs AUR packages from aur-packages.txt via yay
 ./setup.sh --git        # links .gitconfig (skipped if a global config exists)
-./setup.sh --all        # configs (git, nvim, zsh, hypr, fonts, ...) + yay
+./setup.sh --all        # configs (git, nvim, zsh, hypr, fonts, ...) + yay + AUR
 ```
 
 `setup.sh` also sets zsh as the default shell, creates the XDG user
@@ -35,6 +36,13 @@ The package list lives in [`packages.txt`](packages.txt): one package per
 line, with `#` comments. To add something new just edit that file and run
 `./setup.sh --packages` again; since it uses `pacman --needed`, whatever is
 already installed is left alone, so it is always safe to re-run.
+
+AUR-only packages live in [`aur-packages.txt`](aur-packages.txt) and are
+installed with `./setup.sh --aur` (or as part of `--all`). It ships with
+`game-devices-udev` and `appimagelauncher` enabled, plus commented templates
+for gaming launchers, controller drivers and `vkbasalt`; uncomment what you
+use. Official-repo gaming packages (Steam, gamescope, MangoHud, Lutris, ...)
+belong in `packages.txt`, not in the AUR list.
 
 # Table of contents
 - [Software](#software-i-use)
