@@ -23,6 +23,35 @@ networkmanager
 wpa_supplicant
 zram-generator
 
+# --- GPU drivers and hardware video decoding (NVIDIA is the primary GPU) ---
+# nvidia-open supports Turing and newer (GTX 16xx / RTX 20xx+); it is prebuilt
+# for the 'linux' kernel -- use nvidia-open-dkms for other kernels (then also
+# install linux-headers, dkms does not pull them in).
+# Maxwell/Pascal/Volta (GTX 900/1000) are legacy: install nvidia-580xx-dkms
+# from the AUR instead (setup.sh only covers official repositories).
+# Note: the open modules lack Runtime D3 on Turing (an NVIDIA limitation that
+# matters on laptops); on a desktop where the GPU drives the displays it
+# cannot sleep with any driver, so there is no practical difference.
+# nvidia-utils arrives as a dependency of nvidia-open (it pulls egl-wayland),
+# and DRM modeset/fbdev are enabled by default, so no kernel parameters or
+# mkinitcpio changes are needed.
+nvidia-open
+nvidia-settings
+# VA-API for NVIDIA: Firefox/mpv hardware video decoding through NVDEC.
+# Firefox additionally needs LIBVA_DRIVER_NAME=nvidia and
+# MOZ_DISABLE_RDD_SANDBOX=1
+libva-nvidia-driver
+# 32-bit GPU libraries for Steam, Wine and 32-bit games. Comes from the
+# [multilib] repository: enable it in /etc/pacman.conf if it is not already.
+#lib32-nvidia-utils
+
+# --- Intel iGPU machine (comment the NVIDIA block, uncomment below) ---
+# VA-API driver for Intel iGPUs: enables hardware video decoding in Firefox
+# (see firefox/policies.json) and mpv. libva-utils ships vainfo, to check
+# which decode profiles the GPU actually exposes.
+#intel-media-driver
+#libva-utils
+
 # --- XDG user directories and desktop helpers ---
 xdg-utils
 xdg-user-dirs
