@@ -136,6 +136,10 @@ blueman
 power-profiles-daemon
 hyprsunset
 
+# --- Brightness (external monitors - DDC/CI, laptops - /sys/class/backligth) ---
+ddcutil
+brightnessctl
+
 # --- Files and applications ---
 thunar
 tumbler
@@ -172,7 +176,6 @@ xournalpp
 # --- Theming and fonts ---
 qt6ct
 nwg-look
-brightnessctl
 udiskie
 ttf-jetbrains-mono-nerd
 ttf-nerd-fonts-symbols

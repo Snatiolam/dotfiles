@@ -70,6 +70,7 @@ belong in `packages.txt`, not in the AUR list.
 | [hyprpaper](https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper/)         | Wallpaper                                    |
 | [hyprlock](https://wiki.hypr.land/Hypr-Ecosystem/hyprlock/) + hypridle | Lock screen / idle management                |
 | hyprsunset                                                            | Night light                                  |
+| [ddcutil](https://www.ddcutil.com/)                                   | External monitor brightness (DDC/CI)         |
 | [polkit](https://wiki.archlinux.org/title/Polkit) + hyprpolkitagent   | Privilege prompts                            |
 
 ---
@@ -78,6 +79,15 @@ belong in `packages.txt`, not in the AUR list.
 Audio is handled by PipeWire; if a device or stream is muted, open `pavucontrol`.
 
 ---
+
+### Brightness
+
+Laptop panels use `brightnessctl`; external monitors use DDC/CI through
+`ddcutil` (the same backend as Omarchy). The package ships the `i2c-dev` module
+and a udev rule granting access to `/dev/i2c-*`, so no extra group is needed.
+NVIDIA exposes no `ddc` symlink, so the OSD probes with `ddcutil detect` and
+matches the focused monitor's DRM connector. Without DDC/CI, only gamma dimming
+with `hyprsunset` is possible.
 
 
 ## Theming

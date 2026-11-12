@@ -42,6 +42,7 @@ install_packages() {
     # Single transaction (-Syu) so we never leave the system in a partial upgrade
     if sudo pacman -Syu --needed --noconfirm $pkgs; then
         echo "All packages installed"
+        activate_ddc
         return
     fi
 
@@ -60,6 +61,15 @@ install_packages() {
         return 1
     fi
     echo "All packages installed"
+    activate_ddc
+}
+
+# Load i2c-dev and apply ddcutil's udev rule without a reboot.
+activate_ddc() {
+    command -v ddcutil >/dev/null 2>&1 || return 0
+    sudo modprobe i2c-dev 2>/dev/null || true
+    sudo udevadm control --reload-rules 2>/dev/null || true
+    sudo udevadm trigger --subsystem-match=i2c-dev 2>/dev/null || true
 }
 
 install_yay() {
