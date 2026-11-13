@@ -7,15 +7,13 @@ hl.config({
         kb_layout  = "us,es",
         kb_variant = "",
         kb_model   = "",
-        -- Ctrl+Space switches layout, as on macOS (Super+Space is the app
-        -- launcher). Other common choices: "grp:alt_shift_toggle" (classic
-        -- Windows/Linux) and "grp:caps_toggle" (single key).
+        -- Ctrl+Space switches layout (Super+Space is the launcher).
         kb_options = "grp:ctrl_space_toggle",
         kb_rules   = "",
 
         follow_mouse = 1,
 
-        sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
+        sensitivity = 0,
 
         touchpad = {
             natural_scroll = true,

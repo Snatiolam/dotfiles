@@ -1,5 +1,4 @@
--- Hyprland keeps Lua modules cached between config reloads. Clear our own
--- modules first so edits under ~/.config/hypr take effect on every reload.
+-- Hyprland caches Lua modules across reloads; clear ours so edits apply.
 local home = os.getenv("HOME")
 local reload_prefixes = { "hypr" }
 
@@ -19,5 +18,4 @@ for module in pairs(package.loaded) do
     end
 end
 
--- Resolve `require("hypr.<module>")` from ~/.config/hypr/<module>.lua.
 package.path = home .. "/.config/?.lua;" .. package.path

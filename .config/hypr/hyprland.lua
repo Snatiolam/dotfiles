@@ -1,8 +1,4 @@
--- Hyprland entry point.
---
--- Keep this file small: each concern lives in its own module.
--- bootstrap.lua clears the module cache so every `hyprctl reload`
--- picks up edits in these files.
+-- Hyprland entry point; each concern lives in its own module.
 
 dofile((os.getenv("HOME") or "") .. "/.config/hypr/bootstrap.lua")
 

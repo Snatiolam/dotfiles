@@ -14,6 +14,7 @@ window-decoration = true
 gtk-titlebar = false
 
 mouse-hide-while-typing = true
+resize-overlay = never
 copy-on-select = clipboard
 cursor-style-blink = false
 

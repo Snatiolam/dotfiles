@@ -1,11 +1,5 @@
--- Firefox: file dialogs and extension windows as floating popups.
---
--- 1. File dialogs: Firefox routes its open/save/upload pickers through
---    xdg-desktop-portal-gtk, so they arrive as portal windows titled
---    "Open File - <page> — Mozilla Firefox". Every window that portal
---    opens is a dialog, so match on class alone: the portal can map a
---    dialog with an empty title first (the title arrives right after),
---    and static rules only see the title at window creation.
+-- File dialogs come from xdg-desktop-portal-gtk; match on class because the
+-- title arrives after the window maps.
 hl.window_rule({
     name  = "firefox-file-dialogs",
     match = { class = "^xdg-desktop-portal-gtk$" },
@@ -15,14 +9,9 @@ hl.window_rule({
     size   = "875 600",
 })
 
--- 2. Extension windows (e.g. the NordPass vault opened from a page's
---    login field). These open with the generic "Mozilla Firefox" title
---    and only get their real "Extension: (...)" title after mapping, so
---    a static window rule cannot catch them: static effects are
---    evaluated once, at open time. Follow the wiki pattern instead:
---    float new generic-titled Firefox windows, wait for the real title,
---    and keep only actual extension windows floating.
---    https://wiki.hypr.land/configuring/code-snippets/
+-- Extension windows (e.g. NordPass) open with a generic title and get their
+-- real one after mapping, which static rules cannot see: float new windows,
+-- then keep only the ones titled "Extension:" floating.
 local GENERIC_TITLES = { [""] = true, ["Mozilla Firefox"] = true, ["about:blank"] = true }
 
 local function has_generic_title(title)

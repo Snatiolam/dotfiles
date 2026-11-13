@@ -2,10 +2,6 @@
 ---- WINDOWS AND WORKSPACES ----
 -------------------------------
 
--- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
--- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
-
--- Ignore maximize requests from all apps. You'll probably like this.
 hl.window_rule({
     name  = "suppress-maximize-events",
     match = { class = ".*" },
@@ -13,7 +9,7 @@ hl.window_rule({
     suppress_event = "maximize",
 })
 
--- Fix some dragging issues with XWayland
+-- XWayland drag fix.
 hl.window_rule({
     name  = "fix-xwayland-drags",
     match = {
@@ -28,7 +24,6 @@ hl.window_rule({
     no_focus = true,
 })
 
--- Hyprland-run windowrule
 hl.window_rule({
     name  = "move-hyprland-run",
     match = { class = "hyprland-run" },
@@ -37,7 +32,6 @@ hl.window_rule({
     float = true,
 })
 
--- App-specific window rules.
 require("hypr.apps.surfshark")
 require("hypr.apps.steam")
 require("hypr.apps.firefox")
