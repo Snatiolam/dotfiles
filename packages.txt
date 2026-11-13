@@ -150,7 +150,6 @@ ranger
 firefox
 thunderbird
 fastfetch
-qalculate-qt
 
 # --- Gaming (official repos) ---
 # Minimal Steam setup: Steam + Gamemode + MangoHud.
