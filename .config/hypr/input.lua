@@ -7,7 +7,10 @@ hl.config({
         kb_layout  = "us,es",
         kb_variant = "",
         kb_model   = "",
-        kb_options = "grp:win_space_toggle",
+        -- Ctrl+Space switches layout, as on macOS (Super+Space is the app
+        -- launcher). Other common choices: "grp:alt_shift_toggle" (classic
+        -- Windows/Linux) and "grp:caps_toggle" (single key).
+        kb_options = "grp:ctrl_space_toggle",
         kb_rules   = "",
 
         follow_mouse = 1,
