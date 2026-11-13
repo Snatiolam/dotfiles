@@ -7,7 +7,11 @@
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 hl.on("hyprland.start", function()
-    hl.exec_cmd("hyprpaper & quickshell")
+    -- Quickshell runs under a small supervisor instead of directly: it restarts
+    -- the shell after a monitor hotplug burst (Quickshell 0.3.2 does not remap
+    -- its PanelWindows once every output has disappeared) and on crashes.
+    -- Log: ~/.local/state/quickshell-watchdog/log
+    hl.exec_cmd("hyprpaper & $HOME/.config/hypr/scripts/quickshell-watchdog.py")
     -- Polkit authentication agent (needed for GUI privilege prompts)
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
     -- Dark mode for GTK4 / libadwaita apps (Ghostty, Nautilus, ...): the
