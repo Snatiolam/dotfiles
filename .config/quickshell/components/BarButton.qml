@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import qs.config
 
 // Shared bar button: hover/open background + a single MouseArea.
@@ -13,7 +14,8 @@ Item {
     property int acceptedButtons: Qt.LeftButton
 
     readonly property alias hovered: hover.hovered
-    readonly property bool open: popoutId !== "" && Ui.popout === popoutId
+    readonly property string screenName: QsWindow.window ? QsWindow.window.screen.name : ""
+    readonly property bool open: popoutId !== "" && Ui.isPopoutOpenOn(popoutId, screenName)
 
     signal clicked(var mouse)
     signal wheeled(var wheel)

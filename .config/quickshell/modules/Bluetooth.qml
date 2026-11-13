@@ -12,7 +12,7 @@ BarButton {
     implicitWidth: row.implicitWidth + 14
 
     readonly property var adapter: Bluetooth.defaultAdapter
-    readonly property bool enabled: adapter ? adapter.enabled : false
+    readonly property bool powered: adapter ? adapter.enabled : false
     readonly property int connectedCount: {
         let n = 0;
         const devs = Bluetooth.devices.values;
@@ -24,7 +24,7 @@ BarButton {
     onClicked: Ui.togglePopout("bluetooth")
 
     function btColor(): color {
-        if (!root.adapter || !root.enabled) return Theme.overlay0;
+        if (!root.adapter || !root.powered) return Theme.overlay0;
         return Theme.text;
     }
 

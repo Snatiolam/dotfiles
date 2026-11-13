@@ -7,6 +7,8 @@ import qs.config
 PanelWindow {
     id: win
 
+    screen: Ui.focusedScreen
+
     anchors.bottom: true
     margins.bottom: 56
     exclusiveZone: 0

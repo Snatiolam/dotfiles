@@ -9,6 +9,8 @@ import qs.components
 PanelWindow {
     id: win
 
+    screen: Ui.overlayScreen
+
     anchors {
         top: true
         left: true

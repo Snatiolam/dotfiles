@@ -195,13 +195,13 @@ AnchoredPopup {
 
             Slider {
                 Layout.fillWidth: true
-                value: Osd.brightness
+                value: Brightness.value
                 accent: Theme.yellow
-                onMoved: (v) => Osd.setBrightness(v)
+                onMoved: (v) => Brightness.set(v)
             }
 
             Text {
-                text: Math.round(Osd.brightness * 100) + "%"
+                text: Math.round(Brightness.value * 100) + "%"
                 color: Theme.subtext0
                 font.family: Theme.font
                 font.pixelSize: 11

@@ -9,6 +9,10 @@ Row {
 
     spacing: 5
 
+    function focusWorkspace(target): void {
+        Quickshell.execDetached(["hyprctl", "dispatch", `hl.dsp.focus({ workspace = "${target}" })`]);
+    }
+
     readonly property var list: {
         const out = [];
         const values = Hyprland.workspaces.values;
@@ -57,13 +61,8 @@ Row {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: chip.modelData.activate()
-                onWheel: (wheel) => {
-                    if (wheel.angleDelta.y > 0)
-                        Hyprland.dispatch("workspace e+1");
-                    else
-                        Hyprland.dispatch("workspace e-1");
-                }
+                onClicked: root.focusWorkspace(chip.modelData.id)
+                onWheel: (wheel) => root.focusWorkspace(wheel.angleDelta.y > 0 ? "e+1" : "e-1")
             }
         }
     }

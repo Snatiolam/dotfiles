@@ -7,6 +7,8 @@ import qs.config
 PanelWindow {
     id: win
 
+    screen: Ui.overlayScreen
+
     anchors.top: true
     anchors.right: true
     margins.top: Theme.popupGap

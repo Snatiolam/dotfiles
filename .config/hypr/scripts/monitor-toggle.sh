@@ -1,48 +1,54 @@
 #!/usr/bin/env bash
+# Toggles an external monitor between extended and mirrored mode.
 set -euo pipefail
 
-STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/hypr"
-STATE_FILE="$STATE_DIR/monitor-mode"
+STATE_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/hypr/monitor-mode"
+INTERNAL_PATTERN='^(eDP|LVDS|DSI)'
+INTERNAL_SCALE=1.5
+EXTERNAL_SCALE=1
 
 notify() {
   notify-send -a "Monitors" "$1" "$2" 2>/dev/null || true
 }
 
-MONITORS="$(hyprctl monitors all -j 2>/dev/null)"
+find_monitor() {
+  local filter="$1"
+  hyprctl monitors all -j | jq -r ".[] | select(.name | $filter).name" | head -n1
+}
 
-INTERNAL="$(echo "$MONITORS" | jq -r '.[] | select(.name|test("^(eDP|LVDS|DSI)")).name' | head -n1)"
-EXTERNAL="$(echo "$MONITORS" | jq -r '.[] | select(.name|test("^(eDP|LVDS|DSI)")|not).name' | head -n1)"
+configure_monitor() {
+  local output="$1" fields="$2"
+  hyprctl eval "hl.monitor({ output = '$output', disabled = false, mode = 'preferred', $fields })" >/dev/null
+}
 
-mkdir -p "$STATE_DIR"
+reset_internal() {
+  configure_monitor "$1" "position = '0x0', scale = $INTERNAL_SCALE"
+}
 
-if [[ -z "$EXTERNAL" ]]; then
-  if [[ -n "$INTERNAL" ]]; then
-    hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = 'preferred', position = '0x0', scale = 1.5 })" >/dev/null 2>&1
-    # hyprctl monitor "$INTERNAL,preferred,0x0,1.5 2">/dev/null
-  fi
-  rm -f "$STATE_FILE" 2>/dev/null
+internal="$(find_monitor "test(\"$INTERNAL_PATTERN\")")"
+external="$(find_monitor "test(\"$INTERNAL_PATTERN\") | not")"
+
+mkdir -p "$(dirname "$STATE_FILE")"
+
+if [[ -z "$external" ]]; then
+  [[ -n "$internal" ]] && reset_internal "$internal"
+  rm -f "$STATE_FILE"
   notify "External monitor disconnected" "Laptop mode"
   exit 0
 fi
 
-if [[ ! -f "$STATE_FILE" ]]; then
-  echo "extend" > "$STATE_FILE"
+if [[ -z "$internal" ]]; then
+  notify "Monitors" "No internal screen to mirror or extend"
+  exit 0
 fi
 
-MODE="$(cat "$STATE_FILE")"
-
-if [[ "$MODE" == "extend" ]]; then
-  # hyprctl monitor "$EXTERNAL,preferred,0x0,1,mirror,$INTERNAL"
-  hyprctl eval "hl.monitor({ output = '$EXTERNAL', disabled = false, mode = 'preferred', position = 'auto', scale = 1, mirror = '$INTERNAL' })" >/dev/null 2>&1
-  echo "mirror" > "$STATE_FILE"
-  notify "Mirror mode" "Copying $INTERNAL into $EXTERNAL screen"
-else
-  if [[ -n "$INTERNAL" ]]; then
-    hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = 'preferred', position = '0x0', scale = 1.5 })" >/dev/null 2>&1
-    # hyprctl monitor "$INTERNAL,preferred,0x0,1.5"
-  fi
-  hyprctl eval "hl.monitor({ output = '$EXTERNAL', disabled = false, mode = 'preferred', position = 'auto-right', scale = 1, mirror = '' })" >/dev/null 2>&1
-  # hyprctl monitor "$EXTERNAL,preferred,1920x0,1"
+if [[ "$(cat "$STATE_FILE" 2>/dev/null)" == "mirror" ]]; then
+  reset_internal "$internal"
+  configure_monitor "$external" "position = 'auto-right', scale = $EXTERNAL_SCALE, mirror = ''"
   echo "extend" > "$STATE_FILE"
-  notify "Extended mode" "$EXTERNAL to right"
+  notify "Extended mode" "$external to right"
+else
+  configure_monitor "$external" "position = 'auto', scale = $EXTERNAL_SCALE, mirror = '$internal'"
+  echo "mirror" > "$STATE_FILE"
+  notify "Mirror mode" "Copying $internal into $external screen"
 fi

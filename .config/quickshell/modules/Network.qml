@@ -19,7 +19,7 @@ BarButton {
         return null;
     }
 
-    readonly property bool enabled: Networking.wifiEnabled
+    readonly property bool wifiOn: Networking.wifiEnabled
 
     onClicked: Ui.togglePopout("network")
 
@@ -28,7 +28,7 @@ BarButton {
     }
 
     function netColor(): color {
-        return root.enabled ? Theme.text : Theme.overlay0;
+        return root.wifiOn ? Theme.text : Theme.overlay0;
     }
 
     Text {

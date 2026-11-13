@@ -2,14 +2,12 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
-import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 
-// OSD state. Listens to real volume (Pipewire) and brightness (backlight
-// sysfs) changes, applies the multimedia-key steps itself (one IPC call per
-// keypress, no external processes), and exposes extra control through
-// `qs ipc call osd`.
+// OSD state. Listens to real volume (Pipewire) and brightness changes,
+// applies the multimedia-key steps itself (one IPC call per keypress, no
+// external processes), and exposes extra control through `qs ipc call osd`.
 Singleton {
     id: osd
 
@@ -18,9 +16,6 @@ Singleton {
     property string kind: "volume"   // "volume" | "brightness"
     property real value: 0           // 0..1
     property bool muted: false
-
-    // Current backlight fraction (0..1), updated by the watcher.
-    property real brightness: 0
 
     // ── Startup suppression (event-driven, no timers) ────────────
     // PipeWire/WirePlumber are (socket-)activated by quickshell itself, so they
@@ -87,181 +82,10 @@ Singleton {
         osd.showVolume(osd.audio.volume, osd.audio.muted);
     }
 
-    // ── Backlight listener (brightness) ───────────────────────────
-    // The device name differs per machine (intel_backlight, acpi_video0,
-    // amdgpu_bl0, ...), so it must be detected at startup. Hardcoding one name
-    // makes the slider and OSD stay at 0% on any machine using another device.
-    property string backlight: ""
-    property int maxBrightness: 0
-    property real lastBrightness: -1
-
-    // External monitors have no /sys/class/backlight: brightness is a DDC/CI
-    // register reached with ddcutil. NVIDIA exposes one I2C adapter per output
-    // and no `ddc` symlink, so the bus is probed instead.
-    property bool ddc: false
-    property int ddcBus: -1
-    property int ddcMax: 100
-
-    function applyBacklight(name: string): void {
-        if (!name || name === osd.backlight) return;
-        osd.backlight = name;
-        // The FileView paths follow `backlight`; re-read both files so the
-        // value shows immediately after detection.
-        maxFile.reload();
-        brightnessFile.reload();
-    }
-
-    Process {
-        id: blDetect
-        running: false
-        command: ["sh", "-c", "ls -1 /sys/class/backlight | head -1"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const name = this.text.trim();
-                if (name) osd.applyBacklight(name);
-                else ddcDetect.running = true;
-            }
-        }
-    }
-
-    // `detect --brief` lists each monitor with its I2C bus and DRM connector.
-    // Prefer the focused output, like Omarchy; otherwise take the first.
-    Process {
-        id: ddcDetect
-        running: false
-        command: ["sh", "-c", "ddcutil --skip-ddc-checks detect --brief 2>/dev/null"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const focused = Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : "";
-                const blocks = this.text.split(/^Display \d+/m).slice(1);
-                const block = blocks.find(b => focused && b.includes("-" + focused))
-                              || blocks.find(b => /Monitor:|EDID synopsis:/.test(b));
-                const m = block && block.match(/i2c-(\d+)/);
-                if (!m) return;
-                osd.ddcBus = parseInt(m[1]);
-                osd.ddc = true;
-                ddcRead.running = true;
-            }
-        }
-    }
-
-    // VCP 10 is brightness; `--brief` answers "VCP 10 C <current> <max>".
-    Process {
-        id: ddcRead
-        running: false
-        command: ["sh", "-c",
-            "ddcutil --bus " + osd.ddcBus + " --skip-ddc-checks getvcp 10 --brief 2>/dev/null"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const m = this.text.match(/VCP\s+10\s+C\s+(\d+)\s+(\d+)/);
-                if (!m) {
-                    // The bus stopped answering (resume, monitor off): probe
-                    // again on the next brightness action.
-                    osd.ddc = false;
-                    return;
-                }
-                const max = parseInt(m[2]);
-                if (!(max > 0)) return;
-                osd.ddcMax = max;
-                const v = Math.max(0, Math.min(1, parseInt(m[1]) / max));
-                osd.brightness = v;
-                if (Math.abs(v - osd.lastBrightness) < 0.004) return;
-                osd.lastBrightness = v;
-                if (!osd.armed) return;
-                osd.showBrightness(v);
-            }
-        }
-    }
-
-    // Writes are serialized: while the backend process runs, further slider
-    // moves are coalesced into pendingBrightness and applied when it exits.
-    // This keeps dragging smooth instead of spawning one process per pixel.
-    property real pendingBrightness: -1
-    property bool applying: false
-
-    FileView {
-        id: maxFile
-        path: osd.backlight ? ("/sys/class/backlight/" + osd.backlight + "/max_brightness") : ""
-        blockLoading: true
-        onLoaded: {
-            const n = parseInt(maxFile.text());
-            if (!isNaN(n) && n > 0) osd.maxBrightness = n;
-        }
-    }
-
-    // sysfs does not emit inotify events, so it cannot be watched. Instead of
-    // polling, we read on demand: after every write settles, and when
-    // `qs ipc call osd refresh` is called for changes made by external tools,
-    // so nothing here keeps the CPU awake while idle.
-    FileView {
-        id: brightnessFile
-        path: osd.backlight ? ("/sys/class/backlight/" + osd.backlight + "/brightness") : ""
-        blockLoading: true
-        onLoaded: osd.onBrightnessChange()
-    }
-
-    // Detect the backlight device; `applyBacklight` performs the first read so
-    // the slider shows the real value before any keypress.
-    Component.onCompleted: blDetect.running = true
-
-    function onBrightnessChange(): void {
-        // Ignore reads that race with our own write while it is in flight.
-        if (osd.applying || osd.pendingBrightness >= 0) return;
-        // The two files load independently, so at startup `brightness` may
-        // finish before `max_brightness` and the scale would still be unknown
-        // (discarding the read below and leaving the OSD/CC stuck at 0%). Read
-        // it synchronously then; it is a one-shot because `maxBrightness` is
-        // remembered once set.
-        if (osd.maxBrightness <= 0) {
-            const m = parseInt(maxFile.text());
-            if (!isNaN(m) && m > 0) osd.maxBrightness = m;
-        }
-        if (osd.maxBrightness <= 0) return;
-        const raw = parseInt(brightnessFile.text());
-        if (isNaN(raw)) return;
-        const v = Math.max(0, Math.min(1, raw / osd.maxBrightness));
-        osd.brightness = v;
-        if (Math.abs(v - osd.lastBrightness) < 0.004) return;
-        osd.lastBrightness = v;
-        if (!osd.armed) return;
-        osd.showBrightness(v);
-    }
-
-    // Updates the UI instantly and schedules the actual brightness write.
-    function setBrightness(v: real): void {
-        // Never write 0 to a monitor: some panels switch off their backlight
-        // and only their own buttons bring it back. Omarchy clamps to 1%.
-        v = Math.max(osd.ddc ? 0.01 : 0, Math.min(1, v));
-        osd.brightness = v;
-        osd.pendingBrightness = v;
-        osd.showBrightness(v);
-        osd.applyNext();
-    }
-
-    function applyNext(): void {
-        if (osd.applying || osd.pendingBrightness < 0) return;
-        osd.applying = true;
-        const v = osd.pendingBrightness;
-        osd.pendingBrightness = -1;
-        if (osd.ddc) {
-            const raw = Math.max(1, Math.round(v * osd.ddcMax));
-            setBrightProc.command = ["ddcutil", "--bus", String(osd.ddcBus),
-                "--skip-ddc-checks", "--noverify", "setvcp", "10", String(raw)];
-        } else {
-            setBrightProc.command = ["brightnessctl", "set", Math.round(v * 100) + "%"];
-        }
-        setBrightProc.running = true;
-    }
-
-    Process {
-        id: setBrightProc
-        running: false
-        onExited: {
-            osd.applying = false;
-            osd.applyNext();
-            // DDC writes are absolute; only the backlight needs a re-read.
-            if (!osd.ddc) brightnessFile.reload();
-        }
+    Connections {
+        target: Brightness
+        function onAdjusted(v: real): void { osd.showBrightness(v); }
+        function onChangedExternally(v: real): void { if (osd.armed) osd.showBrightness(v); }
     }
 
     // ── API ───────────────────────────────────────────────────────
@@ -297,7 +121,6 @@ Singleton {
     // OSD shows the target value without waiting for the event roundtrip, and
     // brightness writes still collapse into one brightnessctl while held.
     readonly property real volumeStep: 0.05
-    readonly property real brightnessStep: 0.10
 
     function applyVolume(delta: real): void {
         const a = osd.audio;
@@ -322,18 +145,6 @@ Singleton {
         osd.showVolume(a.volume, muted);
     }
 
-    function stepBrightness(up: bool): void {
-        // First key after login probes DDC; the next one applies the change.
-        if (!osd.backlight && !osd.ddc) {
-            ddcDetect.running = true;
-            return;
-        }
-        osd.setBrightness(osd.brightness + (up ? osd.brightnessStep : -osd.brightnessStep));
-    }
-
-    // External control. Media keys use the relative steps; anything else
-    // (scripts, tests) can set absolute values. `refresh` re-reads brightness
-    // after an external change.
     IpcHandler {
         target: "osd"
 
@@ -341,20 +152,9 @@ Singleton {
         function voldown(): void { osd.applyVolume(-osd.volumeStep) }
         function mute(): void { osd.toggleMute() }
 
-        function brightup(): void { osd.stepBrightness(true) }
-        function brightdown(): void { osd.stepBrightness(false) }
-
-        function brightness(value: string): void {
-            osd.setBrightness(Math.max(0, Math.min(1, parseFloat(value) / 100)));
-        }
-
-        function volume(value: string): void {
-            osd.showVolume(parseFloat(value) / 100, false);
-        }
-
-        function refresh(): void {
-            if (osd.ddc) ddcRead.running = true;
-            else brightnessFile.reload();
-        }
+        function brightup(): void { Brightness.step(true) }
+        function brightdown(): void { Brightness.step(false) }
+        function brightness(value: string): void { Brightness.set(parseFloat(value) / 100) }
+        function refresh(): void { Brightness.refresh() }
     }
 }

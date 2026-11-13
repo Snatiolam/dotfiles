@@ -1,6 +1,4 @@
 import QtQuick
-import Quickshell
-import Quickshell.Io
 import Quickshell.Services.Pipewire
 import qs.config
 import qs.components
@@ -11,129 +9,34 @@ BarButton {
     id: root
 
     popoutId: "audio"
-    implicitWidth: row.implicitWidth + 14
+    implicitWidth: icon.implicitWidth + 14
     acceptedButtons: Qt.LeftButton | Qt.MiddleButton
 
-    readonly property var sink: Pipewire.defaultAudioSink
-    readonly property var audio: sink ? sink.audio : null
+    readonly property var audio: Pipewire.defaultAudioSink ? Pipewire.defaultAudioSink.audio : null
     readonly property real volume: audio ? audio.volume : 0
     readonly property bool muted: audio ? audio.muted : false
 
-    property string activePort: ""
-
-    // The active port comes from pactl because Pipewire exposes no direct
-    // "headphones plugged" property.
-    readonly property bool headphones: {
-        function has(s) { return s.indexOf("headphone") !== -1 || s.indexOf("headset") !== -1; }
-        if (!sink) return false;
-        const props = sink.properties || {};
-        if (has(String(props["device.icon-name"] || "").toLowerCase())) return true;
-        if (has(String(sink.name || "").toLowerCase())) return true;
-        if (has((String(sink.description || "") + " " + String(sink.nickname || "")).toLowerCase())) return true;
-        return has(activePort.toLowerCase());
-    }
-
     function volumeIcon(): string {
-        if (root.muted || root.volume <= 0.001) return Icons.volumeMute;
-        if (root.headphones) return Icons.headphones;
-        if (root.volume < 0.34) return Icons.volumeLow;
-        if (root.volume < 0.67) return Icons.volumeMedium;
+        if (muted || volume <= 0.001) return Icons.volumeMute;
+        if (AudioPort.headphones) return Icons.headphones;
+        if (volume < 0.34) return Icons.volumeLow;
+        if (volume < 0.67) return Icons.volumeMedium;
         return Icons.volumeHigh;
     }
 
-    function parseActivePort(text): void {
-        const target = sink ? sink.name : "";
-        if (!target) return;
-        const lines = text.split("\n");
-        let current = false;
-        for (let i = 0; i < lines.length; i++) {
-            const name = lines[i].match(/^\s*Name:\s*(\S+)/);
-            if (name) {
-                current = (name[1] === target);
-                continue;
-            }
-            if (!current) continue;
-            const port = lines[i].match(/^\s*Active Port:\s*(\S+)/);
-            if (port) {
-                root.activePort = port[1];
-                return;
-            }
-        }
-        root.activePort = "";
-    }
-
     onClicked: (mouse) => {
-        if (mouse.button === Qt.MiddleButton) {
-            if (root.audio) root.audio.muted = !root.audio.muted;
-        } else {
-            Ui.togglePopout("audio");
-        }
+        if (mouse.button === Qt.MiddleButton) Osd.toggleMute();
+        else Ui.togglePopout("audio");
     }
 
-    onWheeled: (wheel) => {
-        if (!root.audio) return;
-        const step = 0.05;
-        const next = root.audio.volume + (wheel.angleDelta.y > 0 ? step : -step);
-        root.audio.volume = Math.max(0, Math.min(1, next));
-        if (root.audio.volume > 0 && root.audio.muted)
-            root.audio.muted = false;
-    }
+    onWheeled: (wheel) => Osd.applyVolume(wheel.angleDelta.y > 0 ? Osd.volumeStep : -Osd.volumeStep)
 
-    // Reactive: one long-lived subscription to PipeWire events. The active port
-    // (headphones vs speakers) only changes on a jack plug, a profile switch or
-    // a default-sink change — all of which emit a pulse event — so we re-read
-    // the port only then, instead of polling every couple of seconds.
-    Process {
-        id: portEvents
-        running: true
-        command: ["pactl", "subscribe"]
-        stdout: SplitParser {
-            onRead: (line) => {
-                if (line.indexOf("sink") !== -1
-                        || line.indexOf("card") !== -1
-                        || line.indexOf("server") !== -1)
-                    portDebounce.restart();
-            }
-        }
-        // subscribe should stay up for the whole session; revive it if it dies.
-        onExited: portEventsRestart.restart()
-    }
-
-    Timer {
-        id: portEventsRestart
-        interval: 2000
-        repeat: false
-        onTriggered: portEvents.running = true
-    }
-
-    // A held volume key emits a burst of sink events; collapse them into one read.
-    Timer {
-        id: portDebounce
-        interval: 300
-        onTriggered: portQuery.running = true
-    }
-
-    Process {
-        id: portQuery
-        running: false
-        command: ["pactl", "list", "sinks"]
-        stdout: StdioCollector {
-            onStreamFinished: root.parseActivePort(this.text)
-        }
-    }
-
-    // One initial read so the icon is correct before the first event.
-    Component.onCompleted: portQuery.running = true
-
-    Row {
-        id: row
+    Text {
+        id: icon
         anchors.centerIn: parent
-        Text {
-            anchors.verticalCenter: parent.verticalCenter
-            text: root.volumeIcon()
-            color: root.muted ? Theme.overlay0 : Theme.text
-            font.family: Theme.font
-            font.pixelSize: Theme.iconSize + 2
-        }
+        text: root.volumeIcon()
+        color: root.muted ? Theme.overlay0 : Theme.text
+        font.family: Theme.font
+        font.pixelSize: Theme.iconSize + 2
     }
 }

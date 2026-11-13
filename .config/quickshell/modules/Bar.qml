@@ -9,6 +9,9 @@ import qs.modules.popups
 PanelWindow {
     id: bar
 
+    required property var modelData
+    screen: modelData
+
     anchors {
         top: true
         left: true

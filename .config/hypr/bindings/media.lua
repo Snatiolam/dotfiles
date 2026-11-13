@@ -10,8 +10,8 @@
 -- OSD tracks only the default sink.
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("qs ipc call osd volup"),      { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("qs ipc call osd voldown"),    { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("qs ipc call osd mute"),       { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("qs ipc call osd mute"),       { locked = true })
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true })
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("qs ipc call osd brightup"),   { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("qs ipc call osd brightdown"), { locked = true, repeating = true })
 

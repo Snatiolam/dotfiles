@@ -23,26 +23,24 @@ hl.window_rule({
 --    float new generic-titled Firefox windows, wait for the real title,
 --    and keep only actual extension windows floating.
 --    https://wiki.hypr.land/configuring/code-snippets/
-hl.on("window.open", function(w)
-    if w.class ~= "firefox" then return end
-    if w.initial_title ~= "Mozilla Firefox" then return end
+local GENERIC_TITLES = { [""] = true, ["Mozilla Firefox"] = true, ["about:blank"] = true }
 
-    -- A lone generic-titled Firefox window is the browser itself
-    -- starting up, not an extension popup.
-    local ff_windows = hl.get_windows({ class = "firefox" })
-    if #ff_windows <= 1 then return end
+local function has_generic_title(title)
+    return GENERIC_TITLES[title] or title:match("^about:.*Mozilla Firefox$") ~= nil
+end
 
-    hl.dispatch(hl.dsp.window.float({ action = "set", window = w }))
+local function settle_extension_window(w)
+    local on_title, on_close
 
-    local sub
-    sub = hl.on("window.title", function(tw)
-        if tw.address ~= w.address then return end
-        if tw.title == ""
-            or tw.title == "Mozilla Firefox"
-            or tw.title == "about:blank"
-            or tw.title:match("^about:.*Mozilla Firefox$") then return end
+    local function stop_watching()
+        on_title:remove()
+        on_close:remove()
+    end
 
-        sub:remove()
+    on_title = hl.on("window.title", function(tw)
+        if tw.address ~= w.address or has_generic_title(tw.title) then return end
+
+        stop_watching()
 
         if tw.title:match("^Extension:") then
             hl.dispatch(hl.dsp.window.resize({ x = 800, y = 600, window = tw }))
@@ -52,4 +50,18 @@ hl.on("window.open", function(w)
             hl.dispatch(hl.dsp.window.float({ action = "unset", window = tw }))
         end
     end)
+
+    on_close = hl.on("window.close", function(cw)
+        if cw.address == w.address then stop_watching() end
+    end)
+end
+
+hl.on("window.open", function(w)
+    if w.class ~= "firefox" or w.initial_title ~= "Mozilla Firefox" then return end
+
+    -- A lone generic-titled Firefox window is the browser itself starting up.
+    if #hl.get_windows({ class = "firefox" }) <= 1 then return end
+
+    hl.dispatch(hl.dsp.window.float({ action = "set", window = w }))
+    settle_extension_window(w)
 end)

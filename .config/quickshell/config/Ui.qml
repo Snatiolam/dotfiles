@@ -2,11 +2,20 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Hyprland
 import Quickshell.Io
 
 // Shared state for overlays and popups.
 // Only one popup open at a time: opening one automatically closes the rest.
+// A popup opens on the screen that had focus when it was requested.
 Singleton {
+    readonly property string focusedScreenName: Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : ""
+    readonly property var focusedScreen: screenNamed(focusedScreenName)
+
+    // Screen of the open popout or launcher.
+    property string overlayScreenName: ""
+    readonly property var overlayScreen: screenNamed(overlayScreenName)
+
     // "" | "calendar" | "network" | "bluetooth" | "audio" | "power" | "notifications"
     property string popout: ""
 
@@ -14,11 +23,21 @@ Singleton {
     readonly property bool powerMenu: popout === "power"
     readonly property bool notifCenter: popout === "notifications"
 
+    function screenNamed(name: string): var {
+        return Quickshell.screens.find(s => s.name === name) ?? Quickshell.screens[0];
+    }
+
+    function isPopoutOpenOn(name: string, screenName: string): bool {
+        return popout === name && overlayScreenName === screenName;
+    }
+
     function togglePopout(name): void {
-        popout = (popout === name) ? "" : name;
+        if (isPopoutOpenOn(name, focusedScreenName)) closePopout();
+        else openPopout(name);
     }
 
     function openPopout(name): void {
+        overlayScreenName = focusedScreenName;
         popout = name;
     }
 
@@ -30,13 +49,14 @@ Singleton {
     property bool launcher: false
 
     function toggleLauncher(): void {
-        launcher = !launcher;
-        if (launcher) Ui.closePopout();
+        if (launcher) closeLauncher();
+        else openLauncher();
     }
 
     function openLauncher(): void {
+        closePopout();
+        overlayScreenName = focusedScreenName;
         launcher = true;
-        Ui.closePopout();
     }
 
     function closeLauncher(): void {

@@ -8,7 +8,7 @@ import qs.config
 PopupWindow {
     id: root
 
-    // Bar item the popup appears under.
+    // Bar button the popup appears under (a BarButton).
     required property var anchorItem
     // Key in Ui.popout controlling visibility.
     required property string popoutId
@@ -26,10 +26,11 @@ PopupWindow {
 
     color: "transparent"
     grabFocus: true
-    visible: Ui.popout === popoutId
+    readonly property bool shown: Ui.isPopoutOpenOn(popoutId, anchorItem.screenName)
+    visible: shown
 
     // Click outside → Wayland closes the popup.
-    onClosed: if (Ui.popout === popoutId) Ui.closePopout()
+    onClosed: if (shown) Ui.closePopout()
 
     Shortcut {
         sequence: "Escape"

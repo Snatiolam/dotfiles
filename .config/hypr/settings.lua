@@ -3,7 +3,6 @@ return {
     mod          = "SUPER",
     terminal     = "ghostty",
     file_manager = "thunar",
-    menu         = "rofi -show drun -theme ~/.config/rofi/config.rasi",
     browser      = "firefox",
     calculator   = "qalculate-qt",
 }

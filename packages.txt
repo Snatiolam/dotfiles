@@ -131,6 +131,8 @@ network-manager-applet
 bluez
 bluez-utils
 blueman
+python-dbus     # Quickshell BlueZ pairing agent (scripts/bt-agent.py)
+python-gobject
 
 # --- Power management (battery profiles in the Quickshell panel) ---
 power-profiles-daemon

@@ -7,7 +7,10 @@ import qs.modules
 
 // Config entry point: mounts the bar + overlays.
 ShellRoot {
-    Bar {}
+    Variants {
+        model: Quickshell.screens
+        Bar {}
+    }
     OsdOverlay {}
     Toast {}
     NotificationCenter {}
@@ -28,13 +31,17 @@ ShellRoot {
     // passed through the environment instead, which lives in /proc/<pid>/environ
     // and is invisible to pkill (clearEnvironment defaults to false, so PATH is
     // still inherited).
+    // Exit code of bt-agent.py when BlueZ is not available (no adapter or
+    // service); restarting would only loop.
+    readonly property int btAgentNoBluez: 2
+
     Process {
         id: btAgent
         command: ["sh", "-c",
             "pkill -f '[b]t-agent.py' 2>/dev/null; exec python3 \"$BT_AGENT_SCRIPT\""]
         environment: ({ BT_AGENT_SCRIPT: Quickshell.shellDir + "/scripts/bt-agent.py" })
         running: true
-        onExited: btAgentRestart.restart()
+        onExited: (exitCode) => { if (exitCode !== btAgentNoBluez) btAgentRestart.restart(); }
     }
 
     Timer {

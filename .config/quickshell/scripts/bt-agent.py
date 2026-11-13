@@ -8,6 +8,8 @@ registers once with BlueZ and accepts every request.
 Started automatically by shell.qml. Run manually: python3 scripts/bt-agent.py
 """
 
+import sys
+
 import dbus
 import dbus.mainloop.glib
 import dbus.service
@@ -17,6 +19,7 @@ PATH = "/qs/btagent"
 IFACE = "org.bluez.Agent1"
 MANAGER = "org.bluez.AgentManager1"
 CAPABILITY = "KeyboardDisplay"
+EXIT_NO_BLUEZ = 2  # keep in sync with btAgentNoBluez in shell.qml
 
 
 class Agent(dbus.service.Object):
@@ -51,8 +54,12 @@ class Agent(dbus.service.Object):
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 bus = dbus.SystemBus()
 Agent(bus, PATH)
-manager = dbus.Interface(bus.get_object("org.bluez", "/org/bluez"), MANAGER)
-manager.RegisterAgent(PATH, CAPABILITY)
+try:
+    manager = dbus.Interface(bus.get_object("org.bluez", "/org/bluez"), MANAGER)
+    manager.RegisterAgent(PATH, CAPABILITY)
+except dbus.DBusException as error:
+    print(f"bt-agent: BlueZ unavailable: {error}", file=sys.stderr)
+    sys.exit(EXIT_NO_BLUEZ)
 try:
     manager.RequestDefaultAgent(PATH)
 except dbus.DBusException:

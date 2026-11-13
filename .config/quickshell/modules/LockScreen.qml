@@ -19,6 +19,22 @@ Scope {
         property bool locked: false
     }
 
+    // The compositor stays locked if Quickshell dies (e.g. the monitor
+    // watchdog restarts it), so remember the lock across process restarts and
+    // lock again when the shell comes back.
+    FileView {
+        id: lockMarker
+        path: Quickshell.env("XDG_RUNTIME_DIR") + "/quickshell-locked"
+        blockLoading: true
+        printErrors: false
+        onLoaded: if (text().trim() === "1") persist.locked = true
+    }
+
+    Connections {
+        target: persist
+        function onLockedChanged(): void { lockMarker.setText(persist.locked ? "1" : "0"); }
+    }
+
     LockContext {
         id: lockContext
         onUnlocked: persist.locked = false
