@@ -4,8 +4,7 @@ import Quickshell
 import qs.config
 import qs.components
 
-// Centered session menu, macOS-style: dimmed backdrop, frosted card and a
-// row of large circular actions. Closes on click outside or Escape.
+// Centered session menu: dimmed backdrop, frosted card and large circular actions.
 PanelWindow {
     id: win
 
@@ -18,22 +17,19 @@ PanelWindow {
         bottom: true
     }
 
-    // Cover the whole output, including the bar's reserved strip, so the
-    // backdrop dims everything and the card is truly centered.
+    // Cover the whole output (ignoring the bar's zone) so the backdrop dims everything.
     exclusionMode: ExclusionMode.Ignore
     aboveWindows: true
     focusable: true
     color: "transparent"
     visible: Ui.powerMenu
 
-    // ── Backdrop ──────────────────────────────────────────────────
     Rectangle {
         anchors.fill: parent
         color: "#08090f"
         opacity: win.visible ? 0.52 : 0
         Behavior on opacity { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
 
-        // Closes on click outside the card
         MouseArea {
             anchors.fill: parent
             onClicked: Ui.closePopout()
@@ -46,7 +42,6 @@ PanelWindow {
         onActivated: Ui.closePopout()
     }
 
-    // ── Card ──────────────────────────────────────────────────────
     Item {
         id: stack
         anchors.centerIn: parent
@@ -58,8 +53,7 @@ PanelWindow {
         Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
         Behavior on opacity { NumberAnimation { duration: 160; easing.type: Easing.OutCubic } }
 
-        // Soft ambient shadow: two stacked rings give a cheap blur-like falloff
-        // without needing an extra effect pass on the layer surface.
+        // Two stacked rings fake a soft shadow without an extra effect pass.
         Rectangle {
             anchors.fill: card
             anchors.topMargin: -8
@@ -92,10 +86,8 @@ PanelWindow {
                 GradientStop { position: 1.0; color: Theme.tint(Theme.crust, 0.985) }
             }
 
-            // Absorbs clicks inside the card
             MouseArea { anchors.fill: parent }
 
-            // Glassy top highlight
             Rectangle {
                 anchors.top: parent.top
                 anchors.topMargin: 1
@@ -110,7 +102,6 @@ PanelWindow {
                 }
             }
 
-            // ── Header ────────────────────────────────────────────
             RowLayout {
                 id: header
                 anchors.left: parent.left
@@ -176,7 +167,6 @@ PanelWindow {
                 }
             }
 
-            // ── Divider ───────────────────────────────────────────
             Rectangle {
                 id: divider
                 anchors.left: parent.left
@@ -189,7 +179,6 @@ PanelWindow {
                 color: Qt.rgba(1, 1, 1, 0.06)
             }
 
-            // ── Actions ───────────────────────────────────────────
             RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -206,8 +195,7 @@ PanelWindow {
                     accent: Theme.sapphire
                     action: () => Quickshell.execDetached(["loginctl", "lock-session"])
                 }
-                // Hyprland 0.57 Lua config: legacy `hyprctl dispatch exit` is
-                // rejected, so use the Lua dispatcher form.
+                // Lua dispatcher form: the legacy `hyprctl dispatch exit` is rejected.
                 PowerAction {
                     Layout.fillWidth: true
                     glyph: Icons.logout
@@ -238,7 +226,6 @@ PanelWindow {
                 }
             }
 
-            // ── Footer hint ───────────────────────────────────────
             Row {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom

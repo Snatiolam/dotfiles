@@ -3,8 +3,7 @@ import Quickshell.Services.Pipewire
 import qs.config
 import qs.components
 
-// Default sink volume control.
-// Left click = audio panel · middle click = mute · wheel = ±5%.
+// Volume button: click opens the panel, middle click mutes, wheel adjusts.
 BarButton {
     id: root
 

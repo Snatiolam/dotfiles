@@ -1,23 +1,13 @@
 #!/usr/bin/env python3
 """Supervise Quickshell in a Hyprland session.
 
-Quickshell 0.3.2 does not recreate its PanelWindows when every output is
-removed and re-added (e.g. unplugging/replugging the only HDMI monitor).
-Qt falls back to "There are no outputs - creating placeholder screen" and the
-bar never comes back even though the compositor sees the monitor again. The
-process stays alive, so a plain crash watchdog would not catch it.
+Quickshell 0.3.2 does not recreate its PanelWindows once every output has been
+removed (e.g. replugging the only HDMI monitor), yet the process stays alive.
+This supervisor restarts it after a crash and after a debounced monitor
+add/remove burst, but postpones the restart while Hyprland only has its
+"FALLBACK" placeholder output, which is the state that breaks the bar.
 
-This supervisor:
-  * restarts Quickshell if it exits unexpectedly, and
-  * restarts it after a debounced monitor add/remove burst, which rebuilds
-    the layer surfaces on the new output list.
-
-A restart is postponed while the compositor has no real output (only its
-"FALLBACK" placeholder), otherwise Quickshell would come back in the very
-state that breaks it: no outputs, no bar to map.
-
-Only one instance runs per session (flock); it owns the quickshell child and
-forwards SIGTERM/SIGINT so the bar goes away cleanly when the session ends.
+One instance per session (flock); it forwards SIGTERM/SIGINT to the child.
 """
 
 import fcntl

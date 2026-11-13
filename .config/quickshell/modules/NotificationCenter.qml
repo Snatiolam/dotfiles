@@ -41,7 +41,6 @@ PanelWindow {
             anchors.margins: 12
             spacing: 10
 
-            // Header
             RowLayout {
                 Layout.fillWidth: true
 
@@ -82,7 +81,6 @@ PanelWindow {
                 }
             }
 
-            // Empty state
             Text {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -95,7 +93,6 @@ PanelWindow {
                 font.pixelSize: 12
             }
 
-            // List
             ListView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true

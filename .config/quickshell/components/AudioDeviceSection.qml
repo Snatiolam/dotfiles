@@ -3,8 +3,7 @@ import QtQuick.Layouts
 import qs.config
 import qs.components
 
-// One audio direction (output or input): volume + mute row and a device picker.
-// Reused by AudioPopup for both sinks and sources.
+// Volume row and device picker for one audio direction (output or input).
 ColumnLayout {
     id: root
 
@@ -28,7 +27,6 @@ ColumnLayout {
 
     spacing: 10
 
-    // Header
     RowLayout {
         Layout.fillWidth: true
         spacing: 7
@@ -60,7 +58,6 @@ ColumnLayout {
         }
     }
 
-    // Volume + mute
     RowLayout {
         Layout.fillWidth: true
         spacing: 10
@@ -100,7 +97,6 @@ ColumnLayout {
         }
     }
 
-    // Device selector
     Rectangle {
         Layout.fillWidth: true
         height: 28
@@ -139,7 +135,6 @@ ColumnLayout {
         }
     }
 
-    // Device list
     ColumnLayout {
         Layout.fillWidth: true
         visible: root.expanded

@@ -12,12 +12,9 @@ Singleton {
 
     readonly property real stepSize: 0.10
 
-    // Current brightness, 0..1.
     property real value: 0
 
-    // A change requested through this singleton (keys, slider).
     signal adjusted(real value)
-    // A change made behind our back (external tool, DDC re-read).
     signal changedExternally(real value)
 
     // The device name differs per machine (intel_backlight, amdgpu_bl0, ...),

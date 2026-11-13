@@ -22,18 +22,15 @@ PanelWindow {
     exclusiveZone: Theme.barHeight
     color: "transparent"
 
-    // Compositor-side blur behind the translucent bar (macOS-style).
     BackgroundEffect.blurRegion: Region {
         item: panelBg
     }
 
-    // Background
     Rectangle {
         id: panelBg
         anchors.fill: parent
         color: Theme.barBg
 
-        // Bottom accent line (Macchiato gradient)
         Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
@@ -47,7 +44,6 @@ PanelWindow {
         }
     }
 
-    // ── Left ─────────────────────────────────────────────────────
     RowLayout {
         anchors.left: parent.left
         anchors.leftMargin: Theme.padding
@@ -57,13 +53,11 @@ PanelWindow {
         Workspaces {}
     }
 
-    // ── Center ───────────────────────────────────────────────────
     Clock {
         id: clockWidget
         anchors.centerIn: parent
     }
 
-    // ── Right ────────────────────────────────────────────────────
     RowLayout {
         anchors.right: parent.right
         anchors.rightMargin: Theme.padding
@@ -80,7 +74,6 @@ PanelWindow {
         PowerButton {}
     }
 
-    // ── Popups (dropdowns) ───────────────────────────────────────
     CalendarPopup { anchorItem: clockWidget }
     BluetoothPopup { anchorItem: bluetoothWidget }
     NetworkPopup { anchorItem: networkWidget }

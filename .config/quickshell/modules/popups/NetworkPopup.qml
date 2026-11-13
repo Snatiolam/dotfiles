@@ -38,20 +38,17 @@ AnchoredPopup {
         return n.security === WifiSecurityType.Open;
     }
 
-    // A connection attempt in flight.
     function isConnecting(n): bool {
         return !!n && n.state === ConnectionState.Connecting;
     }
 
-    // Sort priority: the network being connected first, then the connected one,
-    // then everything else by signal strength.
+    // Connecting first, then connected, then by signal strength.
     function netRank(n): int {
         if (popup.isConnecting(n)) return 0;
         if (n.connected) return 1;
         return 2;
     }
 
-    // Human-readable failure reason for the password prompt.
     function failText(reason): string {
         switch (reason) {
         case ConnectionFailReason.NoSecrets: return "Wrong password";
@@ -63,16 +60,14 @@ AnchoredPopup {
         }
     }
 
-    // A wrong password can surface as different reasons depending on the
-    // driver/NetworkManager version, so treat everything as retryable except a
-    // network that simply vanished.
+    // A wrong password surfaces under different reasons across drivers, so everything
+    // is retryable except a network that simply vanished.
     function isAuthFail(reason): bool {
         return reason !== ConnectionFailReason.WifiNetworkLost;
     }
 
-    // NetworkManager saves the profile on the failed attempt, so without
-    // forgetting it every later click would reconnect with the bad secret and
-    // fail instantly. Drop it and reopen the prompt so the user can retry.
+    // NetworkManager saves the profile on a failed attempt; forget it so later
+    // clicks do not reuse the bad secret, and reopen the prompt.
     function onConnectionFailed(n, reason): void {
         popup.pskError = popup.failText(reason);
         if (popup.isAuthFail(reason) && !popup.isOpen(n)) {
@@ -98,14 +93,11 @@ AnchoredPopup {
     property var pendingNetwork: null
     property string psk: ""
     property bool showPsk: false
-    // Message shown in the password prompt after a failed attempt.
     property string pskError: ""
 
-    // True while a WiFi scan is (probably) in flight. The backend exposes no
-    // "scanning" signal, so this is driven by a timeout purely for feedback.
+    // The backend has no "scanning" signal, so a timeout drives the spinner.
     property bool scanning: false
 
-    // Scan only while the panel is open.
     onVisibleChanged: {
         if (!popup.wifi)
             return;
@@ -120,7 +112,6 @@ AnchoredPopup {
         }
     }
 
-    // Kick off a fresh scan and show the spinner for a moment.
     function rescan(): void {
         if (popup.wifi) {
             popup.wifi.scannerEnabled = false;
@@ -136,7 +127,6 @@ AnchoredPopup {
             n.disconnect();
             return;
         }
-        // Clicking the pending network again closes its prompt.
         if (popup.pendingNetwork === n) {
             popup.pendingNetwork = null;
             return;
@@ -152,7 +142,6 @@ AnchoredPopup {
 
     function submitPsk(): void {
         const n = popup.pendingNetwork;
-        // Ignore empty submits so Enter does not dismiss the prompt.
         if (!n || popup.psk.length === 0)
             return;
         popup.pskError = "";
@@ -162,7 +151,6 @@ AnchoredPopup {
         popup.showPsk = false;
     }
 
-    // A WiFi scan reports no completion, so keep the spinner up briefly.
     Timer {
         id: scanTimeout
         interval: 3000
@@ -176,7 +164,6 @@ AnchoredPopup {
         anchors.margins: Theme.popupPadding
         spacing: 8
 
-        // ── Header ────────────────────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 8
@@ -205,7 +192,6 @@ AnchoredPopup {
                     font.family: Theme.font
                     font.pixelSize: 13
 
-                    // Spin while a scan is in flight.
                     RotationAnimator on rotation {
                         running: popup.scanning
                         from: 0
@@ -229,7 +215,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Wired status ──────────────────────────────────────────
         Rectangle {
             Layout.fillWidth: true
             visible: popup.wired !== null
@@ -267,7 +252,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Network list ──────────────────────────────────────────
         Flickable {
             Layout.fillWidth: true
             Layout.preferredHeight: Math.min(232, listCol.implicitHeight)
@@ -325,7 +309,6 @@ AnchoredPopup {
                                 font.pixelSize: 10
                             }
 
-                            // Connection attempt in progress.
                             RowLayout {
                                 visible: popup.isConnecting(modelData)
                                 spacing: 4
@@ -368,7 +351,6 @@ AnchoredPopup {
                             onClicked: popup.onNetworkClicked(modelData)
                         }
 
-                        // Surface connect failures (e.g. wrong password).
                         Connections {
                             target: modelData
                             function onConnectionFailed(reason) {
@@ -380,7 +362,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Empty states ──────────────────────────────────────────
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 64
@@ -413,16 +394,13 @@ AnchoredPopup {
             }
         }
 
-        // ── Password ──────────────────────────────────────────────
         ColumnLayout {
             id: pskSection
             Layout.fillWidth: true
             visible: popup.pendingNetwork !== null
             spacing: 6
 
-            // Focus the field as soon as the prompt appears. Doing this on the
-            // section (not the TextInput) is what actually fires: a child item's
-            // own `visible` never changes when the parent is toggled.
+            // Focus on the section: a child's own `visible` never changes when the parent toggles.
             onVisibleChanged: if (visible) Qt.callLater(pskInput.forceActiveFocus)
 
             RowLayout {
@@ -483,8 +461,7 @@ AnchoredPopup {
                     font.pixelSize: 12
                     echoMode: popup.showPsk ? TextInput.Normal : TextInput.Password
                     selectByMouse: true
-                    // Keep the field and the model in sync. textEdited fires only
-                    // on user input, so this one-way binding never loops.
+                    // textEdited fires only on user input, so this one-way binding never loops.
                     text: popup.psk
                     onTextEdited: popup.psk = text
                     onAccepted: popup.submitPsk()

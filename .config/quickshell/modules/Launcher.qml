@@ -4,8 +4,7 @@ import Quickshell
 import Quickshell.Io
 import qs.config
 
-// macOS-style app launcher. Search is done with fzf over a TSV built by
-// list_apps.py. Controlled with `qs ipc call launcher toggle`.
+// App launcher: fzf over a TSV built by list_apps.py. `qs ipc call launcher toggle`.
 PanelWindow {
     id: win
 
@@ -24,7 +23,6 @@ PanelWindow {
     color: "transparent"
     visible: Ui.launcher
 
-    // ── State ────────────────────────────────────────────────────
     property var results: []
     property string query: ""
     property int sel: -1
@@ -32,9 +30,7 @@ PanelWindow {
 
     readonly property string launcherScript: Quickshell.shellDir + "/modules/list_apps.py"
 
-    // ── Startup: build the app list for fzf ──────────────────────
-    // Rebuilt every time the launcher opens so newly installed apps
-    // (e.g. flatpaks) show up without restarting the shell.
+    // Rebuilt on every open so new apps show up.
     Process {
         id: appScan
         running: false
@@ -44,7 +40,6 @@ PanelWindow {
         }
     }
 
-    // ── Filter through fzf ───────────────────────────────────────
     Process {
         id: filterProc
         running: false
@@ -67,8 +62,7 @@ PanelWindow {
         return q.replace(/[^a-zA-Z0-9\u00C0-\u00FF _.-]/g, "");
     }
 
-    // Always applies the *latest* query: if a filter is in flight, remember
-    // that another pass is needed once it finishes instead of dropping it.
+    // Applies the latest query: a request during a running filter is queued.
     function requestFilter(): void {
         if (filterProc.running) {
             win.pendingFilter = true;
@@ -116,13 +110,11 @@ PanelWindow {
 
     onVisibleChanged: if (win.visible) win.onOpened()
 
-    // Click outside the card to close.
     MouseArea {
         anchors.fill: parent
         onClicked: Ui.closeLauncher()
     }
 
-    // ── Card ─────────────────────────────────────────────────────
     Rectangle {
         id: card
         anchors.horizontalCenter: parent.horizontalCenter
@@ -135,7 +127,6 @@ PanelWindow {
         border.width: 1
         border.color: Theme.cardBorder
 
-        // Absorbs clicks inside the card.
         MouseArea { anchors.fill: parent }
 
         ColumnLayout {
@@ -144,7 +135,6 @@ PanelWindow {
             anchors.margins: 14
             spacing: 12
 
-            // Search box
             Rectangle {
                 Layout.fillWidth: true
                 implicitHeight: 54
@@ -225,7 +215,6 @@ PanelWindow {
                 font.pixelSize: 13
             }
 
-            // Results
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 6
@@ -257,7 +246,6 @@ PanelWindow {
                             anchors.rightMargin: 14
                             spacing: 14
 
-                            // Icon (or first-letter tile)
                             Rectangle {
                                 width: 44
                                 height: 44
@@ -318,7 +306,6 @@ PanelWindow {
         }
     }
 
-    // ── IPC: `qs ipc call launcher toggle/open/close` ────────────
     IpcHandler {
         target: "launcher"
 

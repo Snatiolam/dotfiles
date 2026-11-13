@@ -14,7 +14,6 @@ BarButton {
 
     onClicked: Ui.togglePopout("notifications")
 
-    // Soft pastel halo behind the bell while there are pending notifications.
     Rectangle {
         anchors.centerIn: parent
         width: 22
@@ -35,7 +34,6 @@ BarButton {
         Behavior on color { ColorAnimation { duration: 160 } }
     }
 
-    // Counter badge
     Rectangle {
         visible: root.hasNotifs
         anchors.right: parent.right

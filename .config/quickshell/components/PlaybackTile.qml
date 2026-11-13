@@ -4,15 +4,11 @@ import Quickshell
 import Quickshell.Services.Mpris
 import qs.config
 
-// macOS-style "Playback" tile: shows the current track (or "Not playing"),
-// with play/pause + next controls.
+// Playback tile: current track with play/pause and next controls.
 Rectangle {
     id: t
 
-    // Reactive player selection (no polling): this binding re-evaluates when
-    // the MPRIS player list changes (ObjectModel.valuesChanged) or when the
-    // playback state of any player changes, so it also picks up players that
-    // appear after the shell has started.
+    // Re-evaluates when players appear or change state, so no polling is needed.
     readonly property var player: {
         const arr = Mpris.players.values;
         let best = null;
@@ -35,7 +31,6 @@ Rectangle {
         anchors.margins: 10
         spacing: 7
 
-        // Top row: status + controls
         RowLayout {
             Layout.fillWidth: true
             spacing: 8
@@ -125,7 +120,6 @@ Rectangle {
             }
         }
 
-        // Title
         Text {
             Layout.fillWidth: true
             text: t.playing
@@ -138,7 +132,6 @@ Rectangle {
             elide: Text.ElideRight
         }
 
-        // Artist / hint
         Text {
             Layout.fillWidth: true
             text: t.playing

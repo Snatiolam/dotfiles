@@ -1,8 +1,7 @@
 import QtQuick
 import qs.config
 
-// Minimal switch. Does not mutate its own state: reflects `checked`
-// and notifies with `toggled()` so the parent updates the real state.
+// Minimal switch: reflects `checked` and emits `toggled()`; the parent owns the state.
 Item {
     id: root
 

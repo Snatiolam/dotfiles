@@ -6,9 +6,7 @@ import Quickshell.Bluetooth
 import qs.config
 import qs.components
 
-// Bluetooth panel, macOS-style: remembered devices (connected or paired)
-// come first, then whatever an ongoing scan is finding, and a settings
-// shortcut sits at the very bottom (opens blueman-manager).
+// Bluetooth panel: remembered devices first, then scan results, plus a blueman-manager shortcut.
 AnchoredPopup {
     id: popup
 
@@ -20,13 +18,10 @@ AnchoredPopup {
     readonly property var adapter: Bluetooth.defaultAdapter
     readonly property bool discovering: adapter ? adapter.discovering : false
 
-    // Address of the device being paired; connected on the first list update
-    // that reports it as paired/bonded.
+    // Address of the device being paired; connected once it reports as bonded.
     property string pendingAddress: ""
 
-    // Every device the adapter knows about, sorted: connected, paired, name.
-    // The section lists below are cuts of this, and checkPending() uses it
-    // to look devices up by address.
+    // All known devices sorted: connected, paired, name.
     readonly property var devices: {
         const arr = Bluetooth.devices.values.slice();
         arr.sort((a, b) => {
@@ -41,8 +36,7 @@ AnchoredPopup {
     readonly property var knownDevices:
         popup.devices.filter(d => d.connected || d.paired || d.bonded)
 
-    // "Other Devices": scan results that are not remembered yet. Unnamed
-    // ones are dropped — there is nothing to show for them.
+    // Scan results not remembered yet; unnamed ones are dropped.
     readonly property var discoveredDevices: popup.devices.filter(
         d => !(d.connected || d.paired || d.bonded) && (d.deviceName || d.name))
 
@@ -71,7 +65,6 @@ AnchoredPopup {
         return Icons.bluetooth;
     }
 
-    // macOS wording: the right side of a row states the device's condition.
     function statusText(d): string {
         if (d.pairing) return "Pairing…";
         if (d.state === BluetoothDeviceState.Connecting) return "Connecting…";
@@ -91,7 +84,6 @@ AnchoredPopup {
         return Theme.overlay0;
     }
 
-    // Hovering a row swaps its status text for this action pill (macOS).
     function actionLabel(d): string {
         if (d.pairing) return "Cancel";
         if (d.connected) return "Disconnect";
@@ -99,13 +91,8 @@ AnchoredPopup {
         return "Pair";
     }
 
-    // Connect a paired/bonded device.
-    // - Trust it first: keyboards (e.g. Keychron) reconnect much more
-    //   reliably once trusted.
-    // - Stop discovery: connecting while an inquiry is running makes BlueZ
-    //   fail intermittently with "br-connection-create-socket".
-    // - Retry: that error also appears when the device is initiating the link
-    //   at the same time, so a couple of retries are needed.
+    // Trust first (keyboards reconnect more reliably), stop discovery and retry: BlueZ
+    // fails with "br-connection-create-socket" during an inquiry or a simultaneous link.
     function connectDevice(d, immediate): void {
         if (popup.adapter)
             popup.adapter.discovering = false;
@@ -120,9 +107,7 @@ AnchoredPopup {
         }
     }
 
-    // The device list is recomputed on every device property change, so this
-    // runs as soon as the pairing finishes. Look the device up by address
-    // (the object reference can change) and connect it.
+    // Looks the device up by address (the reference can change) and connects it.
     function checkPending(): void {
         if (!popup.pendingAddress)
             return;
@@ -148,17 +133,14 @@ AnchoredPopup {
             popup.connectDevice(d, true);
             return;
         }
-        // Unpaired: pair, then connect as soon as it bonds (checkPending).
-        // Stop scanning so pairing is clean.
+        // Unpaired: pair and stop scanning; checkPending() connects once it bonds.
         if (popup.adapter)
             popup.adapter.discovering = false;
         popup.pendingAddress = d.address;
         d.pair();
     }
 
-    // Scan while the panel is open, but skip it once something is connected:
-    // a running inquiry can disturb an active keyboard link. The magnifier
-    // button still lets the user force a scan any time.
+    // Scan while open, but not when connected: an inquiry can disturb a keyboard link.
     onVisibleChanged: {
         if (!popup.adapter || !popup.adapter.enabled)
             return;
@@ -168,8 +150,7 @@ AnchoredPopup {
 
     onDevicesChanged: popup.checkPending()
 
-    // Waits a moment, then connects the pending device unless it already
-    // linked up; retries a few times to absorb "br-connection-create-socket".
+    // Retries a few times to absorb "br-connection-create-socket".
     Timer {
         id: connectRetry
         property var device: null
@@ -188,8 +169,7 @@ AnchoredPopup {
         }
     }
 
-    // Safety net while a pairing is in flight, in case the list does not
-    // report the change on its own.
+    // Safety net in case the list does not report the change itself.
     Timer {
         running: popup.pendingAddress !== ""
         interval: 700
@@ -197,15 +177,13 @@ AnchoredPopup {
         onTriggered: popup.checkPending()
     }
 
-    // Opens the BlueZ device manager. Detached so it survives quickshell
-    // restarts and config reloads.
+    // Detached so it survives Quickshell restarts.
     Process {
         id: settingsProc
         running: false
         command: ["sh", "-c", "setsid blueman-manager >/dev/null 2>&1 &"]
     }
 
-    // One device row: type icon, name, and a status text that hover swaps
     // for a Connect/Disconnect pill (macOS System Settings behaviour).
     Component {
         id: deviceDelegate
@@ -220,8 +198,7 @@ AnchoredPopup {
             Behavior on color { ColorAnimation { duration: 120 } }
 
             HoverHandler { id: rowHover }
-            // Row-wide click sits behind the content, so the pill and the
-            // trash button on top receive their own clicks.
+            // The row click sits behind the content so the pill and trash button get their own clicks.
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -301,7 +278,6 @@ AnchoredPopup {
                     }
                 }
 
-                // Forget (unpair), revealed on hover for remembered devices.
                 Item {
                     Layout.preferredWidth: 14
                     Layout.preferredHeight: 14
@@ -335,7 +311,6 @@ AnchoredPopup {
         anchors.margins: Theme.popupPadding
         spacing: 8
 
-        // ── Header ────────────────────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 8
@@ -349,7 +324,6 @@ AnchoredPopup {
                 font.bold: true
             }
 
-            // Toggle a scan on demand.
             Text {
                 text: Icons.search
                 color: popup.discovering
@@ -377,7 +351,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Now discoverable (macOS wording) ──────────────────────
         Text {
             Layout.fillWidth: true
             visible: popup.adapter && popup.adapter.discoverable
@@ -389,7 +362,6 @@ AnchoredPopup {
             elide: Text.ElideMiddle
         }
 
-        // ── No adapter / Bluetooth off ────────────────────────────
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 64
@@ -405,7 +377,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Device list ───────────────────────────────────────────
         Flickable {
             Layout.fillWidth: true
             Layout.preferredHeight: Math.min(300, listCol.implicitHeight)
@@ -436,7 +407,6 @@ AnchoredPopup {
                     delegate: deviceDelegate
                 }
 
-                // ── Scan results ──────────────────────────────────
                 Column {
                     width: parent.width
                     spacing: 3
@@ -464,7 +434,6 @@ AnchoredPopup {
                             font.bold: true
                         }
 
-                        // Spin while the inquiry runs.
                         Text {
                             visible: popup.discovering
                             text: Icons.refresh
@@ -487,7 +456,6 @@ AnchoredPopup {
                         delegate: deviceDelegate
                     }
 
-                    // Nothing found yet.
                     Text {
                         visible: popup.discovering
                                  && popup.discoveredDevices.length === 0
@@ -502,7 +470,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Nothing at all ────────────────────────────────────────
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 64
@@ -521,7 +488,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Settings ──────────────────────────────────────────────
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 32

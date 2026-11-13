@@ -33,7 +33,6 @@ PanelWindow {
         return Osd.muted ? "Muted" : "Volume";
     }
 
-    // Pastel accent: warm yellow for brightness, mauve for volume.
     readonly property color osdAccent: (Osd.kind === "brightness")
         ? Theme.yellow : Theme.mauve
 
@@ -91,7 +90,6 @@ PanelWindow {
                     }
                 }
 
-                // Progress bar
                 Rectangle {
                     Layout.fillWidth: true
                     height: 7

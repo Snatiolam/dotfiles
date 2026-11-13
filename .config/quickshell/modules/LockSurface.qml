@@ -3,8 +3,7 @@ import QtQuick.Layouts
 import qs.config
 import qs.modules
 
-// Visual lockscreen for a single monitor, created once per screen by the
-// WlSessionLock surface component in LockScreen.qml.
+// Lock screen UI for one monitor.
 Rectangle {
     id: root
 
@@ -12,7 +11,6 @@ Rectangle {
 
     color: Theme.crust
 
-    // ── Clock ─────────────────────────────────────────────────────
     Text {
         id: clock
         anchors.horizontalCenter: parent.horizontalCenter
@@ -34,7 +32,6 @@ Rectangle {
         font.pixelSize: 17
     }
 
-    // ── Password prompt ───────────────────────────────────────────
     Rectangle {
         id: card
         anchors.horizontalCenter: parent.horizontalCenter
@@ -107,7 +104,6 @@ Rectangle {
         font.pixelSize: 13
     }
 
-    // ── Clock ticker ──────────────────────────────────────────────
     QtObject {
         id: now
         property date date: new Date()

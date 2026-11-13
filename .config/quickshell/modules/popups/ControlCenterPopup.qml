@@ -21,17 +21,12 @@ AnchoredPopup {
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var audio: sink ? sink.audio : null
 
-    // ── Night light (hyprsunset, Hyprland-native) ────────────────
-    // Tune these two to taste:
-    //   nightTemp  = colour temperature in Kelvin (1000-20000, lower = warmer)
-    //   nightGamma = display gamma in % (100 = unchanged, <100 dims the panel)
+    // nightTemp in Kelvin (lower is warmer); nightGamma in % (below 100 dims).
     property bool nightOn: false
     property int nightTemp: 4000
     property int nightGamma: 100
 
-    // hyprsunset exposes no status signal, so probe only when the panel is
-    // actually opened and keep `nightOn` in sync from toggleNight() after that.
-    // No `pgrep` every few seconds while the panel is closed.
+    // hyprsunset has no status signal: probe when the panel opens, then track toggles.
     onVisibleChanged: if (visible) nightCheck.running = true
 
     Process {
@@ -63,7 +58,6 @@ AnchoredPopup {
         command: ["sh", "-c", "pkill -x hyprsunset"]
     }
 
-    // ── Wi-Fi helpers ────────────────────────────────────────────
     readonly property var ccWifi: {
         const devs = Networking.devices.values;
         for (let i = 0; i < devs.length; i++) {
@@ -91,7 +85,6 @@ AnchoredPopup {
         anchors.margins: Theme.popupPadding
         spacing: 12
 
-        // ══ Quick toggles ════════════════════════════════════════
         Item {
             Layout.fillWidth: true
             Layout.preferredHeight: 104
@@ -140,7 +133,6 @@ AnchoredPopup {
             }
         }
 
-        // ══ Toggle row ═══════════════════════════════════════════
         GridLayout {
             Layout.fillWidth: true
             columns: 3
@@ -181,7 +173,6 @@ AnchoredPopup {
             }
         }
 
-        // ══ Sliders ══════════════════════════════════════════════
         RowLayout {
             Layout.fillWidth: true
             spacing: 10

@@ -18,21 +18,11 @@ ShellRoot {
     Launcher {}
     LockScreen {}
 
-    // BlueZ pairing agent. Quickshell 0.3.2 provides no org.bluez.Agent1,
-    // so without this the panel cannot pair devices that require a
-    // confirmation/passkey (keyboards, earbuds, ...).
-    //
-    // On a config reload Quickshell orphans the previous child (QProcess does
-    // not kill it) and starts a new one, so old agents pile up holding the
-    // BlueZ agent registration. Kill any stale instance first, via the `[b]`
-    // trick so the pattern itself is not matched. `pkill -f` reads
-    // /proc/<pid>/cmdline, so the script path must NOT be part of this
-    // wrapper's argv or pkill would kill it before it can exec python. It is
-    // passed through the environment instead, which lives in /proc/<pid>/environ
-    // and is invisible to pkill (clearEnvironment defaults to false, so PATH is
-    // still inherited).
-    // Exit code of bt-agent.py when BlueZ is not available (no adapter or
-    // service); restarting would only loop.
+    // BlueZ pairing agent (Quickshell has no Agent1). A reload orphans the old child,
+    // so kill stale agents first. The script path goes through the environment so
+    // pkill's pattern cannot match the wrapper itself.
+
+    // bt-agent.py exits with this code when BlueZ is unavailable; restarting would loop.
     readonly property int btAgentNoBluez: 2
 
     Process {

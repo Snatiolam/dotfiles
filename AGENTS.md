@@ -56,12 +56,16 @@ The repo mirrors `$HOME`: `.config/<app>` here maps to `~/.config/<app>`.
 
 ## Conventions
 
+General: code should be self-explanatory, minimal and split into small
+functions. Comment sparingly: only a short line for a non-obvious *why* (a
+workaround, a quirk). Never narrate what the code does, leave banners or
+commented-out code, link wiki pages, or mention other projects or dotfiles.
+
 Hyprland Lua:
 - Config uses the `hl.*` API (`hl.bind`, `hl.exec_cmd`, `hl.env`, `hl.config`,
   `hl.monitor`, `hl.on`). Modules are loaded with `require("hypr.<module>")`.
 - Shared values (`mod`, `terminal`, `browser`, ...) live in `settings.lua`.
-- Files start with a boxed `-----` section header and use explanatory comments.
-  Comments explain the *why* (e.g. workarounds), not just the what.
+- Files start with a boxed `-----` section header.
 - Keep `hyprland.lua` minimal; add new concerns as new modules.
 - `monitors.lua` uses `scale = "auto"` on purpose so the same config works
   across machines; do not pin values unless asked.
@@ -72,9 +76,9 @@ Quickshell QML:
 - Popup state goes through the `Ui` singleton: only one popout open at a
   time (`Ui.togglePopout("<name>")`).
 - Imports use `qs.config`, `qs.components`, `qs.modules`.
-- Files start with a short comment describing what the component does.
-- The Quickshell version in use is 0.3.2; several workarounds in the repo
-  exist because of its limitations (documented inline). Keep those comments.
+- Files start with a one-line comment describing the component.
+- The Quickshell version in use is 0.3.2; a few workarounds exist because of
+  its limitations and carry a short comment explaining why. Keep those.
 
 Shell scripts: `setup.sh` uses `set -euo pipefail`, helper functions
 (`die`, `check_command`) and is meant to be idempotent and safe to re-run.

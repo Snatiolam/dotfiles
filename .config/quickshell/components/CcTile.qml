@@ -2,8 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.config
 
-// macOS-style quick-toggle tile. `pill: true` renders a full-width
-// rounded pill (optionally showing a network/app name in `sublabel`).
+// Quick-toggle tile; `pill: true` makes it full width with an optional `sublabel`.
 Rectangle {
     id: t
 
@@ -25,7 +24,6 @@ Rectangle {
     opacity: t.disabled ? 0.45 : 1
     Behavior on color { ColorAnimation { duration: 120 } }
 
-    // Pill layout: icon + label on top, state/sublabel underneath.
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: 14
@@ -68,7 +66,6 @@ Rectangle {
         }
     }
 
-    // Square layout (icon + label stacked).
     ColumnLayout {
         anchors.centerIn: parent
         spacing: 5

@@ -5,31 +5,19 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 
-// OSD state. Listens to real volume (Pipewire) and brightness changes,
-// applies the multimedia-key steps itself (one IPC call per keypress, no
-// external processes), and exposes extra control through `qs ipc call osd`.
+// Volume and brightness OSD. Media keys reach it through `qs ipc call osd <cmd>`.
 Singleton {
     id: osd
 
-    // Displayed state
     property bool visible: false
     property string kind: "volume"   // "volume" | "brightness"
     property real value: 0           // 0..1
     property bool muted: false
 
-    // ── Startup suppression (event-driven, no timers) ────────────
-    // PipeWire/WirePlumber are (socket-)activated by quickshell itself, so they
-    // come up AFTER it (this session: qs 09:57:02, wireplumber 09:57:04,
-    // pipewire 09:57:05) and then deliver the first sink plus its restored
-    // volume. Any time-based grace would have to guess how long that takes, and
-    // the old 1.2s one expired first — which is why every login popped the OSD.
-    // Instead the OSD stays disarmed until the user actually acts: media keys
-    // go through `qs ipc call osd volup/voldown/mute/...`, which applies the
-    // change and arms the OSD in the same call. Startup can then be as slow
-    // as it wants without ever leaking an OSD, and no timer is involved.
+    // Stays disarmed until the user acts, so slow PipeWire startup (it comes up after
+    // Quickshell and delivers the restored volume) never pops the OSD at login.
     property bool armed: false
 
-    // ── Default sink listener (volume) ────────────────────────────
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var audio: sink ? sink.audio : null
 
@@ -39,12 +27,8 @@ Singleton {
 
     Connections {
         target: osd.audio
-        // Normal changes are shown immediately so holding the volume key keeps
-        // the OSD live. A volume of exactly 0 is the ambiguous case: unplugging
-        // USB headphones makes the outgoing node emit a final 0 while it is
-        // still `osd.audio`, and the switch to the next sink emits no change of
-        // its own. Deferring only the 0 means it is re-read once things settle,
-        // from whichever sink is default by then — no flash, no stuck 0%.
+        // A volume of exactly 0 is ambiguous (unplugging headphones emits a final 0 from
+        // the outgoing node), so it is deferred and re-read once the new sink settles.
         function onVolumesChanged(): void {
             if (osd.audio && osd.audio.volume <= 0.001) osd.deferAudio();
             else osd.onAudioChange();
@@ -52,9 +36,7 @@ Singleton {
         function onMutedChanged(): void { osd.onAudioChange(); }
     }
 
-    // A default-sink switch (jack unplug, device selection) re-shows the new
-    // sink's volume, after letting it settle/bind. Startup sink events happen
-    // while disarmed, so they are ignored without any special casing.
+    // Re-shows the new sink's volume once it settles; startup events are ignored while disarmed.
     onSinkChanged: if (osd.armed) osd.deferAudio()
 
     property int audioRetries: 0
@@ -72,8 +54,7 @@ Singleton {
 
     function onAudioChange(): void {
         if (!osd.armed || !osd.audio) return;
-        // The new sink may still be binding; retry briefly so we never latch
-        // onto its not-yet-populated (0) volume.
+        // The new sink may still be binding; retry so its unpopulated 0 is never shown.
         if (osd.sink && !osd.sink.ready && osd.audioRetries < 5) {
             osd.audioRetries++;
             audioDebounce.restart();
@@ -88,7 +69,6 @@ Singleton {
         function onChangedExternally(v: real): void { if (osd.armed) osd.showBrightness(v); }
     }
 
-    // ── API ───────────────────────────────────────────────────────
     function showVolume(v: real, m: bool): void {
         osd.kind = "volume";
         osd.value = Math.max(0, Math.min(1, v));
@@ -111,15 +91,8 @@ Singleton {
         onTriggered: osd.visible = false
     }
 
-    // ── Media keys ───────────────────────────────────────────────
-    // Hyprland binds every multimedia key to a single `qs ipc call osd <cmd>`
-    // and quickshell applies the change itself: volume goes over the already
-    // open PipeWire connection (same path as the bar wheel and the
-    // control-center slider) and brightness through the coalesced writer above.
-    // That is one process spawn per keypress instead of one sh + wpctl +
-    // brightnessctl + qs burst per keypress (a held key repeats ~30/s), the
-    // OSD shows the target value without waiting for the event roundtrip, and
-    // brightness writes still collapse into one brightnessctl while held.
+    // One IPC call per key press (held keys repeat ~30/s): volume goes over the open
+    // PipeWire connection and brightness through Brightness's coalesced writer.
     readonly property real volumeStep: 0.05
 
     function applyVolume(delta: real): void {
@@ -127,12 +100,12 @@ Singleton {
         if (!a) return;
         osd.armed = true;
         const next = Math.max(0, Math.min(1, a.volume + delta));
-        // Raising above zero unmutes, mirroring the bar wheel and slider.
+        // Raising above zero unmutes.
         const unmute = next > 0 && a.muted;
         const muted = unmute ? false : a.muted;
         a.volume = next;
         if (unmute) a.muted = false;
-        // Show the target now; the PipeWire event re-confirms it right after.
+        // Show the target now; the PipeWire event confirms it.
         osd.showVolume(next, muted);
     }
 

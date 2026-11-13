@@ -31,16 +31,14 @@ PanelWindow {
     property int nUrgency: 0
     property var nRef: null
 
-    // Resolved icon source, plus a secondary source used when the first one
-    // cannot be loaded. Both are empty when there is nothing to show.
+    // Icon source plus a fallback used if it fails to load.
     property string nIconUrl: ""
     property string nIconAltUrl: ""
 
     implicitWidth: 360
     implicitHeight: Math.max(72, toastContent.implicitHeight + 24)
 
-    // Quickshell draws a magenta placeholder when a themed icon does not
-    // resolve, so every icon request gets a fallback icon attached.
+    // Themed icons get a fallback so Quickshell never draws its magenta placeholder.
     function themedIconUrl(name: string, fallback: string): string {
         if (name === "") return "";
         let url = "image://icon/" + name;
@@ -56,13 +54,9 @@ PanelWindow {
         return value;
     }
 
-    // Picks the best icon for a notification:
-    //   1. the icon name or image attached by the app
-    //   2. the app icon
-    //   3. a generic "missing image" icon
+    // Picks the icon: the app's image, then its icon, then a generic fallback.
     function resolveIcon(image: string, appIcon: string): void {
-        // Reset first: a notification without an icon must not inherit the
-        // icon of the previous one.
+        // Reset first so a notification never inherits the previous icon.
         nIconUrl = "";
         nIconAltUrl = "";
         const appName = iconNameOf(appIcon);
@@ -74,15 +68,12 @@ PanelWindow {
             nIconUrl = themedIconUrl(name, fb);
             nIconAltUrl = themedIconUrl(fb, "image-missing");
         } else if (image !== "") {
-            // A real picture sent by the app.
             nIconUrl = image;
             nIconAltUrl = appName !== "" ? themedIconUrl(appName, "image-missing") : "";
         } else if (appName !== "") {
-            // No image, but the app advertised an icon.
             nIconUrl = themedIconUrl(appName, "image-missing");
             nIconAltUrl = themedIconUrl("image-missing", "");
         } else if (appIcon !== "") {
-            // The app icon was given as a path instead of a name.
             nIconUrl = appIcon;
             nIconAltUrl = themedIconUrl("image-missing", "");
         }
@@ -159,9 +150,7 @@ PanelWindow {
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
 
-                    // If the primary source fails to load, fall back to the
-                    // secondary one. Writing to the window property keeps the
-                    // binding of `source` intact.
+                    // Writing to the window property keeps the `source` binding intact.
                     onStatusChanged: {
                         if (status === Image.Error && win.nIconAltUrl !== "") {
                             const alt = win.nIconAltUrl;

@@ -5,21 +5,17 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 
-// Shared state for overlays and popups.
-// Only one popup open at a time: opening one automatically closes the rest.
-// A popup opens on the screen that had focus when it was requested.
+// Shared popup state: one popout at a time, opened on the focused screen.
 Singleton {
     readonly property string focusedScreenName: Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : ""
     readonly property var focusedScreen: screenNamed(focusedScreenName)
 
-    // Screen of the open popout or launcher.
     property string overlayScreenName: ""
     readonly property var overlayScreen: screenNamed(overlayScreenName)
 
     // "" | "calendar" | "network" | "bluetooth" | "audio" | "power" | "notifications"
     property string popout: ""
 
-    // Derived: keeps compatibility with existing overlays.
     readonly property bool powerMenu: popout === "power"
     readonly property bool notifCenter: popout === "notifications"
 
@@ -45,7 +41,6 @@ Singleton {
         popout = "";
     }
 
-    // App launcher (independent of bar popups).
     property bool launcher: false
 
     function toggleLauncher(): void {
@@ -63,7 +58,6 @@ Singleton {
         launcher = false;
     }
 
-    // External control: `qs ipc call popup open network` / `... close`
     IpcHandler {
         target: "popup"
 

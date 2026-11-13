@@ -52,7 +52,6 @@ AnchoredPopup {
         anchors.margins: Theme.popupPadding
         spacing: 12
 
-        // ── Header ────────────────────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 8
@@ -75,7 +74,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Hero: battery + charge ────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 16
@@ -117,7 +115,6 @@ AnchoredPopup {
             color: Theme.cardBorder
         }
 
-        // ── Power mode ────────────────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 7
@@ -208,7 +205,6 @@ AnchoredPopup {
             color: Theme.cardBorder
         }
 
-        // ── Details ───────────────────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 8

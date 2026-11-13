@@ -35,8 +35,7 @@ Row {
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
 
-                // Many tray apps (nm-applet, appindicators) expose a menu but do
-                // not implement Activate, so prefer the menu when one exists.
+                // Many tray apps expose a menu but not Activate, so prefer the menu.
                 onClicked: (mouse) => {
                     if (mouse.button === Qt.MiddleButton) {
                         cell.modelData.secondaryActivate();
@@ -53,7 +52,6 @@ Row {
             QsMenuAnchor {
                 id: menuAnchor
                 menu: cell.modelData.menu
-                anchor.window: cell.QsWindow.window
                 anchor.item: cell
                 anchor.edges: Edges.Bottom
                 anchor.gravity: Edges.Bottom

@@ -1,8 +1,7 @@
 import QtQuick
 import qs.config
 
-// Large circular action used by the power menu: frosted disc + label that
-// warm up with the action's accent color and lift slightly on hover.
+// Circular power-menu action with an accent glow and scale lift on hover.
 Item {
     id: item
 

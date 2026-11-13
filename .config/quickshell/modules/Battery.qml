@@ -4,8 +4,7 @@ import Quickshell.Services.UPower
 import qs.config
 import qs.components
 
-// Battery (only visible when a laptop battery is present).
-// The icon shows the fill level; clicking opens the battery panel.
+// Battery icon, visible only when a laptop battery is present; click opens the panel.
 BarButton {
     id: root
 

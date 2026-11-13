@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """BlueZ pairing agent for the Quickshell Bluetooth panel.
 
-Quickshell ships no org.bluez.Agent1, so pairing any device that asks for
-confirmation (keyboards, headsets, phones, ...) fails without this. It
-registers once with BlueZ and accepts every request.
-
-Started automatically by shell.qml. Run manually: python3 scripts/bt-agent.py
+Quickshell ships no org.bluez.Agent1, so pairing fails without one. It
+registers once and accepts every request. Started by shell.qml.
 """
 
 import sys

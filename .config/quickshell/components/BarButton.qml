@@ -2,10 +2,7 @@ import QtQuick
 import Quickshell
 import qs.config
 
-// Shared bar button: hover/open background + a single MouseArea.
-// Widgets declare their glyphs directly as children; `popoutId` links the
-// highlight to the popup controlled by Ui.popout, and `clicked(mouse)` /
-// `wheeled(wheel)` report interaction.
+// Bar button with a hover/open background; emits clicked(mouse) and wheeled(wheel).
 Item {
     id: root
 

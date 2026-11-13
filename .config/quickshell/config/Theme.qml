@@ -7,7 +7,6 @@ import Quickshell
 Singleton {
     id: theme
 
-    // ── Catppuccin Macchiato palette ──────────────────────────────
     readonly property color mauve:    "#c6a0f6"
     readonly property color red:      "#ed8796"
     readonly property color peach:    "#f5a97f"
@@ -29,7 +28,6 @@ Singleton {
     readonly property color base:     "#24273a"
     readonly property color crust:    "#181926"
 
-    // ── Metrics ───────────────────────────────────────────────────
     readonly property int barHeight: 36
     readonly property int radius: 12
     readonly property int smallRadius: 8
@@ -38,7 +36,6 @@ Singleton {
     readonly property int iconSize: 15
     readonly property string font: "MonaspiceNe Nerd Font"
 
-    // ── Derived pastel tones ──────────────────────────────────────
     // Translucent enough for the compositor blur (macOS-style) to show through.
     readonly property color barBg: Qt.rgba(base.r, base.g, base.b, 0.55)
     readonly property color cardBg: Qt.rgba(crust.r, crust.g, crust.b, 0.96)
@@ -47,20 +44,15 @@ Singleton {
     readonly property color accent: mauve
     readonly property color track: surface0
 
-    // Notification bell: same whitish as the rest of the widgets when idle,
-    // warm pastel when there are pending notifications.
     readonly property color bellIdle: text
     readonly property color bellActive: yellow
 
-    // Tinted translucent fill, useful for glows/backgrounds.
     function tint(c: color, alpha): color {
         return Qt.rgba(c.r, c.g, c.b, alpha);
     }
 
-    // ── Popups ────────────────────────────────────────────────────
     readonly property int popupRadius: 16
     readonly property int popupPadding: 14
-    // Gap between the bar and any popup, in pixels.
     readonly property int popupGap: 4
     readonly property int controlRadius: 8
 }

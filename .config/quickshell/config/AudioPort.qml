@@ -5,8 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 
-// Tells whether the default sink is a headphone/headset output. PipeWire
-// exposes no "headphones plugged" property, so the active port comes from pactl.
+// Whether the default sink is headphones. PipeWire has no such property, so the port comes from pactl.
 Singleton {
     id: root
 
@@ -41,8 +40,7 @@ Singleton {
         }
     }
 
-    // The port only changes on a jack plug, a profile switch or a default-sink
-    // change; all of them emit a pulse event, so no polling is needed.
+    // Port changes always emit a pulse event, so no polling is needed.
     Process {
         id: portEvents
         running: true

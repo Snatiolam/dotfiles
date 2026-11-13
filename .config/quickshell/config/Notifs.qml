@@ -10,8 +10,7 @@ Singleton {
 
     signal received(var notification)
 
-    // Focus / do-not-disturb: suppress toast popups while notifications
-    // keep landing in the notification center.
+    // Do not disturb: toasts are suppressed but notifications still arrive.
     property bool dnd: false
 
     readonly property var server: serverObj

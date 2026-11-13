@@ -40,7 +40,6 @@ AnchoredPopup {
         anchors.margins: Theme.popupPadding
         spacing: 10
 
-        // ── Header: month/year + navigation ───────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 4
@@ -111,7 +110,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Weekday row ───────────────────────────────────────────
         RowLayout {
             Layout.fillWidth: true
             spacing: 0
@@ -131,7 +129,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Month grid ────────────────────────────────────────────
         Grid {
             id: grid
             Layout.fillWidth: true
@@ -145,7 +142,6 @@ AnchoredPopup {
                 model: 42
 
                 delegate: Item {
-                    // index goes from 0 to 41.
                     readonly property int day: index - popup.firstWeekday + 1
                     readonly property bool inMonth: day >= 1 && day <= popup.daysInMonth
                     readonly property bool today: popup.isToday(day)
@@ -189,7 +185,6 @@ AnchoredPopup {
             }
         }
 
-        // ── Footer: full date ─────────────────────────────────────
         Text {
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
