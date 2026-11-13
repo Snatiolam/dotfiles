@@ -128,9 +128,9 @@ PanelWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: parent.height * 0.14
-        width: 460
-        implicitHeight: cardCol.implicitHeight + 20
-        radius: 20
+        width: 520
+        implicitHeight: cardCol.implicitHeight + 24
+        radius: 24
         color: Theme.cardBg
         border.width: 1
         border.color: Theme.cardBorder
@@ -141,35 +141,30 @@ PanelWindow {
         ColumnLayout {
             id: cardCol
             anchors.fill: parent
-            anchors.margins: 12
-            spacing: 10
+            anchors.margins: 14
+            spacing: 12
 
             // Search box
             Rectangle {
                 Layout.fillWidth: true
-                implicitHeight: 46
-                radius: 14
+                implicitHeight: 54
+                radius: 16
                 color: Theme.surface0
+                border.width: 1
+                border.color: field.activeFocus ? Theme.tint(Theme.mauve, 0.6) : "transparent"
+                Behavior on border.color { ColorAnimation { duration: 120 } }
 
                 RowLayout {
                     anchors.fill: parent
-                    anchors.leftMargin: 12
-                    anchors.rightMargin: 12
-                    spacing: 10
+                    anchors.leftMargin: 16
+                    anchors.rightMargin: 16
+                    spacing: 12
 
                     Text {
                         text: Icons.search
                         color: Theme.mauve
                         font.family: Theme.font
-                        font.pixelSize: 15
-                    }
-
-                    Text {
-                        visible: field.text === ""
-                        text: "Search apps…"
-                        color: Theme.overlay0
-                        font.family: Theme.font
-                        font.pixelSize: 13
+                        font.pixelSize: 18
                     }
 
                     TextInput {
@@ -177,10 +172,19 @@ PanelWindow {
                         Layout.fillWidth: true
                         color: Theme.text
                         font.family: Theme.font
-                        font.pixelSize: 13
+                        font.pixelSize: 16
                         clip: true
                         selectionColor: Theme.tint(Theme.mauve, 0.5)
                         selectedTextColor: Theme.text
+
+                        Text {
+                            anchors.fill: parent
+                            verticalAlignment: Text.AlignVCenter
+                            visible: field.text === ""
+                            text: "Search apps…"
+                            color: Theme.overlay0
+                            font: field.font
+                        }
 
                         onTextChanged: {
                             win.query = field.text;
@@ -209,15 +213,16 @@ PanelWindow {
                         }
                         Keys.onTabPressed: function(event) { event.accepted = true }
                     }
-
-                    Text {
-                        text: win.results.length > 0 ? win.results.length + (win.results.length === 1 ? " result" : " results")
-                                                     : (field.text === "" ? "No apps" : "No matches")
-                        color: Theme.overlay0
-                        font.family: Theme.font
-                        font.pixelSize: 10
-                    }
                 }
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                visible: win.query !== "" && win.results.length === 0
+                text: "No results"
+                color: Theme.overlay0
+                font.family: Theme.font
+                font.pixelSize: 13
             }
 
             // Results
@@ -232,13 +237,9 @@ PanelWindow {
                         required property int index
 
                         Layout.fillWidth: true
-                        implicitHeight: 54
-                        radius: 12
-                        color: index === win.sel
-                            ? Theme.tint(Theme.mauve, 0.18)
-                            : (hover.hovered ? Theme.surface1 : "transparent")
-                        border.width: index === win.sel ? 1 : 0
-                        border.color: Qt.rgba(Theme.mauve.r, Theme.mauve.g, Theme.mauve.b, 0.4)
+                        implicitHeight: 64
+                        radius: 14
+                        color: index === win.sel ? Theme.tint(Theme.mauve, 0.16) : "transparent"
                         Behavior on color { ColorAnimation { duration: 90 } }
 
                         HoverHandler { id: hover }
@@ -252,16 +253,16 @@ PanelWindow {
 
                         RowLayout {
                             anchors.fill: parent
-                            anchors.leftMargin: 10
+                            anchors.leftMargin: 12
                             anchors.rightMargin: 14
-                            spacing: 10
+                            spacing: 14
 
                             // Icon (or first-letter tile)
                             Rectangle {
-                                width: 36
-                                height: 36
-                                radius: 10
-                                color: Theme.surface1
+                                width: 44
+                                height: 44
+                                radius: 12
+                                color: Theme.tint(Theme.mauve, 0.16)
                                 clip: true
                                 visible: modelData.icon === ""
 
@@ -270,18 +271,18 @@ PanelWindow {
                                     text: (modelData.name && modelData.name.charAt(0)) || "?"
                                     color: Theme.mauve
                                     font.family: Theme.font
-                                    font.pixelSize: 16
+                                    font.pixelSize: 19
                                     font.bold: true
                                 }
                             }
 
                             Image {
-                                Layout.preferredWidth: 36
-                                Layout.preferredHeight: 36
+                                Layout.preferredWidth: 44
+                                Layout.preferredHeight: 44
                                 Layout.alignment: Qt.AlignVCenter
                                 visible: modelData.icon !== ""
                                 source: modelData.icon
-                                sourceSize: Qt.size(64, 64)
+                                sourceSize: Qt.size(96, 96)
                                 fillMode: Image.PreserveAspectFit
                                 mipmap: true
                             }
@@ -293,9 +294,9 @@ PanelWindow {
                                 Text {
                                     Layout.fillWidth: true
                                     text: modelData.name
-                                    color: Theme.text
+                                    color: index === win.sel ? Theme.mauve : Theme.text
                                     font.family: Theme.font
-                                    font.pixelSize: 12
+                                    font.pixelSize: 14
                                     font.bold: true
                                     elide: Text.ElideRight
                                 }
@@ -304,31 +305,15 @@ PanelWindow {
                                     Layout.fillWidth: true
                                     visible: text !== ""
                                     text: modelData.comment
-                                    color: Theme.overlay0
+                                    color: Theme.subtext0
                                     font.family: Theme.font
-                                    font.pixelSize: 10
+                                    font.pixelSize: 11
                                     elide: Text.ElideRight
                                 }
-                            }
-
-                            Text {
-                                text: Icons.check
-                                visible: index === win.sel
-                                color: Theme.mauve
-                                font.family: Theme.font
-                                font.pixelSize: 13
                             }
                         }
                     }
                 }
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: "\u2191\u2193 Navigate \u00b7 \u23CE Open \u00b7 Esc Close"
-                color: Theme.overlay0
-                font.family: Theme.font
-                font.pixelSize: 10
             }
         }
     }
