@@ -176,6 +176,7 @@ AnchoredPopup {
         RowLayout {
             Layout.fillWidth: true
             spacing: 10
+            visible: Brightness.available
 
             Text {
                 text: Icons.brightness

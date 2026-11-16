@@ -29,6 +29,8 @@ Singleton {
     property int ddcBus: -1
     property int ddcMax: 100
 
+    readonly property bool available: backlight !== "" || ddc
+
     property real lastValue: -1
 
     // Writes are serialized: while a command runs, further requests are

@@ -10,10 +10,17 @@ hl.monitor({
     scale    = "auto",
 })
 
--- The TV only offers 4K at 30 Hz, so run it at 1080p60 for a readable UI.
-hl.monitor({
-    output   = "desc:LG Electronics LG TV SSCR2 0x01010101",
-    mode     = "1920x1080@60",
-    position = "auto",
-    scale    = 1,
-})
+-- TVs prefer 4K at 30 Hz over HDMI: run them at 1080p60.
+local function tame_tv(monitor)
+    if not monitor.description:find("TV") then return end
+
+    hl.monitor({
+        output   = monitor.name,
+        mode     = "1920x1080@60",
+        position = "auto",
+        scale    = 1,
+    })
+end
+
+for _, monitor in ipairs(hl.get_monitors()) do tame_tv(monitor) end
+hl.on("monitor.added", tame_tv)
