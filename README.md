@@ -25,6 +25,7 @@ cd ~/dotfiles
 ./setup.sh --yay        # installs yay from the AUR (skipped if already present)
 ./setup.sh --aur        # installs AUR packages from aur-packages.txt via yay
 ./setup.sh --git        # links .gitconfig (skipped if a global config exists)
+./setup.sh --firewall   # enables ufw: deny incoming, allow outgoing
 ./setup.sh --all        # configs (git, nvim, zsh, hypr, fonts, ...) + yay + AUR
 ```
 

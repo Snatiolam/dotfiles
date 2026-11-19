@@ -400,6 +400,16 @@ setup_tuigreet() {
     echo "Tuigreet config installed"
 }
 
+setup_firewall() {
+    echo "Setting up firewall"
+    command -v ufw >/dev/null 2>&1 || die "ufw is not installed (run with --packages)"
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    sudo ufw --force enable
+    sudo systemctl enable ufw
+    echo "Firewall enabled"
+}
+
 setup_hypr_stack() {
     setup_dirs
     setup_quickshell
@@ -426,6 +436,7 @@ show_help() {
     echo "  -u, --tuigreet  Setup Tuigreet config"
     echo "  -G, --ghostty   Setup Ghostty config"
     echo "  -K, --gtk       Setup GTK3 dark mode (settings.ini)"
+    echo "  -w, --firewall  Enable ufw (deny incoming, allow outgoing)"
     echo "  -h, --help      Show this help message"
 }
 
@@ -476,7 +487,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_yay; install_aur_packages; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk
+                install_packages; install_yay; install_aur_packages; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk; setup_firewall
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -506,6 +517,8 @@ main(){
                 setup_ghostty; shift ;;
             -K|--gtk)
                 setup_gtk; shift ;;
+            -w|--firewall)
+                setup_firewall; shift ;;
             -g|--git)
                 setup_git; shift ;;
             --firefox)

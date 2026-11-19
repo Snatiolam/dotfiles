@@ -21,6 +21,7 @@ efibootmgr
 sudo
 networkmanager
 wpa_supplicant
+ufw
 zram-generator
 
 # --- GPU drivers and hardware video decoding (NVIDIA is the primary GPU) ---
