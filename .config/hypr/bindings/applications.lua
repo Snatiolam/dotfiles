@@ -3,13 +3,15 @@
 --------------------------------
 
 local settings = require("hypr.settings")
+local launch_or_focus = require("hypr.launch").launch_or_focus
 local mod = settings.mod
 
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(settings.terminal))
 hl.bind(mod .. " + Space",  hl.dsp.exec_cmd("qs ipc call launcher toggle"))
 hl.bind(mod .. " + E",      hl.dsp.exec_cmd(settings.file_manager))
 hl.bind(mod .. " + B",      hl.dsp.exec_cmd(settings.browser))
-hl.bind(mod .. " + C",      hl.dsp.exec_cmd(settings.calculator))
+hl.bind(mod .. " + C",      launch_or_focus("io.github.Qalculate.qalculate-qt", settings.calculator))
 hl.bind(mod .. " + D",      hl.dsp.exec_cmd("qs ipc call launcher toggle"))
+hl.bind(mod .. " + SHIFT + D", launch_or_focus("discord", settings.discord))
 hl.bind(mod .. " + L",      hl.dsp.exec_cmd("qs ipc call lock lock"))
 hl.bind(mod .. " + M",      hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))

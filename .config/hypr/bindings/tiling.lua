@@ -27,7 +27,19 @@ for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
     hl.bind(mod .. " + " .. key,         hl.dsp.focus({ workspace = i }))
     hl.bind(mod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+    hl.bind(mod .. " + SHIFT + ALT + " .. key, hl.dsp.window.move({ workspace = i, follow = false }))
 end
+
+hl.bind(mod .. " + TAB",          hl.dsp.focus({ workspace = "m+1" }))
+hl.bind(mod .. " + SHIFT + TAB",  hl.dsp.focus({ workspace = "m-1" }))
+hl.bind(mod .. " + CTRL + TAB",   hl.dsp.focus({ workspace = "previous_per_monitor" }))
+
+-- Going back lowers the window it leaves: raising the one it lands on would
+-- ping-pong, since bring_to_top reorders the list cycle_next walks.
+hl.bind("ALT + SHIFT + TAB", hl.dsp.window.alter_zorder({ mode = "bottom" }))
+hl.bind("ALT + TAB",         hl.dsp.window.cycle_next())
+hl.bind("ALT + SHIFT + TAB", hl.dsp.window.cycle_next({ next = false }))
+hl.bind("ALT + TAB",         hl.dsp.window.bring_to_top())
 
 hl.bind(mod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))

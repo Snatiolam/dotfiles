@@ -39,6 +39,8 @@ The repo mirrors `$HOME`: `.config/<app>` here maps to `~/.config/<app>`.
   - `monitors.lua`, `envs.lua`, `looknfeel.lua`, `input.lua`, `windows.lua`,
     `bindings.lua`, `autostart.lua`, `permissions.lua`, `settings.lua`:
     one concern per file
+  - `launch.lua`: `launch_or_focus(class, command)`, a bind dispatcher that
+    focuses an existing window of that class or starts the app
   - `bindings/`: `applications`, `tiling`, `media`, `screenshots`, `monitors`
   - `apps/`: per-app window rules (firefox, steam, surfshark, thunar),
     required from `windows.lua`

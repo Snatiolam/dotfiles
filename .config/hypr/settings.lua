@@ -5,4 +5,5 @@ return {
     file_manager = "thunar",
     browser      = "firefox",
     calculator   = "qalculate-qt",
+    discord      = "discord",
 }
