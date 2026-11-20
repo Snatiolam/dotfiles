@@ -10,7 +10,7 @@ cliphist_db() {
 }
 
 store() {
-  if wl-paste --list-types | grep -qx 'x-kde-passwordManagerHint'; then
+  if [[ ${CLIPBOARD_STATE:-} == sensitive ]] || wl-paste --list-types | grep -qx 'x-kde-passwordManagerHint'; then
     return
   fi
   cliphist_db store

@@ -27,14 +27,16 @@ PanelWindow {
     property var items: []
     property string query: ""
     property int sel: 0
+    property bool confirmingClear: false
 
     readonly property var modes: ({
         clipboard: {
-            placeholder: "Search clipboard…  (Shift+Del removes)",
+            placeholder: "Search…  (Del remove · Shift+Del clear all)",
             command: [clipboardScript, "list"],
             parse: parseClipboard,
             choose: copyEntry,
             remove: deleteEntry,
+            clearAll: wipeHistory,
         },
         keybinds: {
             placeholder: "Search keybindings…",
@@ -81,6 +83,16 @@ PanelWindow {
         items = items.filter(i => i !== item);
     }
 
+    function wipeHistory(): void {
+        Quickshell.execDetached([clipboardScript, "wipe"]);
+        items = [];
+    }
+
+    function clearAll(): void {
+        if (mode.clearAll) mode.clearAll();
+        confirmingClear = false;
+    }
+
     function remove(i: int): void {
         const item = shown[i];
         if (item && mode.remove) mode.remove(item);
@@ -108,6 +120,7 @@ PanelWindow {
     onVisibleChanged: {
         if (!visible) return;
         field.text = "";
+        confirmingClear = false;
         items = [];
         source.running = true;
         Qt.callLater(() => field.forceActiveFocus());
@@ -184,12 +197,21 @@ PanelWindow {
 
                         Keys.onUpPressed: function(event) { win.move(-1); event.accepted = true; }
                         Keys.onDownPressed: function(event) { win.move(1); event.accepted = true; }
-                        Keys.onReturnPressed: function(event) { win.choose(win.sel); event.accepted = true; }
-                        Keys.onDeletePressed: function(event) {
-                            if (event.modifiers & Qt.ShiftModifier) win.remove(win.sel);
-                            event.accepted = (event.modifiers & Qt.ShiftModifier) !== 0;
+                        Keys.onReturnPressed: function(event) {
+                            if (win.confirmingClear) win.clearAll();
+                            else win.choose(win.sel);
+                            event.accepted = true;
                         }
-                        Keys.onEscapePressed: function(event) { Ui.closePicker(); event.accepted = true; }
+                        Keys.onDeletePressed: function(event) {
+                            if (event.modifiers & Qt.ShiftModifier) win.confirmingClear = !!win.mode.clearAll;
+                            else win.remove(win.sel);
+                            event.accepted = true;
+                        }
+                        Keys.onEscapePressed: function(event) {
+                            if (win.confirmingClear) win.confirmingClear = false;
+                            else Ui.closePicker();
+                            event.accepted = true;
+                        }
                         Keys.onTabPressed: function(event) { event.accepted = true; }
                     }
                 }
@@ -197,9 +219,18 @@ PanelWindow {
 
             Text {
                 Layout.alignment: Qt.AlignHCenter
-                visible: win.shown.length === 0
+                visible: win.shown.length === 0 && !win.confirmingClear
                 text: win.query === "" ? "Nothing here yet" : "No results"
                 color: Theme.overlay0
+                font.family: Theme.font
+                font.pixelSize: 13
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                visible: win.confirmingClear
+                text: "Clear the whole clipboard history?  Enter confirms · Esc cancels"
+                color: Theme.red
                 font.family: Theme.font
                 font.pixelSize: 13
             }
@@ -208,7 +239,7 @@ PanelWindow {
                 id: list
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(contentHeight, 400)
-                visible: win.shown.length > 0
+                visible: win.shown.length > 0 && !win.confirmingClear
                 model: win.shown
                 spacing: 4
                 clip: true
