@@ -16,6 +16,7 @@ ShellRoot {
     NotificationCenter {}
     PowerMenu {}
     Launcher {}
+    Picker {}
     LockScreen {}
 
     // BlueZ pairing agent (Quickshell has no Agent1). A reload orphans the old child,

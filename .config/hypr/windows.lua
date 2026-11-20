@@ -9,6 +9,14 @@ hl.window_rule({
     suppress_event = "maximize",
 })
 
+-- Controllers do not count as input, so fullscreen games must hold off idle.
+hl.window_rule({
+    name  = "idle-inhibit-fullscreen",
+    match = { class = ".*" },
+
+    idle_inhibit = "fullscreen",
+})
+
 -- XWayland drag fix.
 hl.window_rule({
     name  = "fix-xwayland-drags",

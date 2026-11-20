@@ -24,9 +24,17 @@ Scope {
         onLoaded: if (text().trim() === "1") persist.locked = true
     }
 
+    Process {
+        id: wipeClipboard
+        command: [Quickshell.shellDir + "/scripts/clipboard.sh", "wipe"]
+    }
+
     Connections {
         target: persist
-        function onLockedChanged(): void { lockMarker.setText(persist.locked ? "1" : "0"); }
+        function onLockedChanged(): void {
+            lockMarker.setText(persist.locked ? "1" : "0");
+            if (persist.locked) wipeClipboard.running = true;
+        }
     }
 
     LockContext {

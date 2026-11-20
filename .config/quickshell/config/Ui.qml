@@ -50,12 +50,31 @@ Singleton {
 
     function openLauncher(): void {
         closePopout();
+        closePicker();
         overlayScreenName = focusedScreenName;
         launcher = true;
     }
 
     function closeLauncher(): void {
         launcher = false;
+    }
+
+    property string picker: ""
+
+    function togglePicker(name: string): void {
+        if (picker === name) closePicker();
+        else openPicker(name);
+    }
+
+    function openPicker(name: string): void {
+        closePopout();
+        closeLauncher();
+        overlayScreenName = focusedScreenName;
+        picker = name;
+    }
+
+    function closePicker(): void {
+        picker = "";
     }
 
     IpcHandler {

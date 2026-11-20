@@ -7,6 +7,8 @@ hl.on("hyprland.start", function()
     -- remap its windows) and on crashes.
     hl.exec_cmd("hyprpaper & $HOME/.config/hypr/scripts/quickshell-watchdog.py")
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
+    hl.exec_cmd("hypridle")
+    hl.exec_cmd("$HOME/.config/quickshell/scripts/clipboard.sh watch")
     -- Dark mode for GTK4 apps; GTK3 is set in gtk-3.0/settings.ini.
     hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme prefer-dark")
 end)

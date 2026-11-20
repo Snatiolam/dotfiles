@@ -44,13 +44,16 @@ The repo mirrors `$HOME`: `.config/<app>` here maps to `~/.config/<app>`.
   - `bindings/`: `applications`, `tiling`, `media`, `screenshots`, `monitors`
   - `apps/`: per-app window rules (firefox, steam, surfshark, thunar),
     required from `windows.lua`
+  - `hypridle.conf`: lock after 5 min idle, screen off after 10 min
   - `scripts/`: `quickshell-watchdog.py` (supervises Quickshell, restarts it
     after monitor hotplug or crash; started from `autostart.lua`),
-    `monitor-toggle.sh`
+    `monitor-toggle.sh`, `idle-toggle.sh`
 - `.config/quickshell/`
   - `shell.qml`: entry point; mounts `Bar`, `OsdOverlay`, `Toast`,
-    `NotificationCenter`, `PowerMenu`, `Launcher`, `LockScreen` and runs the
-    BlueZ pairing agent (`scripts/bt-agent.py`)
+    `NotificationCenter`, `PowerMenu`, `Launcher`, `Picker` (clipboard history
+    and keybinding cheat sheet), `LockScreen` and runs the
+    BlueZ pairing agent (`scripts/bt-agent.py`); `scripts/clipboard.sh` is the
+    RAM-only clipboard history behind the Picker
   - `config/`: singletons (`Theme`, `Ui`, `Icons`, `Notifs`, `Osd`)
   - `components/`: reusable widgets
   - `modules/`: bar modules and overlays; `modules/popups/` for popups
@@ -67,6 +70,8 @@ Hyprland Lua:
 - Config uses the `hl.*` API (`hl.bind`, `hl.exec_cmd`, `hl.env`, `hl.config`,
   `hl.monitor`, `hl.on`). Modules are loaded with `require("hypr.<module>")`.
 - Shared values (`mod`, `terminal`, `browser`, ...) live in `settings.lua`.
+- Give keybindings worth listing a `{ description = "..." }`; the Picker's
+  keybinding sheet shows only described binds.
 - Files start with a boxed `-----` section header.
 - Keep `hyprland.lua` minimal; add new concerns as new modules.
 - `monitors.lua` uses `scale = "auto"` on purpose so the same config works
