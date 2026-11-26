@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Wayland
 import qs.config
 
 // Floating OSD centered at the bottom. Shown on volume/brightness changes.
@@ -12,7 +13,8 @@ PanelWindow {
     anchors.bottom: true
     margins.bottom: 56
     exclusiveZone: 0
-    aboveWindows: true
+    // The default top layer is hidden behind fullscreen windows.
+    WlrLayershell.layer: WlrLayer.Overlay
     focusable: false
     color: "transparent"
     visible: Osd.visible
