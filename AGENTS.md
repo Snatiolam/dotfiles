@@ -15,6 +15,8 @@ Active (maintain and extend these):
 - Quickshell (`.config/quickshell`), written in QML (+ small Python helpers)
 - Ghostty (`.config/ghostty`)
 - Thunar (file manager; Hyprland window rules in `.config/hypr/apps/thunar.lua`)
+- MangoHud (`.config/MangoHud`), enabled only for Steam through a desktop
+  entry that `setup.sh --mangohud` generates
 
 Legacy (do not edit unless explicitly asked): everything X11-based, plus
 kitty and sway. In the repo that means `.config/i3`, `.config/i3blocks`,
@@ -96,7 +98,7 @@ Shell scripts: `setup.sh` uses `set -euo pipefail`, helper functions
 (`install_config_dir` asks before deleting an existing destination). Options:
 `--packages`, `--yay`, `--aur`, `--git`, `--hypr`, `--ghostty`, `--gtk`,
 `--fastfetch`, `--tuigreet`, `--nvim`, `--zsh`, `--tmux`, `--vim`, `--fonts`,
-`--bin`, `--firefox`, `--all`, `--help`. With no arguments it runs
+`--bin`, `--firefox`, `--firewall`, `--mangohud`, `--all`, `--help`. With no arguments it runs
 interactively.
 
 Because the deployed copies in `~/.config` are separate from the repo,

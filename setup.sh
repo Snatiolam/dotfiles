@@ -400,6 +400,17 @@ setup_tuigreet() {
     echo "Tuigreet config installed"
 }
 
+setup_mangohud() {
+    local entry="/usr/share/applications/steam.desktop"
+    command -v mangohud >/dev/null 2>&1 || die "mangohud is not installed"
+    [ -f "$entry" ] || die "steam is not installed"
+    install_config_dir ".config/MangoHud" "$HOME/.config/MangoHud" "MangoHud"
+    # Only Steam gets the variable, so the overlay stays out of other apps.
+    mkdir -p "$HOME/.local/share/applications"
+    sed 's|^Exec=|Exec=env MANGOHUD=1 |' "$entry" > "$HOME/.local/share/applications/steam.desktop"
+    echo "MangoHud enabled for Steam"
+}
+
 setup_firewall() {
     echo "Setting up firewall"
     command -v ufw >/dev/null 2>&1 || die "ufw is not installed (run with --packages)"
@@ -436,6 +447,7 @@ show_help() {
     echo "  -u, --tuigreet  Setup Tuigreet config"
     echo "  -G, --ghostty   Setup Ghostty config"
     echo "  -K, --gtk       Setup GTK3 dark mode (settings.ini)"
+    echo "  -M, --mangohud  Setup MangoHud for Steam games"
     echo "  -w, --firewall  Enable ufw (deny incoming, allow outgoing)"
     echo "  -h, --help      Show this help message"
 }
@@ -487,7 +499,7 @@ main(){
     while [[ $# -gt 0 ]]; do
         case $1 in
             -a|--all)
-                install_packages; install_yay; install_aur_packages; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk; setup_firewall
+                install_packages; install_yay; install_aur_packages; setup_git; install_fonts; setup_tmux; setup_nvim; setup_zsh; setup_hypr_stack; setup_fastfetch; setup_tuigreet; setup_ghostty; setup_gtk; setup_firewall; setup_mangohud
                 shift ;;
             -n|--nvim)
                 setup_nvim; shift ;;
@@ -517,6 +529,8 @@ main(){
                 setup_ghostty; shift ;;
             -K|--gtk)
                 setup_gtk; shift ;;
+            -M|--mangohud)
+                setup_mangohud; shift ;;
             -w|--firewall)
                 setup_firewall; shift ;;
             -g|--git)

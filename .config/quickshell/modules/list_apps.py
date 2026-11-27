@@ -9,12 +9,13 @@ import os
 import re
 import shutil
 
+# Highest precedence first: a file replaces same-named ones further down.
 APP_DIRS = [
-    "/usr/share/applications",
-    "/usr/local/share/applications",
     os.path.expanduser("~/.local/share/applications"),
-    "/var/lib/flatpak/exports/share/applications",
     os.path.expanduser("~/.local/share/flatpak/exports/share/applications"),
+    "/var/lib/flatpak/exports/share/applications",
+    "/usr/local/share/applications",
+    "/usr/share/applications",
 ]
 
 ICON_BASES = [
@@ -68,6 +69,10 @@ def main():
         if not os.path.isdir(base):
             continue
         for path in glob.glob(base + "/*.desktop"):
+            app_id = os.path.basename(path)
+            if app_id in seen:
+                continue
+            seen.add(app_id)
             try:
                 cp = configparser.ConfigParser(
                     interpolation=None, strict=False, delimiters=("=",)
@@ -87,10 +92,6 @@ def main():
             execs = sec.get("Exec", "").strip()
             if not name or not execs:
                 continue
-            key = name.lower() + "\t" + execs
-            if key in seen:
-                continue
-            seen.add(key)
             # Strip desktop field codes: %f %u %U %c %k etc.
             execs = re.sub(r"%\w", "", execs).strip()
             if not execs:
